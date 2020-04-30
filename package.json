@@ -1,0 +1,41 @@
+{
+  "name": "@bytesoftio/schema",
+  "version": "1.0.1",
+  "author": "Maxim Kott",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "repository": "github:bytesoftio/schema",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "tsc --noEmit",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "docs": "doctoc readme.md && typedoc src/index.ts --out docs --hideGenerator --tsconfig tsconfig.build.json --mode library --theme minimal",
+    "release": "yarn run build && np"
+  },
+  "dependencies": {
+    "@bytesoftio/use-translator": "^1.0.0",
+    "date-fns": "^2.12.0",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^13.9.1",
+    "@types/react": "^16.9.34",
+    "doctoc": "^1.4.0",
+    "jest": "^25.1.0",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "ts-jest": "^25.2.1",
+    "typedoc": "^0.17.0-3",
+    "typescript": "^3.8.3"
+  }
+}

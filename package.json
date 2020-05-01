@@ -21,7 +21,7 @@
     "release": "yarn run build && np"
   },
   "dependencies": {
-    "@bytesoftio/use-translator": "^1.0.0",
+    "@bytesoftio/translator": "^2.1.0",
     "date-fns": "^2.12.0",
     "lodash": "^4.17.15"
   },

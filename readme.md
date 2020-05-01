@@ -260,8 +260,7 @@ if (valid) {
 
 ## Validating
 
-Validations can be very simple, when using strings, numbers, etc. or become 
-quite complex when using object. We'll cover objects in a later section.
+Validations can be very simple, when using strings, numbers, etc. or become quite complex when using object. We'll cover objects in a later section.
 
 Successful validation: 
 
@@ -317,8 +316,7 @@ This is what the validation error looks like:
 
 ## Sanitizing
 
-Lets take a look on how schema can be used to sanitize / normalize data. 
-For convenience, all sanitization methods start with `to`, like `toCamelCase`.
+Lets take a look on how schema can be used to sanitize / normalize data. For convenience, all sanitization methods start with `to`, like `toCamelCase`.
 
 ```ts
 import { string } from "@bytesoftio/schema"
@@ -331,8 +329,7 @@ const value = await schema.sanitize("  foo bar  ")
 
 ## Sanitize and test
 
-Now let's mix some things up, what if you could sanitize your data 
-before running the assertions?
+Now let's mix some things up, what if you could sanitize your data before running the assertions?
 
 Successful test:
 
@@ -356,14 +353,11 @@ const schema = string().min(4).toTrimmed()
 const [valid, value] = await schema.sanitizeAndTest("  foo  ")
 ```
 
-As you can see, even though the string `"  foo  "` has a length greater than 4, 
-after it gets trimmed (all surrounding whitespace gets stripped away), it becomes
-`"foo"` and therefore its length is less than 4. 
+As you can see, even though the string `"  foo  "` has a length greater than 4, after it gets trimmed (all surrounding whitespace gets stripped away), it becomes`"foo"` and therefore its length is less than 4. 
 
 ## Sanitize and validate
 
-This method works exactly the same as `sanitizeAndTest`, except instead of 
-calling `test` behind the scenes, it calls the `validate` method.
+This method works exactly the same as `sanitizeAndTest`, except instead of calling `test` behind the scenes, it calls the `validate` method.
 
 Successful validation:
 
@@ -404,10 +398,7 @@ This what the errors would look like:
 
 ## Reusing validation schemas
 
-Schemas can be chained using conditions. It is also possible to 
-shape the contents of an array or object using a dedicated schema.
-Sounds complicated, but it isn't. Based on the reasons above you migh
-want to split schemas into small reusable pieces.
+Schemas can be chained using conditions. It is also possible to shape the contents of an array or object using a dedicated schema. Sounds complicated, but it isn't. Based on the reasons above you might want to split schemas into small reusable pieces.
 
 ```ts
 import { array, string } from "@bytesoftio/schema"
@@ -493,9 +484,7 @@ const value = await schema.sanitize("foo bar")
 
 ## Translations
 
-This library uses `@bytesoftio/use-translator` behind the scenes. 
-Please take a look at the corresponding docs for examples of how to 
-add / replace translations, etc.
+This library uses [@bytesoftio/translator](https://github.com/bytesoftio/translator) behind the scenes. Please take a look at the corresponding docs for examples of how to add / replace translations, etc.
 
 Access translator like this:
 

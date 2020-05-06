@@ -17,8 +17,8 @@
     "test": "jest",
     "lint": "tsc --noEmit",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
-    "docs": "doctoc readme.md && typedoc src/index.ts --out docs --hideGenerator --tsconfig tsconfig.build.json --mode library --theme minimal",
-    "release": "yarn run build && np"
+    "docs": "doctoc readme.md && docster src/index.ts --out docs --tsconfig tsconfig.build.json",
+    "release": "yarn run build && np --no-release-draft"
   },
   "dependencies": {
     "@bytesoftio/translator": "^2.1.0",
@@ -26,6 +26,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@bytesoftio/docster": "^1.0.0",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.9.1",
@@ -33,7 +34,6 @@
     "jest": "^25.1.0",
     "lodash": "^4.17.15",
     "ts-jest": "^25.2.1",
-    "typedoc": "^0.17.0-3",
     "typescript": "^3.8.3"
   }
 }

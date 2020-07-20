@@ -13,15 +13,15 @@ export interface ValidationSchema {
 
   test(value: any): Promise<boolean>
   validate(value: any): Promise<ValidationError[] | undefined>
-  sanitize<T, M = T>(value: T): Promise<M>
-  sanitizeAndTest<T, M = T>(value: any): Promise<[boolean, T]>
-  sanitizeAndValidate<T, M = T>(value: any): Promise<[ValidationError[] | undefined, T]>
+  sanitize<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue>
+  sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TValue]>
+  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TValue]>
 }
 
-export type LazyValue<T> = T | (() => T) | undefined
-export type MaybePromise<T> = T | Promise<T>
+export type LazyValue<TValue> = TValue | (() => TValue) | undefined
+export type MaybePromise<TValue> = TValue | Promise<TValue>
 
-export type ValidationResult = { [K: string]: string[] }
+export type ValidationResult = { [key: string]: string[] }
 export type ValidationFunctionResult = undefined | boolean
 export type ValidationError = {
   type: ValidationType

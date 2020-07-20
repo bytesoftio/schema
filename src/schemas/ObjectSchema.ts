@@ -29,11 +29,11 @@ import { validateObjectShape } from "../validateObjectShape"
 import { validateObjectIsMissingKeys } from "../validateObjectIsMissingKeys"
 import { testObjectIsMissingKeys } from "../testObjectIsMissingKeys"
 
-export type ObjectShape<T> = {
-  [K in keyof T]: ValidationSchema
+export type ObjectShape<TValue> = {
+  [key in keyof TValue]: ValidationSchema
 }
 
-export class ObjectSchema<T> extends Schema {
+export class ObjectSchema<TValue> extends Schema {
   protected cloneInstance(): this {
     const schema = new ObjectSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -67,16 +67,16 @@ export class ObjectSchema<T> extends Schema {
     return [...errors, ...hasUnknownKeysErrors, ...isMissingKeysErrors, ...unknownKeysErrors, ...unknownValueErrors, ...validateShapeErrors]
   }
 
-  protected async customSanitizeBehavior<T, M = T>(value: T): Promise<M> {
+  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
     return sanitizeObjectShape(value, this.objectShape)
   }
 
-  protected objectShape?: ObjectShape<T>
+  protected objectShape?: ObjectShape<TValue>
   protected unknownKeysSchema?: StringSchema
   protected unknownValuesSchema?: StringSchema
   protected allowUnknownKeysAndValues: boolean = false
 
-  constructor(objectShape?: ObjectShape<T>) {
+  constructor(objectShape?: ObjectShape<TValue>) {
     super()
 
     this.skipClone(() => {
@@ -101,7 +101,7 @@ export class ObjectSchema<T> extends Schema {
       .addValidationDefinition(createValidationDefinition("object_equals", objectEquals, [equal], message))
   }
 
-  shape(objectShape?: ObjectShape<T>): this {
+  shape(objectShape?: ObjectShape<TValue>): this {
     const schema = this.clone()
     schema.objectShape = objectShape
 

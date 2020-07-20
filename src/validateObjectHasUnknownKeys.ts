@@ -4,9 +4,9 @@ import { ValidationError } from "./types"
 import { createValidationError } from "./createValidationError"
 import { translateMessage } from "./translateMessage"
 
-export const validateObjectHasUnknownKeys = <T = any>(
+export const validateObjectHasUnknownKeys = <TValue = any>(
   value: any,
-  objectShape: ObjectShape<T> | undefined,
+  objectShape: ObjectShape<TValue> | undefined,
   allowUnknownKeysAndValues: boolean,
 ): ValidationError[] => {
   if (allowUnknownKeysAndValues) return []

@@ -12,7 +12,7 @@ export const number = () => new NumberSchema()
 export const boolean = () => new BooleanSchema()
 export const date = () => new DateSchema()
 export const array = (valuesSchema?: ValidationSchema) => new ArraySchema(valuesSchema)
-export const object = <T = any>(objectShape?: ObjectShape<T>) => new ObjectSchema<T>(objectShape)
+export const object = <TValue = any>(objectShape?: ObjectShape<TValue>) => new ObjectSchema<TValue>(objectShape)
 export const mixed = () => new MixedSchema()
 
 export * from "./schemas/StringSchema"

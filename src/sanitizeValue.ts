@@ -1,6 +1,6 @@
 import { SanitizerDefinition } from "./types"
 
-export const sanitizeValue = async <T, M = T>(value: T, definitions: SanitizerDefinition[]): Promise<M> => {
+export const sanitizeValue = async <TValue, TSanitizedValue = TValue>(value: TValue, definitions: SanitizerDefinition[]): Promise<TSanitizedValue> => {
   for (let definition of definitions) {
     value = await definition.sanitizer(value, ...definition.args)
   }

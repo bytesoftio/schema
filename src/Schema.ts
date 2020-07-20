@@ -72,22 +72,22 @@ export abstract class Schema implements ValidationSchema {
     return ! dedupedErrors || dedupedErrors.length === 0 ? undefined : dedupedErrors
   }
 
-  async sanitize<T, M = T>(value: T): Promise<M> {
-    const sanitizedValue = await sanitizeValue<T, M>(value, this.sanitizerDefinitions)
-    const customSanitizedValue = await this.customSanitizeBehavior<T, M>(sanitizedValue as any)
+  async sanitize<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+    const sanitizedValue = await sanitizeValue<TValue, TSanitizedValue>(value, this.sanitizerDefinitions)
+    const customSanitizedValue = await this.customSanitizeBehavior<TValue, TSanitizedValue>(sanitizedValue as any)
 
     return customSanitizedValue
   }
 
-  async sanitizeAndTest<T, M = T>(value: any): Promise<[boolean, M]> {
-    const sanitizedValue = await this.sanitize<T, M>(value)
+  async sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TSanitizedValue]> {
+    const sanitizedValue = await this.sanitize<TValue, TSanitizedValue>(value)
     const testResult = await this.test(sanitizedValue)
 
     return [testResult, sanitizedValue]
   }
 
-  async sanitizeAndValidate<T, M = T>(value: any): Promise<[ValidationError[] | undefined, M]> {
-    const sanitizedValue = await this.sanitize<T, M>(value)
+  async sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TSanitizedValue]> {
+    const sanitizedValue = await this.sanitize<TValue, TSanitizedValue>(value)
     const validationResult = await this.validate(sanitizedValue)
 
     return [validationResult, sanitizedValue]
@@ -101,7 +101,7 @@ export abstract class Schema implements ValidationSchema {
     return errors
   }
 
-  protected async customSanitizeBehavior<T, M = T>(value: T): Promise<M> {
+  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
     return value as any
   }
 

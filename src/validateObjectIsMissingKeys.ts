@@ -4,9 +4,9 @@ import { ValidationError } from "./types"
 import { createValidationError } from "./createValidationError"
 import { translateMessage } from "./translateMessage"
 
-export const validateObjectIsMissingKeys = <T = any>(
+export const validateObjectIsMissingKeys = <TValue = any>(
   value: any,
-  objectShape: ObjectShape<T> | undefined,
+  objectShape: ObjectShape<TValue> | undefined,
 ): ValidationError[] => {
   const missingKeys = difference(keys(objectShape), keys(value))
 

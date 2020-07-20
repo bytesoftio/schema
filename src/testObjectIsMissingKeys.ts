@@ -1,9 +1,9 @@
 import { ObjectShape } from "./schemas/ObjectSchema"
 import { difference, keys } from "lodash"
 
-export const testObjectIsMissingKeys = <T = any>(
+export const testObjectIsMissingKeys = <TValue = any>(
   value: any,
-  objectShape: ObjectShape<T> | undefined,
+  objectShape: ObjectShape<TValue> | undefined,
 ): boolean => {
   if ( ! objectShape) return true
 

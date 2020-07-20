@@ -1,7 +1,7 @@
 import { ObjectShape } from "./schemas/ObjectSchema"
 import { isObjectLike, keys } from "lodash"
 
-export const sanitizeObjectShape = async <T, M = T>(value: T, objectShape: ObjectShape<any> | undefined): Promise<M> => {
+export const sanitizeObjectShape = async <TValue, TSanitizedValue = TValue>(value: TValue, objectShape: ObjectShape<any> | undefined): Promise<TSanitizedValue> => {
   if ( ! objectShape || ! isObjectLike(value)) return value as any
 
   await Promise.all(keys(objectShape).map(async (shapeKey) => {

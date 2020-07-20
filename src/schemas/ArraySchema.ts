@@ -37,7 +37,7 @@ export class ArraySchema extends Schema {
     return testResult && await testArrayValues(value, this.valuesSchema)
   }
 
-  protected async customSanitizeBehavior<T, M = T>(value: T): Promise<M> {
+  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
     return sanitizeArrayValues(value, this.valuesSchema)
   }
 

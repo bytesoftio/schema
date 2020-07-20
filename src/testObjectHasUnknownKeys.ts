@@ -1,9 +1,9 @@
 import { ObjectShape } from "./schemas/ObjectSchema"
 import { difference, keys } from "lodash"
 
-export const testObjectHasUnknownKeys = <T = any>(
+export const testObjectHasUnknownKeys = <TValue = any>(
   value: any,
-  objectShape: ObjectShape<T> | undefined,
+  objectShape: ObjectShape<TValue> | undefined,
   allowUnknownKeysAndValues: boolean,
 ): boolean => {
   if ( ! objectShape) return true

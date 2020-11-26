@@ -1,5 +1,9 @@
 import { addDays, subDays } from "date-fns"
-import { string } from "../index"
+import {
+  string,
+  StringSchema,
+  value,
+} from "../index"
 import { translateMessage } from "../translateMessage"
 
 describe("StringSchema", () => {
@@ -981,5 +985,14 @@ describe("StringSchema", () => {
     const [errors2, value2] = await s.sanitizeAndValidate("   12   ")
     expect(errors2).toBe(undefined)
     expect(value2).toEqual("12")
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().string()", async () => {
+    const s = value('foo').string()
+
+    expect(s instanceof StringSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toBe('foo')
   })
 })

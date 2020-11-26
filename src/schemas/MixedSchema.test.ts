@@ -1,4 +1,8 @@
-import { mixed } from "../index"
+import {
+  mixed,
+  MixedSchema,
+  value,
+} from "../index"
 import { translateMessage } from "../translateMessage"
 
 describe("MixedSchema", () => {
@@ -91,5 +95,14 @@ describe("MixedSchema", () => {
     const s2 = mixed().toDefault(() => 1)
 
     expect(await s2.sanitize(null)).toBe(1)
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().mixed()", async () => {
+    const s = value('foo').mixed()
+
+    expect(s instanceof MixedSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toBe('foo')
   })
 })

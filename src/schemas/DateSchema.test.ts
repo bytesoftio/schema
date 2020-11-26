@@ -1,5 +1,12 @@
-import { date } from "../index"
-import { addDays, subDays } from "date-fns"
+import {
+  date,
+  DateSchema,
+  value,
+} from "../index"
+import {
+  addDays,
+  subDays,
+} from "date-fns"
 import { translateMessage } from "../translateMessage"
 
 describe("DateSchema", () => {
@@ -118,5 +125,15 @@ describe("DateSchema", () => {
     const s2 = date().toDefault(() => newDate)
 
     expect(await s2.sanitize(null)).toBe(newDate)
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().date()", async () => {
+    const date = new Date()
+    const s = value(date).date()
+
+    expect(s instanceof DateSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toBe(date)
   })
 })

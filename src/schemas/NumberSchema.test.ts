@@ -1,4 +1,8 @@
-import { number } from "../index"
+import {
+  number,
+  NumberSchema,
+  value,
+} from "../index"
 import { translateMessage } from "../translateMessage"
 
 describe("NumberSchema", () => {
@@ -174,5 +178,14 @@ describe("NumberSchema", () => {
     expect(await s.sanitize(1.6)).toBe(1)
     expect(await s.sanitize(2.3)).toBe(2)
     expect(await s.sanitize(2.6)).toBe(2)
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().number()", async () => {
+    const s = value(1).number()
+
+    expect(s instanceof NumberSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toBe(1)
   })
 })

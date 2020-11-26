@@ -1,4 +1,11 @@
-import { array, boolean, number, string } from "../index"
+import {
+  array,
+  ArraySchema,
+  boolean,
+  number,
+  string,
+  value,
+} from "../index"
 import { isString } from "lodash"
 import { translateMessage } from "../translateMessage"
 
@@ -175,7 +182,7 @@ describe("ArraySchema", () => {
   })
 
   test("toMapped", async () => {
-    const s = array().toMapped((value) => `${value}_`)
+    const s = array().toMapped((value) => `${ value }_`)
 
     expect(await s.sanitize(["1", "2"])).toEqual(["1_", "2_"])
   })
@@ -335,5 +342,14 @@ describe("ArraySchema", () => {
     const [errors2, value2] = await s.sanitizeAndValidate([1, 2, null, undefined])
     expect(errors2).toBe(undefined)
     expect(value2).toEqual([1, 2])
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().array()", async () => {
+    const s = value(['foo']).array()
+
+    expect(s instanceof ArraySchema).toBe(true)
+    expect(await s.sanitize(undefined)).toEqual(['foo'])
   })
 })

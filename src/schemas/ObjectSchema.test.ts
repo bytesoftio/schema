@@ -1,5 +1,14 @@
-import { array, object, string } from "../index"
-import { isString, keys } from "lodash"
+import {
+  array,
+  object,
+  ObjectSchema,
+  string,
+  value,
+} from "../index"
+import {
+  isString,
+  keys,
+} from "lodash"
 import { translateMessage } from "../translateMessage"
 
 describe("ObjectSchema", () => {
@@ -42,11 +51,20 @@ describe("ObjectSchema", () => {
   })
 
   test("equals", async () => {
-    const equals = { tag: "bar", baz: [1, 2] }
+    const equals = {
+      tag: "bar",
+      baz: [1, 2],
+    }
     const s1 = object().equals(equals)
 
-    expect(await s1.test({ tag: "baz", baz: [1, 2] })).toBe(false)
-    expect(await s1.test({ tag: "bar", baz: [1] })).toBe(false)
+    expect(await s1.test({
+      tag: "baz",
+      baz: [1, 2],
+    })).toBe(false)
+    expect(await s1.test({
+      tag: "bar",
+      baz: [1],
+    })).toBe(false)
     expect(await s1.test(equals)).toBe(true)
 
     const errors = (await s1.validate({ tag: "baz" }))!
@@ -127,33 +145,63 @@ describe("ObjectSchema", () => {
   })
 
   test("toMappedKeys", async () => {
-    const s = object().toMappedKeys((value, key) => `${key}_`)
+    const s = object().toMappedKeys((value, key) => `${ key }_`)
 
-    expect(await s.sanitize({ foo: { bar: "baz" }, yolo: "swag" })).toEqual({ foo_: { bar: "baz" }, yolo_: "swag" })
+    expect(await s.sanitize({
+      foo: { bar: "baz" },
+      yolo: "swag",
+    })).toEqual({
+      foo_: { bar: "baz" },
+      yolo_: "swag",
+    })
   })
 
   test("toMappedValues", async () => {
-    const s = object().toMappedValues((value, key) => isString(value) ? `${value}_` : value)
+    const s = object().toMappedValues((value, key) => isString(value) ? `${ value }_` : value)
 
-    expect(await s.sanitize({ foo: { bar: "baz" }, yolo: "swag" })).toEqual({ foo: { bar: "baz" }, yolo: "swag_" })
+    expect(await s.sanitize({
+      foo: { bar: "baz" },
+      yolo: "swag",
+    })).toEqual({
+      foo: { bar: "baz" },
+      yolo: "swag_",
+    })
   })
 
   test("toMappedKeysDeep", async () => {
-    const s = object().toMappedKeysDeep((value, key) => `${key}_`)
+    const s = object().toMappedKeysDeep((value, key) => `${ key }_`)
 
-    expect(await s.sanitize({ foo: { bar: "baz" }, yolo: "swag" })).toEqual({ foo_: { bar_: "baz" }, yolo_: "swag" })
+    expect(await s.sanitize({
+      foo: { bar: "baz" },
+      yolo: "swag",
+    })).toEqual({
+      foo_: { bar_: "baz" },
+      yolo_: "swag",
+    })
   })
 
   test("toMappedValues", async () => {
-    const s = object().toMappedValues((value, key) => isString(value) ? `${value}_` : value)
+    const s = object().toMappedValues((value, key) => isString(value) ? `${ value }_` : value)
 
-    expect(await s.sanitize({ foo: { bar: "baz" }, yolo: "swag" })).toEqual({ foo: { bar: "baz" }, yolo: "swag_" })
+    expect(await s.sanitize({
+      foo: { bar: "baz" },
+      yolo: "swag",
+    })).toEqual({
+      foo: { bar: "baz" },
+      yolo: "swag_",
+    })
   })
 
   test("toMappedValuesDeep", async () => {
-    const s = object().toMappedValuesDeep((value, key) => isString(value) ? `${value}_` : value)
+    const s = object().toMappedValuesDeep((value, key) => isString(value) ? `${ value }_` : value)
 
-    expect(await s.sanitize({ foo: { bar: "baz" }, yolo: "swag" })).toEqual({ foo: { bar: "baz_" }, yolo: "swag_" })
+    expect(await s.sanitize({
+      foo: { bar: "baz" },
+      yolo: "swag",
+    })).toEqual({
+      foo: { bar: "baz_" },
+      yolo: "swag_",
+    })
   })
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -265,15 +313,24 @@ describe("ObjectSchema", () => {
 
     expect(await s1.test({ foo: "bar" })).toBe(true)
     expect(await s1.test({ yolo: "swag" })).toBe(false)
-    expect(await s1.test({ foo: "bar", yolo: "swag" })).toBe(false)
+    expect(await s1.test({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(false)
 
     const s2 = object({ foo: string() }).disallowUnknownKeys()
 
     expect(await s2.test({ foo: "bar" })).toBe(true)
     expect(await s2.test({ yolo: "swag" })).toBe(false)
-    expect(await s2.test({ foo: "bar", yolo: "swag" })).toBe(false)
+    expect(await s2.test({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(false)
 
-    const errors = (await s2.validate({ foo: "bar", yolo: "swag" }))!
+    const errors = (await s2.validate({
+      foo: "bar",
+      yolo: "swag",
+    }))!
 
     expect(errors.length).toBe(1)
     expect(errors[0].message).toBe(translateMessage("object_unknown_key", ["yolo"]))
@@ -286,45 +343,78 @@ describe("ObjectSchema", () => {
     const s = object({ foo: string() }).allowUnknownKeys()
 
     expect(await s.test({ foo: "bar" })).toBe(true)
-    expect(await s.test({ foo: "bar", yolo: "swag" })).toBe(true)
+    expect(await s.test({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(true)
     expect(await s.test({ yolo: "swag" })).toBe(false)
 
-    const errors = (await s.validate({ foo: 1, yolo: "swag" }))!
+    const errors = (await s.validate({
+      foo: 1,
+      yolo: "swag",
+    }))!
 
     expect(errors.length).toBe(1)
     expect(errors[0].message).toBe(translateMessage("string_required"))
 
-    expect(await s.validate({ foo: "bar", yolo: "swag" })).toBe(undefined)
+    expect(await s.validate({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(undefined)
   })
 
   test("shapeUnknownKeys", async () => {
     const s = object().shapeUnknownKeys(string().min(3))
 
-    expect(await s.test({ foo: "bar", yo: "swag" })).toBe(false)
-    expect(await s.test({ foo: "bar", yolo: "swag" })).toBe(true)
+    expect(await s.test({
+      foo: "bar",
+      yo: "swag",
+    })).toBe(false)
+    expect(await s.test({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(true)
 
-    const errors = (await s.validate({ foo: "bar", yo: "swag" }))!
+    const errors = (await s.validate({
+      foo: "bar",
+      yo: "swag",
+    }))!
 
     expect(errors.length).toBe(1)
     expect(errors[0].message).toBe(translateMessage("string_min", [3]))
     expect(errors[0].path).toBe("yo")
 
-    expect(await s.validate({ foo: "bar", yolo: "swag" })).toBe(undefined)
+    expect(await s.validate({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(undefined)
   })
 
   test("shapeUnknownValues", async () => {
     const s = object().shapeUnknownValues(string().min(3))
 
-    expect(await s.test({ foo: "bar", yolo: "sw" })).toBe(false)
-    expect(await s.test({ foo: "bar", yolo: "swag" })).toBe(true)
+    expect(await s.test({
+      foo: "bar",
+      yolo: "sw",
+    })).toBe(false)
+    expect(await s.test({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(true)
 
-    const errors = (await s.validate({ foo: "bar", yolo: "sw" }))!
+    const errors = (await s.validate({
+      foo: "bar",
+      yolo: "sw",
+    }))!
 
     expect(errors.length).toBe(1)
     expect(errors[0].message).toBe(translateMessage("string_min", [3]))
     expect(errors[0].path).toBe("yolo")
 
-    expect(await s.validate({ foo: "bar", yolo: "swag" })).toBe(undefined)
+    expect(await s.validate({
+      foo: "bar",
+      yolo: "swag",
+    })).toBe(undefined)
   })
 
   test("shape", async () => {
@@ -374,7 +464,10 @@ describe("ObjectSchema", () => {
     expect(errors2[2].message).toBe(translateMessage("array_required"))
     expect(errors2[2].path).toBe("keys")
 
-    expect(await s2.validate({ tag: "foo", keys: ["yolo"] })).toBe(undefined)
+    expect(await s2.validate({
+      tag: "foo",
+      keys: ["yolo"],
+    })).toBe(undefined)
 
     const s3 = object({
       foo: object({
@@ -414,7 +507,10 @@ describe("ObjectSchema", () => {
 
     expect(await s2.test({ foo: "12" })).toBe(false)
     expect(await s2.test({ foo: "123" })).toBe(false)
-    expect(await s2.test({ foo: "1234", bar: "123" })).toBe(true)
+    expect(await s2.test({
+      foo: "1234",
+      bar: "123",
+    })).toBe(true)
   })
 
   test("customSanitizer", async () => {
@@ -460,5 +556,14 @@ describe("ObjectSchema", () => {
     const [errors2, value2] = await s.sanitizeAndValidate({ foo: "  12  " })
     expect(errors2).toBe(undefined)
     expect(value2).toEqual({ foo: "12" })
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().object()", async () => {
+    const s = value({ foo: 'bar' }).object()
+
+    expect(s instanceof ObjectSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toEqual({ foo: 'bar' })
   })
 })

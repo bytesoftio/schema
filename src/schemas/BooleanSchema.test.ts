@@ -1,4 +1,8 @@
-import { boolean } from "../index"
+import {
+  boolean,
+  BooleanSchema,
+  value,
+} from "../index"
 import { translateMessage } from "../translateMessage"
 
 describe("BooleanSchema", () => {
@@ -59,5 +63,14 @@ describe("BooleanSchema", () => {
     const s2 = boolean().toDefault(() => true)
 
     expect(await s2.sanitize(null)).toBe(true)
+  })
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  test("value().boolean()", async () => {
+    const s = value(true).boolean()
+
+    expect(s instanceof BooleanSchema).toBe(true)
+    expect(await s.sanitize(undefined)).toBe(true)
   })
 })

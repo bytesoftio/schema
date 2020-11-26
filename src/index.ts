@@ -11,9 +11,20 @@ export const string = () => new StringSchema()
 export const number = () => new NumberSchema()
 export const boolean = () => new BooleanSchema()
 export const date = () => new DateSchema()
-export const array = (valuesSchema?: ValidationSchema) => new ArraySchema(valuesSchema)
+export const array = (arrayShape?: ValidationSchema) => new ArraySchema(arrayShape)
 export const object = <TValue = any>(objectShape?: ObjectShape<TValue>) => new ObjectSchema<TValue>(objectShape)
 export const mixed = () => new MixedSchema()
+export const value = (defaultValue?: any) => {
+  return {
+    string: () => string().toDefault(defaultValue),
+    number: () => number().toDefault(defaultValue),
+    boolean: () => boolean().toDefault(defaultValue),
+    date: () => date().toDefault(defaultValue),
+    array: (arrayShape?: ValidationSchema) => array(arrayShape).toDefault(defaultValue),
+    object: <TValue = any>(objectShape?: ObjectShape<TValue>) => object<TValue>(objectShape).toDefault(defaultValue),
+    mixed: () => mixed().toDefault(defaultValue),
+  }
+}
 
 export * from "./schemas/StringSchema"
 export * from "./schemas/NumberSchema"

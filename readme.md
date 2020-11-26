@@ -143,6 +143,7 @@
   - [oneOf](#oneof-1)
   - [noneOf](#noneof-2)
   - [toDefault](#todefault-6)
+- [Alternative syntax](#alternative-syntax)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -1593,3 +1594,17 @@ mixed().toDefault(true)
 // or
 mixed().toDefault(() => true)
 ```
+
+## Alternative syntax
+
+You can create any schema starting with the default value, this is especially useful for forms.
+
+```ts
+import { value, string } from "@bytesoftio/schema"
+
+value('').string()
+// same as 
+string().toDefault('')
+
+// same applies for boolean, number, date, etc. ...
+``` 

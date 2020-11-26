@@ -398,6 +398,7 @@ describe("StringSchema", () => {
     const s = string().time()
 
     expect(await s.test("17 55 41")).toBe(false)
+    expect(await s.test("17:55")).toBe(true)
     expect(await s.test("17:55:41")).toBe(true)
     expect(await s.test("17:55:41.127")).toBe(true)
     expect(await s.test("17:55:41+07:00")).toBe(true)
@@ -429,6 +430,8 @@ describe("StringSchema", () => {
     const s1 = string().dateBefore(before)
 
     expect(await s1.test(before)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(before.toISOString())).toBe(false)
     expect(await s1.test(subDays(before, 1))).toBe(false)
     expect(await s1.test(subDays(before, 1).toISOString())).toBe(true)
 
@@ -440,11 +443,31 @@ describe("StringSchema", () => {
     expect(await s2.test(subDays(before, 1).toISOString())).toBe(true)
   })
 
+  test("dateBeforeOrSame", async () => {
+    const before = new Date()
+    const s1 = string().dateBeforeOrSame(before)
+
+    expect(await s1.test(before)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(before.toISOString())).toBe(true)
+    expect(await s1.test(subDays(before, 1))).toBe(false)
+    expect(await s1.test(subDays(before, 1).toISOString())).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_date_before_or_same", [before]))
+    expect(await s1.validate(subDays(before, 1).toISOString())).toBe(undefined)
+
+    const s2 = string().dateBeforeOrSame(() => before)
+
+    expect(await s2.test(subDays(before, 1).toISOString())).toBe(true)
+  })
+
   test("dateAfter", async () => {
     const after = new Date()
     const s1 = string().dateAfter(after)
 
     expect(await s1.test(after)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(after.toISOString())).toBe(false)
     expect(await s1.test(addDays(after, 1))).toBe(false)
     expect(await s1.test(addDays(after, 1).toISOString())).toBe(true)
 
@@ -456,12 +479,34 @@ describe("StringSchema", () => {
     expect(await s2.test(addDays(after, 1).toISOString())).toBe(true)
   })
 
+  test("dateAfterOrSame", async () => {
+    const after = new Date()
+    const s1 = string().dateAfterOrSame(after)
+
+    expect(await s1.test(after)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(after.toISOString())).toBe(true)
+    expect(await s1.test(addDays(after, 1))).toBe(false)
+    expect(await s1.test(addDays(after, 1).toISOString())).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_date_after_or_same", [after]))
+    expect(await s1.validate(addDays(after, 1).toISOString())).toBe(undefined)
+
+    const s2 = string().dateAfterOrSame(() => after)
+
+    expect(await s2.test(addDays(after, 1).toISOString())).toBe(true)
+  })
+
   test("dateBetween", async () => {
     const after = subDays(new Date(), 3)
     const before = addDays(new Date(), 3)
     const now = new Date()
     const s1 = string().dateBetween(after, before)
 
+    expect(await s1.test(after)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(after.toISOString())).toBe(false)
+    expect(await s1.test(before.toISOString())).toBe(false)
     expect(await s1.test(addDays(now, 4))).toBe(false)
     expect(await s1.test(addDays(now, 4).toISOString())).toBe(false)
     expect(await s1.test(subDays(now, 4))).toBe(false)
@@ -475,6 +520,149 @@ describe("StringSchema", () => {
     const s2 = string().dateBetween(() => after, () => before)
 
     expect(await s2.test(now.toISOString())).toBe(true)
+  })
+
+  test("dateBetween", async () => {
+    const after = subDays(new Date(), 3)
+    const before = addDays(new Date(), 3)
+    const now = new Date()
+    const s1 = string().dateBetweenOrSame(after, before)
+
+    expect(await s1.test(after)).toBe(false)
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test(after.toISOString())).toBe(true)
+    expect(await s1.test(before.toISOString())).toBe(true)
+    expect(await s1.test(addDays(now, 4))).toBe(false)
+    expect(await s1.test(addDays(now, 4).toISOString())).toBe(false)
+    expect(await s1.test(subDays(now, 4))).toBe(false)
+    expect(await s1.test(subDays(now, 4).toISOString())).toBe(false)
+    expect(await s1.test(now)).toBe(false)
+    expect(await s1.test(now.toISOString())).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_date_between_or_same", [after, before]))
+    expect(await s1.validate(now.toISOString())).toBe(undefined)
+
+    const s2 = string().dateBetweenOrSame(() => after, () => before)
+
+    expect(await s2.test(now.toISOString())).toBe(true)
+  })
+
+  test("timeBefore", async () => {
+    const before = "12:00"
+    const s1 = string().timeBefore(before)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("13:00")).toBe(false)
+    expect(await s1.test("12:00")).toBe(false)
+    expect(await s1.test("11:59")).toBe(true)
+    expect(await s1.test("11:00")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_before", [before]))
+    expect(await s1.validate("11:00")).toBe(undefined)
+
+    const s2 = string().timeBefore(() => before)
+
+    expect(await s2.test("11:00")).toBe(true)
+  })
+
+  test("timeBeforeOrSame", async () => {
+    const before = "12:00"
+    const s1 = string().timeBeforeOrSame(before)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("13:00")).toBe(false)
+    expect(await s1.test("12:00")).toBe(true)
+    expect(await s1.test("11:59")).toBe(true)
+    expect(await s1.test("11:00")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_before_or_same", [before]))
+    expect(await s1.validate("11:00")).toBe(undefined)
+
+    const s2 = string().timeBeforeOrSame(() => before)
+
+    expect(await s2.test("11:00")).toBe(true)
+  })
+
+  test("timeAfter", async () => {
+    const after = "12:00"
+    const s1 = string().timeAfter(after)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("11:59")).toBe(false)
+    expect(await s1.test("12:00")).toBe(false)
+    expect(await s1.test("12:01")).toBe(true)
+    expect(await s1.test("13:00")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_after", [after]))
+    expect(await s1.validate("13:00")).toBe(undefined)
+
+    const s2 = string().timeAfter(() => after)
+
+    expect(await s2.test("13:00")).toBe(true)
+  })
+
+  test("timeAfterOrSame", async () => {
+    const after = "12:00"
+    const s1 = string().timeAfterOrSame(after)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("11:59")).toBe(false)
+    expect(await s1.test("12:00")).toBe(true)
+    expect(await s1.test("12:01")).toBe(true)
+    expect(await s1.test("13:00")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_after_or_same", [after]))
+    expect(await s1.validate("13:00")).toBe(undefined)
+
+    const s2 = string().timeAfterOrSame(() => after)
+
+    expect(await s2.test("13:00")).toBe(true)
+  })
+
+  test("timeBetween", async () => {
+    const after = "10:00"
+    const before = "15:00"
+    const s1 = string().timeBetween(after, before)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("09:00")).toBe(false)
+    expect(await s1.test("09:59")).toBe(false)
+    expect(await s1.test("16:00")).toBe(false)
+    expect(await s1.test("15:01")).toBe(false)
+    expect(await s1.test("10:00")).toBe(false)
+    expect(await s1.test("15:00")).toBe(false)
+    expect(await s1.test("10:01")).toBe(true)
+    expect(await s1.test("14:59")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_between", [after, before]))
+    expect(await s1.validate("12:00")).toBe(undefined)
+
+    const s2 = string().timeBetween(() => after, () => before)
+
+    expect(await s2.test("12:00")).toBe(true)
+  })
+
+  test("timeBetweenOrSame", async () => {
+    const after = "10:00"
+    const before = "15:00"
+    const s1 = string().timeBetweenOrSame(after, before)
+
+    expect(await s1.test("foo")).toBe(false)
+    expect(await s1.test("09:00")).toBe(false)
+    expect(await s1.test("09:59")).toBe(false)
+    expect(await s1.test("16:00")).toBe(false)
+    expect(await s1.test("15:01")).toBe(false)
+    expect(await s1.test("10:00")).toBe(true)
+    expect(await s1.test("15:00")).toBe(true)
+    expect(await s1.test("10:01")).toBe(true)
+    expect(await s1.test("14:59")).toBe(true)
+
+    expect((await s1.validate("-"))![0].message).toBe(translateMessage("string_time_between_or_same", [after, before]))
+    expect(await s1.validate("12:00")).toBe(undefined)
+
+    const s2 = string().timeBetweenOrSame(() => after, () => before)
+
+    expect(await s2.test("12:00")).toBe(true)
   })
 
   ////////////////////////////////////////////////////////////////////////////////

@@ -2824,11 +2824,20 @@ img {
 						<li><a href="#alphanumericdashes">alphaNumericDashes</a></li>
 						<li><a href="#alphanumericunderscores">alphaNumericUnderscores</a></li>
 						<li><a href="#date">date</a></li>
-						<li><a href="#time">time</a></li>
-						<li><a href="#datetime">dateTime</a></li>
 						<li><a href="#datebefore">dateBefore</a></li>
+						<li><a href="#datebeforeorsame">dateBeforeOrSame</a></li>
 						<li><a href="#dateafter">dateAfter</a></li>
+						<li><a href="#dateafterorsame">dateAfterOrSame</a></li>
 						<li><a href="#datebetween">dateBetween</a></li>
+						<li><a href="#datebetweenorsame">dateBetweenOrSame</a></li>
+						<li><a href="#time">time</a></li>
+						<li><a href="#timebefore">timeBefore</a></li>
+						<li><a href="#timebeforeorsame">timeBeforeOrSame</a></li>
+						<li><a href="#timeafter">timeAfter</a></li>
+						<li><a href="#timeafterorsame">timeAfterOrSame</a></li>
+						<li><a href="#timebetween">timeBetween</a></li>
+						<li><a href="#timebetweenorsame">timeBetweenOrSame</a></li>
+						<li><a href="#datetime">dateTime</a></li>
 						<li><a href="#todefault">toDefault</a></li>
 						<li><a href="#touppercase">toUpperCase</a></li>
 						<li><a href="#tolowercase">toLowerCase</a></li>
@@ -3347,37 +3356,100 @@ img {
 			</a>
 			<p>String must be a valid ISO date string.</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">date</span><span style="color: #000000">()</span></code></pre></code></pre>
+			<a href="#datebefore" id="datebefore" style="color: inherit; text-decoration: none;">
+				<h3>dateBefore</h3>
+			</a>
+			<p>String must be a valid ISO date string before the given date.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBefore</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBefore</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
+			<a href="#datebeforeorsame" id="datebeforeorsame" style="color: inherit; text-decoration: none;">
+				<h3>dateBeforeOrSame</h3>
+			</a>
+			<p>Similar to <code>dateBefore</code>, but allows dates to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBeforeOrSame</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBeforeOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
+			<a href="#dateafter" id="dateafter" style="color: inherit; text-decoration: none;">
+				<h3>dateAfter</h3>
+			</a>
+			<p>String must be a valid ISO date string after the given date.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfter</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfter</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
+			<a href="#dateafterorsame" id="dateafterorsame" style="color: inherit; text-decoration: none;">
+				<h3>dateAfterOrSame</h3>
+			</a>
+			<p>Similar to <code>dateAfter</code>, but allows dates to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfterOrSame</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfterOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
+			<a href="#datebetween" id="datebetween" style="color: inherit; text-decoration: none;">
+				<h3>dateBetween</h3>
+			</a>
+			<p>String must be a valid ISO date string between the two given dates.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetween</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetween</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
+			<a href="#datebetweenorsame" id="datebetweenorsame" style="color: inherit; text-decoration: none;">
+				<h3>dateBetweenOrSame</h3>
+			</a>
+			<p>Similar to <code>dateBetween</code>, but allows dates to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetweenOrSame</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetweenOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
 			<a href="#time" id="time" style="color: inherit; text-decoration: none;">
 				<h3>time</h3>
 			</a>
 			<p>String must be a valid ISO time string.</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">time</span><span style="color: #000000">()</span></code></pre></code></pre>
+			<a href="#timebefore" id="timebefore" style="color: inherit; text-decoration: none;">
+				<h3>timeBefore</h3>
+			</a>
+			<p>String must be a valid ISO time string before the given time.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBefore</span><span style="color: #000000">(</span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBefore</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#timebeforeorsame" id="timebeforeorsame" style="color: inherit; text-decoration: none;">
+				<h3>timeBeforeOrSame</h3>
+			</a>
+			<p>Similar to <code>timeBefore</code>, but allows times to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBeforeOrSame</span><span style="color: #000000">(</span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBeforeOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#timeafter" id="timeafter" style="color: inherit; text-decoration: none;">
+				<h3>timeAfter</h3>
+			</a>
+			<p>String must be a valid ISO time string after the given time.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeAfter</span><span style="color: #000000">(</span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeAfter</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#timeafterorsame" id="timeafterorsame" style="color: inherit; text-decoration: none;">
+				<h3>timeAfterOrSame</h3>
+			</a>
+			<p>Similar to <code>timeAfter</code>, but allows times to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeAfterOrSame</span><span style="color: #000000">(</span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeAfterOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">"10:00"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#timebetween" id="timebetween" style="color: inherit; text-decoration: none;">
+				<h3>timeBetween</h3>
+			</a>
+			<p>String must be a valid ISO time string between the two given times.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBetween</span><span style="color: #000000">(</span><span style="color: #A31515">"10:00"</span><span style="color: #000000">, </span><span style="color: #A31515">"15:00"</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">timeBetween</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #A31515">"10:00"</span><span style="color: #000000">, </span><span style="color: #A31515">"15:00"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#timebetweenorsame" id="timebetweenorsame" style="color: inherit; text-decoration: none;">
+				<h3>timeBetweenOrSame</h3>
+			</a>
+			<p>Similar to <code>dateBetween</code>, but allows dates to be equal.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetweenOrSame</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
+<span style="color: #008000">// or</span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetweenOrSame</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
 			<a href="#datetime" id="datetime" style="color: inherit; text-decoration: none;">
 				<h3>dateTime</h3>
 			</a>
 			<p>String must be a valid ISO date time string.</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateTime</span><span style="color: #000000">()</span></code></pre></code></pre>
-			<a href="#datebefore" id="datebefore" style="color: inherit; text-decoration: none;">
-				<h3>dateBefore</h3>
-			</a>
-			<p>String must be a valid ISO date time string before the given date.</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBefore</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
-<span style="color: #008000">// or</span>
-<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBefore</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
-			<a href="#dateafter" id="dateafter" style="color: inherit; text-decoration: none;">
-				<h3>dateAfter</h3>
-			</a>
-			<p>String must be a valid ISO date time string after the given date.</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfter</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
-<span style="color: #008000">// or</span>
-<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateAfter</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
-			<a href="#datebetween" id="datebetween" style="color: inherit; text-decoration: none;">
-				<h3>dateBetween</h3>
-			</a>
-			<p>String must be a valid ISO date time string between the two given dates.</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetween</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span>
-<span style="color: #008000">// or</span>
-<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">dateBetween</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">(), </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">())</span></code></pre></code></pre>
 			<a href="#todefault" id="todefault" style="color: inherit; text-decoration: none;">
 				<h3>toDefault</h3>
 			</a>
@@ -3932,7 +4004,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Custom<wbr>Validation<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#validationfunctionresult" class="tsd-signature-type">ValidationFunctionResult</a><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L45">types.ts:45</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L45">types.ts:45</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3963,7 +4035,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Custom<wbr>Validation<wbr>Message<span class="tsd-signature-symbol">:</span> <a href="globals.html#lazyvalue" class="tsd-signature-type">LazyValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L44">types.ts:44</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L44">types.ts:44</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3973,7 +4045,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Lazy<wbr>Value&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L21">types.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L21">types.ts:21</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3989,7 +4061,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Maybe<wbr>Promise&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L22">types.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L22">types.ts:22</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4005,7 +4077,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Object<wbr>Shape&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/schemas/ObjectSchema.ts#L32">schemas/ObjectSchema.ts:32</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/schemas/ObjectSchema.ts#L32">schemas/ObjectSchema.ts:32</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4026,7 +4098,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Sanitizer<wbr>Definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>sanitizer<span class="tsd-signature-symbol">: </span><a href="globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L47">types.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L47">types.ts:47</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4047,7 +4119,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Sanitizer<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L46">types.ts:46</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L46">types.ts:46</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4081,7 +4153,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>customMessage<span class="tsd-signature-symbol">?: </span><a href="globals.html#customvalidationmessage" class="tsd-signature-type">CustomValidationMessage</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="globals.html#validationtype" class="tsd-signature-type">ValidationType</a><span class="tsd-signature-symbol">; </span>validator<span class="tsd-signature-symbol">: </span><a href="globals.html#validationfunction" class="tsd-signature-type">ValidationFunction</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L38">types.ts:38</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L38">types.ts:38</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4108,7 +4180,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>link<span class="tsd-signature-symbol">: </span><a href="globals.html#validationlink" class="tsd-signature-type">ValidationLink</a><span class="tsd-signature-symbol">; </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>path<span class="tsd-signature-symbol">: </span><a href="globals.html#validationpath" class="tsd-signature-type">ValidationPath</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="globals.html#validationtype" class="tsd-signature-type">ValidationType</a><span class="tsd-signature-symbol">; </span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L26">types.ts:26</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L26">types.ts:26</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4141,7 +4213,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#validationfunctionresult" class="tsd-signature-type">ValidationFunctionResult</a><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L34">types.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L34">types.ts:34</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4175,7 +4247,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Function<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L25">types.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L25">types.ts:25</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4185,7 +4257,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Link<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"and"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"or"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L36">types.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L36">types.ts:36</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4195,7 +4267,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L37">types.ts:37</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L37">types.ts:37</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4205,7 +4277,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L24">types.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L24">types.ts:24</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4220,10 +4292,10 @@ img {
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="validationtype" class="tsd-anchor"></a>
 				<h3>Validation<wbr>Type</h3>
-				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">"array_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_some_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_positive"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_negative"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_integer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_missing_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_unknown_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_matches"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_email"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_url"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_starts_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_ends_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_includes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_omits"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_between"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"custom"</span></div>
+				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">"array_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_some_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_positive"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_negative"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_integer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_missing_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_unknown_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_matches"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_email"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_url"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_starts_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_ends_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_includes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_omits"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_after_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_before_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_between_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_after_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_before_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_between_or_same"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"custom"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/types.ts#L35">types.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/types.ts#L35">types.ts:35</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4236,7 +4308,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">schema<wbr>Translator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ObservableTranslator</span><span class="tsd-signature-symbol"> = createTranslator({ en: locale }, &quot;en&quot;)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/schemaTranslator.ts#L4">schemaTranslator.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/schemaTranslator.ts#L4">schemaTranslator.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4253,7 +4325,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L14">index.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L14">index.ts:14</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4276,7 +4348,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L12">index.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L12">index.ts:12</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/booleanschema.html" class="tsd-signature-type">BooleanSchema</a></h4>
@@ -4293,7 +4365,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/createValidationResult.ts#L3">createValidationResult.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/createValidationResult.ts#L3">createValidationResult.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4316,7 +4388,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L13">index.ts:13</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L13">index.ts:13</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/dateschema.html" class="tsd-signature-type">DateSchema</a></h4>
@@ -4333,7 +4405,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L16">index.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L16">index.ts:16</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/mixedschema.html" class="tsd-signature-type">MixedSchema</a></h4>
@@ -4350,7 +4422,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L11">index.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L11">index.ts:11</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/numberschema.html" class="tsd-signature-type">NumberSchema</a></h4>
@@ -4367,7 +4439,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L15">index.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L15">index.ts:15</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4396,7 +4468,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2646aaa/src/index.ts#L10">index.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/f8eaebd/src/index.ts#L10">index.ts:10</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/stringschema.html" class="tsd-signature-type">StringSchema</a></h4>

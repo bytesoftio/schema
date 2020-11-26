@@ -28,6 +28,9 @@ import {
   stringRequired,
   stringStartsWith,
   stringTime,
+  stringTimeAfter,
+  stringTimeBefore,
+  stringTimeBetween,
   stringToCamelCase,
   stringToCapitalized,
   stringToConstantCase,
@@ -163,15 +166,51 @@ export class StringSchema extends Schema {
   }
 
   dateBefore(before: LazyValue<Date>, message?: CustomValidationMessage): this {
-    return this.addValidationDefinition(createValidationDefinition("string_date_before", stringDateBefore, [before], message))
+    return this.addValidationDefinition(createValidationDefinition("string_date_before", stringDateBefore, [before, false], message))
+  }
+
+  dateBeforeOrSame(before: LazyValue<Date>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_date_before_or_same", stringDateBefore, [before, true], message))
   }
 
   dateAfter(after: LazyValue<Date>, message?: CustomValidationMessage): this {
-    return this.addValidationDefinition(createValidationDefinition("string_date_after", stringDateAfter, [after], message))
+    return this.addValidationDefinition(createValidationDefinition("string_date_after", stringDateAfter, [after, false], message))
+  }
+
+  dateAfterOrSame(after: LazyValue<Date>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_date_after_or_same", stringDateAfter, [after, true], message))
   }
 
   dateBetween(after: LazyValue<Date>, before: LazyValue<Date>, message?: CustomValidationMessage): this {
-    return this.addValidationDefinition(createValidationDefinition("string_date_between", stringDateBetween, [after, before], message))
+    return this.addValidationDefinition(createValidationDefinition("string_date_between", stringDateBetween, [after, before, false], message))
+  }
+
+  dateBetweenOrSame(after: LazyValue<Date>, before: LazyValue<Date>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_date_between_or_same", stringDateBetween, [after, before, true], message))
+  }
+
+  timeBefore(before: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_before", stringTimeBefore, [before, false], message))
+  }
+
+  timeBeforeOrSame(before: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_before_or_same", stringTimeBefore, [before, true], message))
+  }
+
+  timeAfter(after: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_after", stringTimeAfter, [after, false], message))
+  }
+
+  timeAfterOrSame(after: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_after_or_same", stringTimeAfter, [after, true], message))
+  }
+
+  timeBetween(after: LazyValue<string>, before: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_between", stringTimeBetween, [after, before, false], message))
+  }
+
+  timeBetweenOrSame(after: LazyValue<string>, before: LazyValue<string>, message?: CustomValidationMessage): this {
+    return this.addValidationDefinition(createValidationDefinition("string_time_between_or_same", stringTimeBetween, [after, before, true], message))
   }
 
   toDefault(defaultValue: LazyValue<string> = ""): this {

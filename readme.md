@@ -47,11 +47,20 @@
   - [alphaNumericDashes](#alphanumericdashes)
   - [alphaNumericUnderscores](#alphanumericunderscores)
   - [date](#date)
-  - [time](#time)
-  - [dateTime](#datetime)
   - [dateBefore](#datebefore)
+  - [dateBeforeOrSame](#datebeforeorsame)
   - [dateAfter](#dateafter)
+  - [dateAfterOrSame](#dateafterorsame)
   - [dateBetween](#datebetween)
+  - [dateBetweenOrSame](#datebetweenorsame)
+  - [time](#time)
+  - [timeBefore](#timebefore)
+  - [timeBeforeOrSame](#timebeforeorsame)
+  - [timeAfter](#timeafter)
+  - [timeAfterOrSame](#timeafterorsame)
+  - [timeBetween](#timebetween)
+  - [timeBetweenOrSame](#timebetweenorsame)
+  - [dateTime](#datetime)
   - [toDefault](#todefault)
   - [toUpperCase](#touppercase)
   - [toLowerCase](#tolowercase)
@@ -723,6 +732,66 @@ String must be a valid ISO date string.
 string().date()
 ```
 
+### dateBefore
+
+String must be a valid ISO date string before the given date.
+
+```ts
+string().dateBefore(new Date())
+// or
+string().dateBefore(() => new Date())
+```
+
+### dateBeforeOrSame
+
+Similar to `dateBefore`, but allows dates to be equal.
+
+```ts
+string().dateBeforeOrSame(new Date())
+// or
+string().dateBeforeOrSame(() => new Date())
+```
+
+### dateAfter
+
+String must be a valid ISO date string after the given date.
+
+```ts
+string().dateAfter(new Date())
+// or
+string().dateAfter(() => new Date())
+```
+
+### dateAfterOrSame
+
+Similar to `dateAfter`, but allows dates to be equal.
+
+```ts
+string().dateAfterOrSame(new Date())
+// or
+string().dateAfterOrSame(() => new Date())
+```
+
+### dateBetween
+
+String must be a valid ISO date string between the two given dates.
+
+```ts
+string().dateBetween(new Date(), new Date())
+// or
+string().dateBetween(() => new Date(), new Date())
+```
+
+### dateBetweenOrSame
+
+Similar to `dateBetween`, but allows dates to be equal.
+
+```ts
+string().dateBetweenOrSame(new Date(), new Date())
+// or
+string().dateBetweenOrSame(() => new Date(), new Date())
+```
+
 ### time
 
 String must be a valid ISO time string.
@@ -731,42 +800,72 @@ String must be a valid ISO time string.
 string().time()
 ```
 
+### timeBefore
+
+String must be a valid ISO time string before the given time.
+
+```ts
+string().timeBefore("10:00")
+// or
+string().timeBefore(() => "10:00")
+```
+
+### timeBeforeOrSame
+
+Similar to `timeBefore`, but allows times to be equal.
+
+```ts
+string().timeBeforeOrSame("10:00")
+// or
+string().timeBeforeOrSame(() => "10:00")
+```
+
+### timeAfter
+
+String must be a valid ISO time string after the given time.
+
+```ts
+string().timeAfter("10:00")
+// or
+string().timeAfter(() => "10:00")
+```
+
+### timeAfterOrSame
+
+Similar to `timeAfter`, but allows times to be equal.
+
+```ts
+string().timeAfterOrSame("10:00")
+// or
+string().timeAfterOrSame(() => "10:00")
+```
+
+### timeBetween
+
+String must be a valid ISO time string between the two given times.
+
+```ts
+string().timeBetween("10:00", "15:00")
+// or
+string().timeBetween(() => "10:00", "15:00")
+```
+
+### timeBetweenOrSame
+
+Similar to `dateBetween`, but allows dates to be equal.
+
+```ts
+string().dateBetweenOrSame(new Date(), new Date())
+// or
+string().dateBetweenOrSame(() => new Date(), new Date())
+```
+
 ### dateTime
 
 String must be a valid ISO date time string.
 
 ```ts
 string().dateTime()
-```
-
-### dateBefore
-
-String must be a valid ISO date time string before the given date.
-
-```ts
-string().dateBefore(new Date())
-// or
-string().dateBefore(() => new Date())
-```
-
-### dateAfter
-
-String must be a valid ISO date time string after the given date.
-
-```ts
-string().dateAfter(new Date())
-// or
-string().dateAfter(() => new Date())
-```
-
-### dateBetween
-
-String must be a valid ISO date time string between the two given dates.
-
-```ts
-string().dateBetween(new Date(), new Date())
-// or
-string().dateBetween(() => new Date(), new Date())
 ```
 
 ### toDefault

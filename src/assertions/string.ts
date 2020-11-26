@@ -12,7 +12,14 @@ import {
   trim,
 } from "lodash"
 import { isDefined } from "./mixed"
-import { isAfter, isBefore, isDate, parseISO } from "date-fns"
+import {
+  format,
+  isAfter,
+  isBefore,
+  isDate,
+  isSameSecond,
+  parseISO,
+} from "date-fns"
 import { LazyValue, ValidationFunctionResult } from "../types"
 import { lazyValue } from "../lazyValue"
 
@@ -180,7 +187,7 @@ export const stringDate = (value: any): ValidationFunctionResult => {
   return dateRegex.test(value)
 }
 
-const timeRegex = /^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$/
+const timeRegex = /^(2[0-3]|[01][0-9]):([0-5][0-9]):?([0-5][0-9])?(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$/
 
 export const stringTime = (value: any): ValidationFunctionResult => {
   if ( ! isDefinedString(value)) return
@@ -196,28 +203,50 @@ export const stringDateTime = (value: any): ValidationFunctionResult => {
   return dateTimeRegex.test(value)
 }
 
-export const stringDateAfter = (value: any, after: LazyValue<Date>): ValidationFunctionResult => {
+export const stringDateAfter = (value: any, after: LazyValue<Date>, allowSame: boolean): ValidationFunctionResult => {
   if ( ! isDefinedString(value)) return
 
   const date = parseISO(value)
 
-  return isDate(date) && isAfter(date, lazyValue(after))
+  return isDate(date) && (isAfter(date, lazyValue(after)) || allowSame && isSameSecond(date, lazyValue(after)))
 }
 
-export const stringDateBefore = (value: any, before: LazyValue<Date>): ValidationFunctionResult => {
+export const stringDateBefore = (value: any, before: LazyValue<Date>, allowSame: boolean): ValidationFunctionResult => {
   if ( ! isDefinedString(value)) return
 
   const date = parseISO(value)
 
-  return isDate(date) && isBefore(date, lazyValue(before))
+  return isDate(date) && (isBefore(date, lazyValue(before)) || allowSame && isSameSecond(date, lazyValue(before)))
 }
 
-export const stringDateBetween = (value: any, after: LazyValue<Date>, before: LazyValue<Date>): ValidationFunctionResult => {
+export const stringDateBetween = (value: any, after: LazyValue<Date>, before: LazyValue<Date>, allowSame: boolean): ValidationFunctionResult => {
+  return stringDateAfter(value, after, allowSame) && stringDateBefore(value, before, allowSame)
+}
+
+export const stringTimeAfter = (value: any, after: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
+  if ( ! isDefinedString(value)) return
+  if ( ! stringTime(value)) return false
+
+  const date = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${value}`)
+  const dateAfter = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${lazyValue(after)}`)
+
+  return isDate(date) && isDate(dateAfter) && (isAfter(date, dateAfter) || allowSame && isSameSecond(date, lazyValue(dateAfter)))
+}
+
+export const stringTimeBefore = (value: any, before: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
+  if ( ! isDefinedString(value)) return
+  if ( ! stringTime(value)) return false
+
+  const date = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${value}`)
+  const dateBefore = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${lazyValue(before)}`)
+
+  return isDate(date) && isDate(dateBefore) && (isBefore(date, dateBefore) || allowSame && isSameSecond(date, lazyValue(dateBefore)))
+}
+
+export const stringTimeBetween = (value: any, after: LazyValue<string>, before: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
   if ( ! isDefinedString(value)) return
 
-  const date = parseISO(value)
-
-  return isDate(date) && isAfter(date, lazyValue(after)) && isBefore(date, lazyValue(before))
+  return stringTimeAfter(value, after, allowSame) && stringTimeBefore(value, before, allowSame)
 }
 
 ////////////////////////////////////////////////////////////////////////////////

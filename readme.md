@@ -47,7 +47,7 @@
   - [alphaNumericDashes](#alphanumericdashes)
   - [alphaNumericUnderscores](#alphanumericunderscores)
   - [date](#date)
-  - [date](#date-1)
+  - [time](#time)
   - [dateTime](#datetime)
   - [dateBefore](#datebefore)
   - [dateAfter](#dateafter)
@@ -723,7 +723,7 @@ String must be a valid ISO date string.
 string().date()
 ```
 
-### date
+### time
 
 String must be a valid ISO time string.
 

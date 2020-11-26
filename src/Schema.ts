@@ -25,7 +25,7 @@ import { testAndOrSchemasAsync } from "./testAndOrSchemasAsync"
 import { validateValue } from "./validateValue"
 import { validateAndOrSchemas } from "./validateAndOrSchemas"
 
-export abstract class Schema<TStructure> implements ValidationSchema<TStructure> {
+export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   abstract required(message?: CustomValidationMessage): this
   abstract optional(message?: CustomValidationMessage): this
   abstract equals(value: any): this

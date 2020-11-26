@@ -1,6 +1,6 @@
 import { locale } from "./locale"
 
-export interface ValidationSchema<TStructure = any> {
+export interface ValidationSchema<TValue = any> {
   required(message?: CustomValidationMessage): ValidationSchema
   optional(message?: CustomValidationMessage): ValidationSchema
   equals(value: any): ValidationSchema

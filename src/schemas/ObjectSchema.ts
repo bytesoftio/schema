@@ -40,7 +40,7 @@ export type ObjectShape<TValue> = {
   [key in keyof TValue]: ValidationSchema
 }
 
-export class ObjectSchema<TValue> extends Schema {
+export class ObjectSchema<TValue extends object> extends Schema<TValue> {
   protected cloneInstance(): this {
     const schema = new ObjectSchema()
     schema.validationDefinitions = [...this.validationDefinitions]

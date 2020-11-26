@@ -24,7 +24,7 @@ import { sanitizeArrayValues } from "../sanitizeArrayValues"
 import { testArrayValues } from "../testArrayValues"
 import { validateArrayValues } from "../validateArrayValues"
 
-export class ArraySchema extends Schema {
+export class ArraySchema extends Schema<any[]> {
   protected cloneInstance(): this {
     const schema = new ArraySchema()
     schema.validationDefinitions = [...this.validationDefinitions]

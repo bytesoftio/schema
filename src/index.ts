@@ -12,7 +12,7 @@ export const number = () => new NumberSchema()
 export const boolean = () => new BooleanSchema()
 export const date = () => new DateSchema()
 export const array = (arrayShape?: ValidationSchema) => new ArraySchema(arrayShape)
-export const object = <TValue = any>(objectShape?: ObjectShape<TValue>) => new ObjectSchema<TValue>(objectShape)
+export const object = <TValue extends object = any>(objectShape?: ObjectShape<TValue>) => new ObjectSchema<TValue>(objectShape)
 export const mixed = () => new MixedSchema()
 export const value = (defaultValue?: any) => {
   return {
@@ -21,7 +21,7 @@ export const value = (defaultValue?: any) => {
     boolean: () => boolean().toDefault(defaultValue),
     date: () => date().toDefault(defaultValue),
     array: (arrayShape?: ValidationSchema) => array(arrayShape).toDefault(defaultValue),
-    object: <TValue = any>(objectShape?: ObjectShape<TValue>) => object<TValue>(objectShape).toDefault(defaultValue),
+    object: <TValue extends object= any>(objectShape?: ObjectShape<TValue>) => object<TValue>(objectShape).toDefault(defaultValue),
     mixed: () => mixed().toDefault(defaultValue),
   }
 }

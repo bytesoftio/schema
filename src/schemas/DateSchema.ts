@@ -12,7 +12,7 @@ import { CustomValidationMessage, LazyValue } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
-export class DateSchema extends Schema {
+export class DateSchema extends Schema<Date> {
   protected cloneInstance(): this {
     const schema = new DateSchema()
     schema.validationDefinitions = [...this.validationDefinitions]

@@ -4,7 +4,7 @@ import { CustomValidationMessage, LazyValue } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
-export class MixedSchema extends Schema {
+export class MixedSchema extends Schema<any> {
   protected cloneInstance(): this {
     const schema = new MixedSchema()
     schema.validationDefinitions = [...this.validationDefinitions]

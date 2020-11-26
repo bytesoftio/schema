@@ -19,7 +19,7 @@ import { CustomValidationMessage, LazyValue } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
-export class NumberSchema extends Schema {
+export class NumberSchema extends Schema<number> {
   protected cloneInstance(): this {
     const schema = new NumberSchema()
     schema.validationDefinitions = [...this.validationDefinitions]

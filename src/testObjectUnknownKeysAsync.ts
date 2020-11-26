@@ -1,21 +1,21 @@
 import { ObjectShape } from "./schemas/ObjectSchema"
-import { ValidationSchema } from "./types"
 import {
   difference,
   keys,
 } from "lodash"
+import { ValidationSchema } from "./types"
 
-export const testObjectUnknownKeys = (
+export const testObjectUnknownKeysAsync = async (
   value: any,
   objectShape: ObjectShape<any> | undefined,
   unknownKeysSchema: ValidationSchema | undefined,
-): boolean => {
+): Promise<boolean> => {
   if ( ! unknownKeysSchema) return true
 
   const unknownKeys = difference(keys(value), keys(objectShape))
 
   for (const unknownKey of unknownKeys) {
-    if ( ! unknownKeysSchema.test(unknownKey)) {
+    if ( ! await unknownKeysSchema.testAsync(unknownKey)) {
       return false
     }
   }

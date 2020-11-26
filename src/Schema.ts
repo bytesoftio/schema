@@ -10,12 +10,20 @@ import {
 } from "./types"
 import { createValidationDefinition } from "./createValidationDefinition"
 import { createSanitizerDefinition } from "./createSanitizerDefinition"
-import { sanitizeValue } from "./sanitizeValue"
-import { testValue } from "./testValue"
-import { validateValue } from "./validateValue"
+import {
+  sanitizeValue,
+
+} from "./sanitizeValue"
+import { testValueAsync } from "./testValueAsync"
+import { validateValueAsync } from "./validateValueAsync"
 import { testAndOrSchemas } from "./testAndOrSchemas"
-import { validateAndOrSchemas } from "./validateAndOrSchemas"
+import { validateAndOrSchemasAsync } from "./validateAndOrSchemasAsync"
 import { dedupeValidationResult } from "./dedupeValidationResult"
+import { sanitizeValueAsync } from "./sanitizeValueAsync"
+import { testValue } from "./testValue"
+import { testAndOrSchemasAsync } from "./testAndOrSchemasAsync"
+import { validateValue } from "./validateValue"
+import { validateAndOrSchemas } from "./validateAndOrSchemas"
 
 export abstract class Schema implements ValidationSchema {
   abstract required(message?: CustomValidationMessage): this
@@ -55,53 +63,103 @@ export abstract class Schema implements ValidationSchema {
     return this.addSanitizerDefinition(createSanitizerDefinition(sanitizer))
   }
 
-  async test(value: any): Promise<boolean> {
-    const testResult = await testValue(value, this.validationDefinitions)
-    const customTestResult = await this.customTestingBehavior(value, testResult)
-    const testResultWithAndOr = await testAndOrSchemas(value, customTestResult, this.andSchemas, this.orSchemas)
+  test(value: any): boolean {
+    const testResult = testValue(value, this.validationDefinitions)
+    const customTestResult = this.customTestingBehavior(value, testResult)
+    const testResultWithAndOr = testAndOrSchemas(value, customTestResult, this.andSchemas, this.orSchemas)
 
     return testResultWithAndOr
   }
 
-  async validate(value: any): Promise<ValidationError[] | undefined> {
-    const errors = await validateValue(value, this.validationDefinitions)
-    const customErrors = await this.customValidationBehavior(value, errors)
-    const errorsWithAndOr = await validateAndOrSchemas(value, this, customErrors, this.andSchemas, this.orSchemas)
+  async testAsync(value: any): Promise<boolean> {
+    const testResult = await testValueAsync(value, this.validationDefinitions)
+    const customTestResult = await this.customTestingBehaviorAsync(value, testResult)
+    const testResultWithAndOr = await testAndOrSchemasAsync(value, customTestResult, this.andSchemas, this.orSchemas)
+
+    return testResultWithAndOr
+  }
+
+  validate(value: any): ValidationError[] | undefined {
+    const errors = validateValue(value, this.validationDefinitions)
+    const customErrors = this.customValidationBehavior(value, errors)
+    const errorsWithAndOr = validateAndOrSchemas(value, this, customErrors, this.andSchemas, this.orSchemas)
     const dedupedErrors = dedupeValidationResult(errorsWithAndOr)
 
     return ! dedupedErrors || dedupedErrors.length === 0 ? undefined : dedupedErrors
   }
 
-  async sanitize<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
-    const sanitizedValue = await sanitizeValue<TValue, TSanitizedValue>(value, this.sanitizerDefinitions)
-    const customSanitizedValue = await this.customSanitizeBehavior<TValue, TSanitizedValue>(sanitizedValue as any)
+  async validateAsync(value: any): Promise<ValidationError[] | undefined> {
+    const errors = await validateValueAsync(value, this.validationDefinitions)
+    const customErrors = await this.customValidationBehaviorAsync(value, errors)
+    const errorsWithAndOr = await validateAndOrSchemasAsync(value, this, customErrors, this.andSchemas, this.orSchemas)
+    const dedupedErrors = dedupeValidationResult(errorsWithAndOr)
+
+    return ! dedupedErrors || dedupedErrors.length === 0 ? undefined : dedupedErrors
+  }
+
+  sanitize<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue {
+    const sanitizedValue = sanitizeValue<TValue, TSanitizedValue>(value, this.sanitizerDefinitions)
+    const customSanitizedValue = this.customSanitizeBehavior<TValue, TSanitizedValue>(sanitizedValue as any)
 
     return customSanitizedValue
   }
 
-  async sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TSanitizedValue]> {
-    const sanitizedValue = await this.sanitize<TValue, TSanitizedValue>(value)
-    const testResult = await this.test(sanitizedValue)
+  async sanitizeAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+    const sanitizedValue = await sanitizeValueAsync<TValue, TSanitizedValue>(value, this.sanitizerDefinitions)
+    const customSanitizedValue = await this.customSanitizeBehaviorAsync<TValue, TSanitizedValue>(sanitizedValue as any)
+
+    return customSanitizedValue
+  }
+
+  sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): [boolean, TSanitizedValue] {
+    const sanitizedValue = this.sanitize<TValue, TSanitizedValue>(value)
+    const testResult = this.test(sanitizedValue)
 
     return [testResult, sanitizedValue]
   }
 
-  async sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TSanitizedValue]> {
-    const sanitizedValue = await this.sanitize<TValue, TSanitizedValue>(value)
-    const validationResult = await this.validate(sanitizedValue)
+  async sanitizeAndTestAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TSanitizedValue]> {
+    const sanitizedValue = await this.sanitizeAsync<TValue, TSanitizedValue>(value)
+    const testResult = await this.testAsync(sanitizedValue)
+
+    return [testResult, sanitizedValue]
+  }
+
+  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): [ValidationError[] | undefined, TSanitizedValue] {
+    const sanitizedValue = this.sanitize<TValue, TSanitizedValue>(value)
+    const validationResult = this.validate(sanitizedValue)
 
     return [validationResult, sanitizedValue]
   }
 
-  protected async customTestingBehavior(value: any, testResult: boolean): Promise<boolean> {
+  async sanitizeAndValidateAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TSanitizedValue]> {
+    const sanitizedValue = await this.sanitizeAsync<TValue, TSanitizedValue>(value)
+    const validationResult = await this.validateAsync(sanitizedValue)
+
+    return [validationResult, sanitizedValue]
+  }
+
+  protected customTestingBehavior(value: any, testResult: boolean): boolean {
     return testResult
   }
 
-  protected async customValidationBehavior(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
+  protected async customTestingBehaviorAsync(value: any, testResult: boolean): Promise<boolean> {
+    return testResult
+  }
+
+  protected customValidationBehavior(value: any, errors: ValidationError[]): ValidationError[] {
     return errors
   }
 
-  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+  protected async customValidationBehaviorAsync(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
+    return errors
+  }
+
+  protected customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue {
+    return value as any
+  }
+
+  protected async customSanitizeBehaviorAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
     return value as any
   }
 

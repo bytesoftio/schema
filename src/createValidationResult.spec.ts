@@ -17,14 +17,14 @@ describe("createValidationResult", () => {
           .or(string().min(8)),
       }))
 
-    expect(await s.test({ foo: "1" })).toBe(false)
-    expect(await s.test({ foo: "12" })).toBe(true)
-    expect(await s.test({ foo: "123" })).toBe(true)
-    expect(await s.test({ bar: "1" })).toBe(false)
-    expect(await s.test({ bar: "12" })).toBe(true)
-    expect(await s.test({ bar: "123" })).toBe(true)
+    expect(await s.testAsync({ foo: "1" })).toBe(false)
+    expect(await s.testAsync({ foo: "12" })).toBe(true)
+    expect(await s.testAsync({ foo: "123" })).toBe(true)
+    expect(await s.testAsync({ bar: "1" })).toBe(false)
+    expect(await s.testAsync({ bar: "12" })).toBe(true)
+    expect(await s.testAsync({ bar: "123" })).toBe(true)
 
-    const errors = (await s.validate({ foo: "1" }))!
+    const errors = (await s.validateAsync({ foo: "1" }))!
 
     const expectedErrors = {
       "foo": [

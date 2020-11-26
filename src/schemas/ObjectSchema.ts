@@ -17,17 +17,24 @@ import { StringSchema } from "./StringSchema"
 import { CustomValidationMessage, LazyValue, ValidationError, ValidationSchema } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
-import { sanitizeObjectShape } from "../sanitizeObjectShape"
+import { sanitizeObjectShapeAsync } from "../sanitizeObjectShapeAsync"
 import { testObjectHasUnknownKeys } from "../testObjectHasUnknownKeys"
+import { testObjectUnknownKeysAsync } from "../testObjectUnknownKeysAsync"
+import { testObjectUnknownValuesAsync } from "../testObjectUnknownValuesAsync"
+import { testObjectShapeAsync } from "../testObjectShapeAsync"
+import { validateObjectHasUnknownKeys } from "../validateObjectHasUnknownKeys"
+import { validateObjectUnknownKeysAsync } from "../validateObjectUnknownKeysAsync"
+import { validateObjectUnknownValuesAsync } from "../validateObjectUnknownValuesAsync"
+import { validateObjectShapeAsync } from "../validateObjectShapeAsync"
+import { validateObjectIsMissingKeys } from "../validateObjectIsMissingKeys"
+import { testObjectIsMissingKeys } from "../testObjectIsMissingKeys"
+import { sanitizeObjectShape } from "../sanitizeObjectShape"
 import { testObjectUnknownKeys } from "../testObjectUnknownKeys"
 import { testObjectUnknownValues } from "../testObjectUnknownValues"
 import { testObjectShape } from "../testObjectShape"
-import { validateObjectHasUnknownKeys } from "../validateObjectHasUnknownKeys"
 import { validateObjectUnknownKeys } from "../validateObjectUnknownKeys"
 import { validateObjectUnknownValues } from "../validateObjectUnknownValues"
 import { validateObjectShape } from "../validateObjectShape"
-import { validateObjectIsMissingKeys } from "../validateObjectIsMissingKeys"
-import { testObjectIsMissingKeys } from "../testObjectIsMissingKeys"
 
 export type ObjectShape<TValue> = {
   [key in keyof TValue]: ValidationSchema
@@ -48,27 +55,50 @@ export class ObjectSchema<TValue> extends Schema {
     return schema as any
   }
 
-  protected async customTestingBehavior(value: any, testResult: boolean): Promise<boolean> {
+  protected customTestingBehavior(value: any, testResult: boolean): boolean {
     return testResult
       && testObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
       && testObjectIsMissingKeys(value, this.objectShape)
-      && await testObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema)
-      && await testObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema)
-      && await testObjectShape(value, this.objectShape)
+      && testObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema)
+      && testObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema)
+      && testObjectShape(value, this.objectShape)
   }
 
-  protected async customValidationBehavior(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
+  protected async customTestingBehaviorAsync(value: any, testResult: boolean): Promise<boolean> {
+    return testResult
+      && testObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
+      && testObjectIsMissingKeys(value, this.objectShape)
+      && await testObjectUnknownKeysAsync(value, this.objectShape, this.unknownKeysSchema)
+      && await testObjectUnknownValuesAsync(value, this.objectShape, this.unknownValuesSchema)
+      && await testObjectShapeAsync(value, this.objectShape)
+  }
+
+  protected customValidationBehavior(value: any, errors: ValidationError[]): ValidationError[] {
     const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
     const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape)
-    const unknownKeysErrors = await validateObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema)
-    const unknownValueErrors = await validateObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema)
-    const validateShapeErrors = await validateObjectShape(value, this.objectShape)
+    const unknownKeysErrors = validateObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema)
+    const unknownValueErrors = validateObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema)
+    const validateShapeErrors = validateObjectShape(value, this.objectShape)
 
     return [...errors, ...hasUnknownKeysErrors, ...isMissingKeysErrors, ...unknownKeysErrors, ...unknownValueErrors, ...validateShapeErrors]
   }
 
-  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+  protected async customValidationBehaviorAsync(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
+    const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
+    const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape)
+    const unknownKeysErrors = await validateObjectUnknownKeysAsync(value, this.objectShape, this.unknownKeysSchema)
+    const unknownValueErrors = await validateObjectUnknownValuesAsync(value, this.objectShape, this.unknownValuesSchema)
+    const validateShapeErrors = await validateObjectShapeAsync(value, this.objectShape)
+
+    return [...errors, ...hasUnknownKeysErrors, ...isMissingKeysErrors, ...unknownKeysErrors, ...unknownValueErrors, ...validateShapeErrors]
+  }
+
+  protected customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue {
     return sanitizeObjectShape(value, this.objectShape)
+  }
+
+  protected async customSanitizeBehaviorAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+    return sanitizeObjectShapeAsync(value, this.objectShape)
   }
 
   protected objectShape?: ObjectShape<TValue>

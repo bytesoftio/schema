@@ -5,11 +5,11 @@ import {
   keys,
 } from "lodash"
 
-export const testObjectUnknownValues = (
+export const testObjectUnknownValuesAsync = async (
   value: any,
   objectShape: ObjectShape<any> | undefined,
   unknownValuesSchema: StringSchema | undefined,
-): boolean => {
+): Promise<boolean> => {
   if ( ! unknownValuesSchema) return true
 
   const unknownKeys = difference(keys(value), keys(objectShape))
@@ -17,7 +17,7 @@ export const testObjectUnknownValues = (
   for (const unknownKey of unknownKeys) {
     const unknownValue = value[unknownKey]
 
-    if ( ! unknownValuesSchema.test(unknownValue)) {
+    if ( ! await unknownValuesSchema.testAsync(unknownValue)) {
       return false
     }
   }

@@ -17,6 +17,9 @@ import {
 import { CustomValidationMessage, LazyValue, ValidationError, ValidationSchema } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
+import { sanitizeArrayValuesAsync } from "../sanitizeArrayValuesAsync"
+import { testArrayValuesAsync } from "../testArrayValuesAsync"
+import { validateArrayValuesAsync } from "../validateArrayValuesAsync"
 import { sanitizeArrayValues } from "../sanitizeArrayValues"
 import { testArrayValues } from "../testArrayValues"
 import { validateArrayValues } from "../validateArrayValues"
@@ -33,16 +36,30 @@ export class ArraySchema extends Schema {
     return schema as any
   }
 
-  protected async customTestingBehavior(value: any, testResult: boolean): Promise<boolean> {
-    return testResult && await testArrayValues(value, this.valuesSchema)
+  protected customTestingBehavior(value: any, testResult: boolean): boolean {
+    return testResult && testArrayValues(value, this.valuesSchema)
   }
 
-  protected async customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+  protected async customTestingBehaviorAsync(value: any, testResult: boolean): Promise<boolean> {
+    return testResult && await testArrayValuesAsync(value, this.valuesSchema)
+  }
+
+  protected customSanitizeBehavior<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue {
     return sanitizeArrayValues(value, this.valuesSchema)
   }
 
-  protected async customValidationBehavior(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
-    const arrayValuesErrors = await validateArrayValues(value, this.valuesSchema)
+  protected async customSanitizeBehaviorAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue> {
+    return sanitizeArrayValuesAsync(value, this.valuesSchema)
+  }
+
+  protected customValidationBehavior(value: any, errors: ValidationError[]): ValidationError[] {
+    const arrayValuesErrors = validateArrayValues(value, this.valuesSchema)
+
+    return [...errors, ...arrayValuesErrors]
+  }
+
+  protected async customValidationBehaviorAsync(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
+    const arrayValuesErrors = await validateArrayValuesAsync(value, this.valuesSchema)
 
     return [...errors, ...arrayValuesErrors]
   }

@@ -2801,6 +2801,8 @@ img {
 				<li><a href="#relations-with-and--or">Relations with and() / or()</a></li>
 				<li><a href="#add-a-custom-validator">Add a custom validator</a></li>
 				<li><a href="#add-a-custom-sanitizer">Add a custom sanitizer</a></li>
+				<li><a href="#async-methods-and-logic">Async methods and logic</a></li>
+				<li><a href="#alternative-syntax">Alternative syntax</a></li>
 				<li><a href="#translations">Translations</a></li>
 				<li><a href="#string-schema">String schema</a><ul>
 						<li><a href="#required">required</a></li>
@@ -2937,7 +2939,6 @@ img {
 						<li><a href="#todefault-6">toDefault</a></li>
 					</ul>
 				</li>
-				<li><a href="#alternative-syntax">Alternative syntax</a></li>
 			</ul>
 			<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 			<a href="#description" id="description" style="color: inherit; text-decoration: none;">
@@ -2956,8 +2957,8 @@ img {
 				sanitization methods. Some methods are common for all of the schemas, some are
 			available only on a certain kind of schema.</p>
 			<p>Assertions are used for validation purposes and are used to describe
-				the underlying value and to ensure it is valid. Both methods, <code>test</code> and <code>validate</code>,
-			are async and must be awaited.s</p>
+				the underlying value and to ensure it is valid. Methods, <code>test</code>, <code>validate</code> and sanitize
+			exist in two versions: sync and async.</p>
 			<p>Sanitization / normalization methods are used to process the underlying
 				value even further, for example, to ensure that a string is capitalised, or
 			all of the object keys are camel-cased, etc.   </p>
@@ -2983,22 +2984,22 @@ img {
 <span style="color: #000000">})</span></code></pre></code></pre>
 			<p>The schema above contains some validation assertions as well as some sanitization / normalization logic. </p>
 			<p>Quick check if an object is valid according to the schema:</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> (</span><span style="color: #001080">valid</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
 <span style="color: #000000">}</span></code></pre></code></pre>
 			<p>Regular validation:</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> ( ! </span><span style="color: #001080">errors</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
 <span style="color: #000000">}</span></code></pre></code></pre>
 			<p>Run sanitizers like <code>array().toUnique()</code>:</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span></code></pre></code></pre>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000"> = </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span></code></pre></code></pre>
 			<p>All together:</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span></code></pre></code></pre>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000">] = </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">sanitizedValue</span><span style="color: #000000">] = </span><span style="color: #001080">userSchema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span></code></pre></code></pre>
 			<a href="#testing" id="testing" style="color: inherit; text-decoration: none;">
 				<h2>Testing</h2>
 			</a>
@@ -3009,7 +3010,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">alphaNumeric</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// true</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #A31515">"fooBar"</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #A31515">"fooBar"</span><span style="color: #000000">)</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> (</span><span style="color: #001080">valid</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
@@ -3020,7 +3021,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">alphaNumeric</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// false</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #A31515">"foo-bar"</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">valid</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #A31515">"foo-bar"</span><span style="color: #000000">)</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> (</span><span style="color: #001080">valid</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
@@ -3035,7 +3036,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">alphaNumeric</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// undefined</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"fooBar"</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"fooBar"</span><span style="color: #000000">)</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> ( ! </span><span style="color: #001080">errors</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
@@ -3046,7 +3047,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">alphaNumeric</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// [ ... ]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo-bar"</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo-bar"</span><span style="color: #000000">)</span>
 
 <span style="color: #0000FF">if</span><span style="color: #000000"> ( ! </span><span style="color: #001080">errors</span><span style="color: #000000">) {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ...</span>
@@ -3078,7 +3079,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">toTrimmed</span><span style="color: #000000">().</span><span style="color: #795E26">toCamelCase</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// "fooBar"</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">value</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo bar  "</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">value</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo bar  "</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<a href="#sanitize-and-test" id="sanitize-and-test" style="color: inherit; text-decoration: none;">
 				<h2>Sanitize and test</h2>
 			</a>
@@ -3089,14 +3090,14 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">4</span><span style="color: #000000">).</span><span style="color: #795E26">toCamelCase</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// [true, "fooBar"]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<p>Failed test:</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">import</span><span style="color: #000000"> { </span><span style="color: #001080">string</span><span style="color: #000000"> } </span><span style="color: #0000FF">from</span><span style="color: #000000"> </span><span style="color: #A31515">"@bytesoftio/schema"</span>
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">4</span><span style="color: #000000">).</span><span style="color: #795E26">toTrimmed</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// [false, "foo"]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo  "</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">valid</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo  "</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<p>As you can see, even though the string <code>&quot;  foo  &quot;</code> has a length greater than 4, after it gets trimmed (all surrounding whitespace gets stripped away), it becomes<code>&quot;foo&quot;</code> and therefore its length is less than 4. </p>
 			<a href="#sanitize-and-validate" id="sanitize-and-validate" style="color: inherit; text-decoration: none;">
 				<h2>Sanitize and validate</h2>
@@ -3108,14 +3109,14 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">4</span><span style="color: #000000">).</span><span style="color: #795E26">toCamelCase</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// [undefined, "fooBar"]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<p>Failed validation:</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">import</span><span style="color: #000000"> { </span><span style="color: #001080">string</span><span style="color: #000000"> } </span><span style="color: #0000FF">from</span><span style="color: #000000"> </span><span style="color: #A31515">"@bytesoftio/schema"</span>
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">4</span><span style="color: #000000">).</span><span style="color: #795E26">toTrimmed</span><span style="color: #000000">()</span>
 
 <span style="color: #008000">// [[ ... ], "foo"]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo  "</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #001080">errors</span><span style="color: #000000">, </span><span style="color: #001080">value</span><span style="color: #000000">] = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">(</span><span style="color: #A31515">"  foo  "</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<p>This what the errors would look like:</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #000000">[</span>
 <span style="color: #000000">  {</span>
@@ -3140,7 +3141,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">usernameListSchema</span><span style="color: #000000"> = </span><span style="color: #795E26">array</span><span style="color: #000000">().</span><span style="color: #795E26">min</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">shape</span><span style="color: #000000">(</span><span style="color: #001080">usernameSchema</span><span style="color: #000000">)</span>
 
 <span style="color: #008000">// undefined</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">usernameListSchema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">([</span><span style="color: #A31515">"foo"</span><span style="color: #000000">, </span><span style="color: #A31515">"bar"</span><span style="color: #000000">, </span><span style="color: #A31515">"baz"</span><span style="color: #000000">])</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">usernameListSchema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">([</span><span style="color: #A31515">"foo"</span><span style="color: #000000">, </span><span style="color: #A31515">"bar"</span><span style="color: #000000">, </span><span style="color: #A31515">"baz"</span><span style="color: #000000">])</span></code></pre></code></pre>
 			<a href="#relations-with-and--or" id="relations-with-and--or" style="color: inherit; text-decoration: none;">
 				<h2>Relations with and() / or()</h2>
 			</a>
@@ -3167,7 +3168,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">customValidator</span><span style="color: #000000">(</span><span style="color: #A31515">"Value is too short"</span><span style="color: #000000">, </span><span style="color: #795E26">assertMinLength</span><span style="color: #000000">(</span><span style="color: #098658">10</span><span style="color: #000000">))</span>
 
 <span style="color: #008000">// [ ... ]</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
 			<p>This is what the errors would look like:</p>
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #000000">[</span>
 <span style="color: #000000">  {</span>
@@ -3196,7 +3197,33 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">customSanitizer</span><span style="color: #000000">(</span><span style="color: #001080">toUpperCase</span><span style="color: #000000">)</span>
 
 <span style="color: #000000">  </span><span style="color: #008000">// "FOO BAR"</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">value</span><span style="color: #000000"> = </span><span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">value</span><span style="color: #000000"> = </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">(</span><span style="color: #A31515">"foo bar"</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#async-methods-and-logic" id="async-methods-and-logic" style="color: inherit; text-decoration: none;">
+				<h2>Async methods and logic</h2>
+			</a>
+			<p>Every validation, sanitizing and testing method has an async counterpart. Synchronous methods would be the go to ones, most of the time. This library itself does not come with any async validation or sanitizing logic. However, it is possible for you to add custom validation and sanitizing methods and you might need them to be async. If you try to run any kind of validation or sanitizing logic trough a sync method, you will get an error - you&#39;ll be asked to use an async mehtod instead.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000"> = </span><span style="color: #795E26">object</span><span style="color: #000000">({ </span><span style="color: #008000">/* ... */</span><span style="color: #000000"> })</span>
+<span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">testAsync</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">validateAsync</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitize</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAsync</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTest</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndTestAsync</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidate</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">await</span><span style="color: #000000"> </span><span style="color: #001080">schema</span><span style="color: #000000">.</span><span style="color: #795E26">sanitizeAndValidateAsync</span><span style="color: #000000">(</span><span style="color: #008000">/* ... */</span><span style="color: #000000">)</span></code></pre></code></pre>
+			<a href="#alternative-syntax" id="alternative-syntax" style="color: inherit; text-decoration: none;">
+				<h2>Alternative syntax</h2>
+			</a>
+			<p>You can create any schema starting with the default value, this is especially useful for forms.</p>
+			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">import</span><span style="color: #000000"> { </span><span style="color: #001080">value</span><span style="color: #000000">, </span><span style="color: #001080">string</span><span style="color: #000000"> } </span><span style="color: #0000FF">from</span><span style="color: #000000"> </span><span style="color: #A31515">"@bytesoftio/schema"</span>
+
+<span style="color: #795E26">value</span><span style="color: #000000">(</span><span style="color: #A31515">''</span><span style="color: #000000">).</span><span style="color: #795E26">string</span><span style="color: #000000">()</span>
+<span style="color: #008000">// same as </span>
+<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">toDefault</span><span style="color: #000000">(</span><span style="color: #A31515">''</span><span style="color: #000000">)</span>
+
+<span style="color: #008000">// same applies for boolean, number, date, etc. ...</span></code></pre></code></pre>
 			<a href="#translations" id="translations" style="color: inherit; text-decoration: none;">
 				<h2>Translations</h2>
 			</a>
@@ -3934,17 +3961,6 @@ img {
 			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #795E26">mixed</span><span style="color: #000000">().</span><span style="color: #795E26">toDefault</span><span style="color: #000000">(</span><span style="color: #0000FF">true</span><span style="color: #000000">)</span>
 <span style="color: #008000">// or</span>
 <span style="color: #795E26">mixed</span><span style="color: #000000">().</span><span style="color: #795E26">toDefault</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">)</span></code></pre></code></pre>
-			<a href="#alternative-syntax" id="alternative-syntax" style="color: inherit; text-decoration: none;">
-				<h2>Alternative syntax</h2>
-			</a>
-			<p>You can create any schema starting with the default value, this is especially useful for forms.</p>
-			<pre><code class="language-ts"><pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">import</span><span style="color: #000000"> { </span><span style="color: #001080">value</span><span style="color: #000000">, </span><span style="color: #001080">string</span><span style="color: #000000"> } </span><span style="color: #0000FF">from</span><span style="color: #000000"> </span><span style="color: #A31515">"@bytesoftio/schema"</span>
-
-<span style="color: #795E26">value</span><span style="color: #000000">(</span><span style="color: #A31515">''</span><span style="color: #000000">).</span><span style="color: #795E26">string</span><span style="color: #000000">()</span>
-<span style="color: #008000">// same as </span>
-<span style="color: #795E26">string</span><span style="color: #000000">().</span><span style="color: #795E26">toDefault</span><span style="color: #000000">(</span><span style="color: #A31515">''</span><span style="color: #000000">)</span>
-
-<span style="color: #008000">// same applies for boolean, number, date, etc. ...</span></code></pre></code></pre>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
@@ -4021,7 +4037,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Custom<wbr>Validation<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#validationfunctionresult" class="tsd-signature-type">ValidationFunctionResult</a><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L45">types.ts:45</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L50">types.ts:50</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4052,7 +4068,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Custom<wbr>Validation<wbr>Message<span class="tsd-signature-symbol">:</span> <a href="globals.html#lazyvalue" class="tsd-signature-type">LazyValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L44">types.ts:44</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L49">types.ts:49</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4062,7 +4078,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Lazy<wbr>Value&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L21">types.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L26">types.ts:26</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4078,7 +4094,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Maybe<wbr>Promise&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L22">types.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L27">types.ts:27</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4094,7 +4110,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Object<wbr>Shape&lt;TValue&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/schemas/ObjectSchema.ts#L32">schemas/ObjectSchema.ts:32</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/schemas/ObjectSchema.ts#L39">schemas/ObjectSchema.ts:39</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4115,7 +4131,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Sanitizer<wbr>Definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>sanitizer<span class="tsd-signature-symbol">: </span><a href="globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L47">types.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L52">types.ts:52</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4136,7 +4152,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Sanitizer<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L46">types.ts:46</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L51">types.ts:51</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4170,7 +4186,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>customMessage<span class="tsd-signature-symbol">?: </span><a href="globals.html#customvalidationmessage" class="tsd-signature-type">CustomValidationMessage</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="globals.html#validationtype" class="tsd-signature-type">ValidationType</a><span class="tsd-signature-symbol">; </span>validator<span class="tsd-signature-symbol">: </span><a href="globals.html#validationfunction" class="tsd-signature-type">ValidationFunction</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L38">types.ts:38</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L43">types.ts:43</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4197,7 +4213,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>link<span class="tsd-signature-symbol">: </span><a href="globals.html#validationlink" class="tsd-signature-type">ValidationLink</a><span class="tsd-signature-symbol">; </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>path<span class="tsd-signature-symbol">: </span><a href="globals.html#validationpath" class="tsd-signature-type">ValidationPath</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="globals.html#validationtype" class="tsd-signature-type">ValidationType</a><span class="tsd-signature-symbol">; </span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L26">types.ts:26</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L31">types.ts:31</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4230,7 +4246,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#maybepromise" class="tsd-signature-type">MaybePromise</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#validationfunctionresult" class="tsd-signature-type">ValidationFunctionResult</a><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L34">types.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L39">types.ts:39</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4264,7 +4280,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Function<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L25">types.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L30">types.ts:30</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4274,7 +4290,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Link<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"and"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"or"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L36">types.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L41">types.ts:41</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4284,7 +4300,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L37">types.ts:37</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L42">types.ts:42</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4294,7 +4310,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L24">types.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L29">types.ts:29</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4312,7 +4328,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Validation<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">"array_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_some_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"array_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"mixed_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_positive"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_negative"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number_integer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_missing_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"object_unknown_key"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_required"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_optional"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_equals"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_length"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_min"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_max"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_matches"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_email"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_url"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_starts_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_ends_with"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_includes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_omits"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_one_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_none_of"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_dashes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_alpha_numeric_underscores"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_after_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_before_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_date_between_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_after"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_after_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_before"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_before_or_same"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_between"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"string_time_between_or_same"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"custom"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/types.ts#L35">types.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/types.ts#L40">types.ts:40</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4325,7 +4341,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">schema<wbr>Translator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ObservableTranslator</span><span class="tsd-signature-symbol"> = createTranslator({ en: locale }, &quot;en&quot;)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/schemaTranslator.ts#L4">schemaTranslator.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/schemaTranslator.ts#L4">schemaTranslator.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4342,7 +4358,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L14">index.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L14">index.ts:14</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4365,7 +4381,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L12">index.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L12">index.ts:12</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/booleanschema.html" class="tsd-signature-type">BooleanSchema</a></h4>
@@ -4382,7 +4398,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/createValidationResult.ts#L3">createValidationResult.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/createValidationResult.ts#L3">createValidationResult.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4405,7 +4421,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L13">index.ts:13</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L13">index.ts:13</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/dateschema.html" class="tsd-signature-type">DateSchema</a></h4>
@@ -4422,7 +4438,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L16">index.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L16">index.ts:16</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/mixedschema.html" class="tsd-signature-type">MixedSchema</a></h4>
@@ -4439,7 +4455,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L11">index.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L11">index.ts:11</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/numberschema.html" class="tsd-signature-type">NumberSchema</a></h4>
@@ -4456,7 +4472,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L15">index.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L15">index.ts:15</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4485,7 +4501,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L10">index.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L10">index.ts:10</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="classes/stringschema.html" class="tsd-signature-type">StringSchema</a></h4>
@@ -4502,7 +4518,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L17">index.ts:17</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L17">index.ts:17</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4522,7 +4538,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L23">index.ts:23</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L23">index.ts:23</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4544,7 +4560,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L21">index.ts:21</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L21">index.ts:21</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-returns-title">Returns <a href="classes/booleanschema.html" class="tsd-signature-type">BooleanSchema</a></h4>
@@ -4560,7 +4576,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L22">index.ts:22</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L22">index.ts:22</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-returns-title">Returns <a href="classes/dateschema.html" class="tsd-signature-type">DateSchema</a></h4>
@@ -4576,7 +4592,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L25">index.ts:25</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L25">index.ts:25</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-returns-title">Returns <a href="classes/mixedschema.html" class="tsd-signature-type">MixedSchema</a></h4>
@@ -4592,7 +4608,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L20">index.ts:20</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L20">index.ts:20</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-returns-title">Returns <a href="classes/numberschema.html" class="tsd-signature-type">NumberSchema</a></h4>
@@ -4608,7 +4624,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L24">index.ts:24</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L24">index.ts:24</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -4636,7 +4652,7 @@ img {
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/2618c83/src/index.ts#L19">index.ts:19</a></li>
+												<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/cea1995/src/index.ts#L19">index.ts:19</a></li>
 											</ul>
 										</aside>
 										<h4 class="tsd-returns-title">Returns <a href="classes/stringschema.html" class="tsd-signature-type">StringSchema</a></h4>

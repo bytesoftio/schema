@@ -1,20 +1,20 @@
+import { isArray } from "lodash"
 import {
   ValidationError,
   ValidationSchema,
 } from "./types"
-import { isArray } from "lodash"
 import { joinPath } from "./helpers"
 
-export const validateArrayValues = (
+export const validateArrayValuesAsync = async (
   values: any,
   valuesSchema: ValidationSchema | undefined,
-): ValidationError[] => {
+): Promise<ValidationError[]> => {
   if ( ! valuesSchema || ! isArray(values)) return []
 
   const errors: ValidationError[] = []
 
-  values.map((value, index) => {
-    const newErrors = valuesSchema.validate(value)
+  await Promise.all(values.map(async (value, index) => {
+    const newErrors = await valuesSchema.validateAsync(value)
 
     if (newErrors) {
       newErrors.forEach(error => {
@@ -22,7 +22,8 @@ export const validateArrayValues = (
         errors.push(error)
       })
     }
-  })
+  }))
 
   return errors
 }
+

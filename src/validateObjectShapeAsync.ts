@@ -6,18 +6,18 @@ import {
 } from "lodash"
 import { joinPath } from "./helpers"
 
-export const validateObjectShape = (
+export const validateObjectShapeAsync = async (
   value: any,
   objectShape: ObjectShape<any> | undefined,
-): ValidationError[] => {
+): Promise<ValidationError[]> => {
   if ( ! objectShape) return []
 
   const errors: ValidationError[] = []
 
-  keys(objectShape).map(async key => {
+  await Promise.all(keys(objectShape).map(async key => {
     const shapeValue = objectShape[key]
     const keyValue = get(value, key)
-    const newErrors = await shapeValue.validate(keyValue)
+    const newErrors = await shapeValue.validateAsync(keyValue)
 
     if (newErrors) {
       newErrors.forEach(error => {
@@ -25,7 +25,7 @@ export const validateObjectShape = (
         errors.push(error)
       })
     }
-  })
+  }))
 
   return errors
 }

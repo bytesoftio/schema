@@ -1,26 +1,25 @@
 import { ObjectShape } from "./schemas/ObjectSchema"
-import {
-  ValidationError,
-  ValidationSchema,
-} from "./types"
+import { StringSchema } from "./schemas/StringSchema"
 import {
   difference,
   keys,
 } from "lodash"
+import { ValidationError } from "./types"
 import { joinPath } from "./helpers"
 
-export const validateObjectUnknownKeys = (
+export const validateObjectUnknownValuesAsync = async (
   value: any,
   objectShape: ObjectShape<any> | undefined,
-  unknownKeysSchema: ValidationSchema | undefined,
-): ValidationError[] => {
-  if ( ! unknownKeysSchema) return []
+  unknownValuesSchema: StringSchema | undefined,
+): Promise<ValidationError[]> => {
+  if ( ! unknownValuesSchema) return []
 
   const unknownKeys = difference(keys(value), keys(objectShape))
   const errors: ValidationError[] = []
 
-  unknownKeys.map(async (unknownKey) => {
-    const newErrors = await unknownKeysSchema.validate(unknownKey)
+  await Promise.all(unknownKeys.map(async unknownKey => {
+    const unknownValue = value[unknownKey]
+    const newErrors = await unknownValuesSchema.validateAsync(unknownValue)
 
     if (newErrors) {
       newErrors.forEach(error => {
@@ -28,7 +27,7 @@ export const validateObjectUnknownKeys = (
         errors.push(error)
       })
     }
-  })
+  }))
 
   return errors
 }

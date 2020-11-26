@@ -4,16 +4,16 @@ import {
   keys,
 } from "lodash"
 
-export const sanitizeObjectShape = <TValue, TSanitizedValue = TValue>(value: TValue, objectShape: ObjectShape<any> | undefined): TSanitizedValue => {
+export const sanitizeObjectShapeAsync = async <TValue, TSanitizedValue = TValue>(value: TValue, objectShape: ObjectShape<any> | undefined): Promise<TSanitizedValue> => {
   if ( ! objectShape || ! isObjectLike(value)) return value as any
 
-  keys(objectShape).map((shapeKey) => {
+  await Promise.all(keys(objectShape).map(async (shapeKey) => {
     const shapeValue = value[shapeKey]
     const shapeSchema = objectShape[shapeKey]
-    const sanitizedValue = shapeSchema.sanitize(shapeValue)
+    const sanitizedValue = await shapeSchema.sanitizeAsync(shapeValue)
 
     value[shapeKey] = sanitizedValue
-  })
+  }))
 
   return value as any
 }

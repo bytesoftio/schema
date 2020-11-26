@@ -11,11 +11,16 @@ export interface ValidationSchema {
   customValidator(message: string, validator: CustomValidationFunction): ValidationSchema
   customSanitizer(sanitizer: SanitizerFunction): ValidationSchema
 
-  test(value: any): Promise<boolean>
-  validate(value: any): Promise<ValidationError[] | undefined>
-  sanitize<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue>
-  sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TValue]>
-  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TValue]>
+  test(value: any): boolean
+  testAsync(value: any): Promise<boolean>
+  validate(value: any): ValidationError[] | undefined
+  validateAsync(value: any): Promise<ValidationError[] | undefined>
+  sanitize<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue
+  sanitizeAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue>
+  sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): [boolean, TValue]
+  sanitizeAndTestAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TValue]>
+  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): [ValidationError[] | undefined, TValue]
+  sanitizeAndValidateAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TValue]>
 }
 
 export type LazyValue<TValue> = TValue | (() => TValue) | undefined

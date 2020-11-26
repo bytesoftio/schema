@@ -1,14 +1,14 @@
 import { ValidationSchema } from "./types"
 
-export const testAndOrSchemas = (
+export const testAndOrSchemasAsync = async (
   value: any,
   testResult: boolean,
   andSchemas: ValidationSchema[],
   orSchemas: ValidationSchema[],
-): boolean => {
+): Promise<boolean> => {
   if ( ! testResult) {
     for (const schema of orSchemas) {
-      if (schema.test(value)) {
+      if (await schema.testAsync(value)) {
         testResult = true
         break
       }
@@ -17,7 +17,7 @@ export const testAndOrSchemas = (
 
   if (testResult) {
     for (const schema of andSchemas) {
-      if ( ! schema.test(value)) {
+      if ( ! await schema.testAsync(value)) {
         testResult = false
         break
       }

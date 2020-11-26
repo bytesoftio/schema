@@ -21,6 +21,8 @@
 - [Relations with and() / or()](#relations-with-and--or)
 - [Add a custom validator](#add-a-custom-validator)
 - [Add a custom sanitizer](#add-a-custom-sanitizer)
+- [Async methods and logic](#async-methods-and-logic)
+- [Alternative syntax](#alternative-syntax)
 - [Translations](#translations)
 - [String schema](#string-schema)
   - [required](#required)
@@ -143,7 +145,6 @@
   - [oneOf](#oneof-1)
   - [noneOf](#noneof-2)
   - [toDefault](#todefault-6)
-- [Alternative syntax](#alternative-syntax)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -166,8 +167,8 @@ sanitization methods. Some methods are common for all of the schemas, some are
 available only on a certain kind of schema.
 
 Assertions are used for validation purposes and are used to describe 
-the underlying value and to ensure it is valid. Both methods, `test` and `validate`, 
-are async and must be awaited.s
+the underlying value and to ensure it is valid. Methods, `test`, `validate` and sanitize 
+exist in two versions: sync and async.
 
 Sanitization / normalization methods are used to process the underlying 
 value even further, for example, to ensure that a string is capitalised, or 
@@ -204,7 +205,7 @@ The schema above contains some validation assertions as well as some sanitizatio
 Quick check if an object is valid according to the schema:
 
 ```ts
-const valid = await userSchema.test({ /* ... */ })
+const valid = userSchema.test({ /* ... */ })
 
 if (valid) {
   // ...
@@ -214,7 +215,7 @@ if (valid) {
 Regular validation:
 
 ```ts
-const errors = await userSchema.validate({ /* ... */ })
+const errors = userSchema.validate({ /* ... */ })
 
 if ( ! errors) {
   // ...
@@ -224,14 +225,14 @@ if ( ! errors) {
 Run sanitizers like `array().toUnique()`:
 
 ```ts
-const sanitizedValue = await userSchema.sanitize({ /* ... */ })
+const sanitizedValue = userSchema.sanitize({ /* ... */ })
 ```
 
 All together:
 
 ```ts
-const [valid, sanitizedValue] = await userSchema.sanitizeAndTest({ /* ... */ })
-const [errors, sanitizedValue] = await userSchema.sanitizeAndValidate({ /* ... */ })
+const [valid, sanitizedValue] = userSchema.sanitizeAndTest({ /* ... */ })
+const [errors, sanitizedValue] = userSchema.sanitizeAndValidate({ /* ... */ })
 ```
 
 ## Testing
@@ -246,7 +247,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(3).alphaNumeric()
 
 // true
-const valid = await schema.test("fooBar")
+const valid = schema.test("fooBar")
 
 if (valid) {
   // ...
@@ -261,7 +262,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(3).alphaNumeric()
 
 // false
-const valid = await schema.test("foo-bar")
+const valid = schema.test("foo-bar")
 
 if (valid) {
   // ...
@@ -280,7 +281,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(3).alphaNumeric()
 
 // undefined
-const errors = await schema.validate("fooBar")
+const errors = schema.validate("fooBar")
 
 if ( ! errors) {
   // ...
@@ -295,7 +296,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(3).alphaNumeric()
 
 // [ ... ]
-const errors = await schema.validate("foo-bar")
+const errors = schema.validate("foo-bar")
 
 if ( ! errors) {
   // ...
@@ -334,7 +335,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().toTrimmed().toCamelCase()
 
 // "fooBar"
-const value = await schema.sanitize("  foo bar  ")
+const value = schema.sanitize("  foo bar  ")
 ```
 
 ## Sanitize and test
@@ -349,7 +350,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(4).toCamelCase()
 
 // [true, "fooBar"]
-const [valid, value] = await schema.sanitizeAndTest("foo bar")
+const [valid, value] = schema.sanitizeAndTest("foo bar")
 ```
 
 Failed test:
@@ -360,7 +361,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(4).toTrimmed()
 
 // [false, "foo"]
-const [valid, value] = await schema.sanitizeAndTest("  foo  ")
+const [valid, value] = schema.sanitizeAndTest("  foo  ")
 ```
 
 As you can see, even though the string `"  foo  "` has a length greater than 4, after it gets trimmed (all surrounding whitespace gets stripped away), it becomes`"foo"` and therefore its length is less than 4. 
@@ -377,7 +378,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(4).toCamelCase()
 
 // [undefined, "fooBar"]
-const [errors, value] = await schema.sanitizeAndValidate("foo bar")
+const [errors, value] = schema.sanitizeAndValidate("foo bar")
 ```
 
 Failed validation:
@@ -388,7 +389,7 @@ import { string } from "@bytesoftio/schema"
 const schema = string().min(4).toTrimmed()
 
 // [[ ... ], "foo"]
-const [errors, value] = await schema.sanitizeAndValidate("  foo  ")
+const [errors, value] = schema.sanitizeAndValidate("  foo  ")
 ```
 
 This what the errors would look like:
@@ -420,7 +421,7 @@ const usernameSchema = string().alphaNumeric().between(3, 10)
 const usernameListSchema = array().min(3).shape(usernameSchema)
 
 // undefined
-const errors = await usernameListSchema.validate(["foo", "bar", "baz"])
+const errors = usernameListSchema.validate(["foo", "bar", "baz"])
 ```
 
 ## Relations with and() / or()
@@ -453,7 +454,7 @@ const assertMinLength = (min: number) => {
 const schema = string().customValidator("Value is too short", assertMinLength(10))
 
 // [ ... ]
-const errors = await schema.validate("foo bar")
+const errors = schema.validate("foo bar")
 ```
 
 This is what the errors would look like:
@@ -489,7 +490,39 @@ const toUpperCase = (value) => {
 const schema = string().customSanitizer(toUpperCase)
 
   // "FOO BAR"
-const value = await schema.sanitize("foo bar")
+const value = schema.sanitize("foo bar")
+```
+
+## Async methods and logic
+
+Every validation, sanitizing and testing method has an async counterpart. Synchronous methods would be the go to ones, most of the time. This library itself does not come with any async validation or sanitizing logic. However, it is possible for you to add custom validation and sanitizing methods and you might need them to be async. If you try to run any kind of validation or sanitizing logic trough a sync method, you will get an error - you'll be asked to use an async mehtod instead.
+
+```ts
+const schema = object({ /* ... */ })
+schema.test(/* ... */)
+await schema.testAsync(/* ... */)
+schema.validate(/* ... */)
+await schema.validateAsync(/* ... */)
+schema.sanitize(/* ... */)
+await schema.sanitizeAsync(/* ... */)
+schema.sanitizeAndTest(/* ... */)
+await schema.sanitizeAndTestAsync(/* ... */)
+schema.sanitizeAndValidate(/* ... */)
+await schema.sanitizeAndValidateAsync(/* ... */)
+```
+
+## Alternative syntax
+
+You can create any schema starting with the default value, this is especially useful for forms.
+
+```ts
+import { value, string } from "@bytesoftio/schema"
+
+value('').string()
+// same as 
+string().toDefault('')
+
+// same applies for boolean, number, date, etc. ...
 ```
 
 ## Translations
@@ -1594,17 +1627,3 @@ mixed().toDefault(true)
 // or
 mixed().toDefault(() => true)
 ```
-
-## Alternative syntax
-
-You can create any schema starting with the default value, this is especially useful for forms.
-
-```ts
-import { value, string } from "@bytesoftio/schema"
-
-value('').string()
-// same as 
-string().toDefault('')
-
-// same applies for boolean, number, date, etc. ...
-``` 

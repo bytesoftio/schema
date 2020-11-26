@@ -4,16 +4,16 @@ import {
 } from "./types"
 import { linkErrors } from "./linkErrors"
 
-export const validateAndOrSchemas = (
+export const validateAndOrSchemasAsync = async (
   value: any,
   mainSchema: ValidationSchema,
   errors: ValidationError[],
   andSchemas: ValidationSchema[],
   orSchemas: ValidationSchema[],
-): ValidationError[] => {
+): Promise<ValidationError[]> => {
   if (errors.length > 0) {
     for (const schema of orSchemas) {
-      const newErrors = schema.validate(value)
+      const newErrors = await schema.validateAsync(value)
 
       if (newErrors) {
         errors.push(...linkErrors("or", newErrors))
@@ -25,7 +25,7 @@ export const validateAndOrSchemas = (
   }
 
   for (const schema of andSchemas) {
-    const newErrors = schema.validate(value)
+    const newErrors = await schema.validateAsync(value)
 
     if (newErrors) {
       errors.push(...linkErrors("and", newErrors))

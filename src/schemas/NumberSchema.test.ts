@@ -1,9 +1,10 @@
 import {
-  number,
   NumberSchema,
-  value,
+
 } from "../index"
 import { translateMessage } from "../translateMessage"
+import { number } from "../factories/number"
+import { value } from "../factories/value"
 
 describe("NumberSchema", () => {
   test("required", async () => {

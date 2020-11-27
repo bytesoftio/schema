@@ -1,4 +1,6 @@
-import { createValidationResult, object, string } from "./index"
+import { createValidationResult} from "./index"
+import { string } from "./factories/string"
+import { object } from "./factories/object"
 
 describe("createValidationResult", () => {
   it("creates result", async () => {

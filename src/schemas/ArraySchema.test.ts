@@ -1,13 +1,14 @@
 import {
-  array,
   ArraySchema,
-  boolean,
-  number,
-  string,
-  value,
+
 } from "../index"
 import { isString } from "lodash"
 import { translateMessage } from "../translateMessage"
+import { string } from "../factories/string"
+import { number } from "../factories/number"
+import { boolean } from "../factories/boolean"
+import { array } from "../factories/array"
+import { value } from "../factories/value"
 
 describe("ArraySchema", () => {
   test("required", async () => {

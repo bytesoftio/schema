@@ -1,15 +1,16 @@
 import {
-  array,
-  object,
   ObjectSchema,
-  string,
-  value,
+
 } from "../index"
 import {
   isString,
   keys,
 } from "lodash"
 import { translateMessage } from "../translateMessage"
+import { string } from "../factories/string"
+import { array } from "../factories/array"
+import { object } from "../factories/object"
+import { value } from "../factories/value"
 
 describe("ObjectSchema", () => {
   test("required", async () => {

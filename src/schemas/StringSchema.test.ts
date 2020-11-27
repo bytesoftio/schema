@@ -1,10 +1,11 @@
 import { addDays, subDays } from "date-fns"
 import {
-  string,
   StringSchema,
-  value,
+
 } from "../index"
 import { translateMessage } from "../translateMessage"
+import { string } from "../factories/string"
+import { value } from "../factories/value"
 
 describe("StringSchema", () => {
   test("required", async () => {

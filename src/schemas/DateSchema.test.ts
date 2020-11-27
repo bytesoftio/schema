@@ -1,13 +1,14 @@
 import {
-  date,
   DateSchema,
-  value,
+
 } from "../index"
 import {
   addDays,
   subDays,
 } from "date-fns"
 import { translateMessage } from "../translateMessage"
+import { date } from "../factories/date"
+import { value } from "../factories/value"
 
 describe("DateSchema", () => {
   test("required", async () => {

@@ -1,9 +1,10 @@
 import {
-  mixed,
   MixedSchema,
-  value,
+
 } from "../index"
 import { translateMessage } from "../translateMessage"
+import { mixed } from "../factories/mixed"
+import { value } from "../factories/value"
 
 describe("MixedSchema", () => {
   test("required", async () => {

@@ -1,9 +1,10 @@
 import {
-  boolean,
   BooleanSchema,
-  value,
+
 } from "../index"
 import { translateMessage } from "../translateMessage"
+import { boolean } from "../factories/boolean"
+import { value } from "../factories/value"
 
 describe("BooleanSchema", () => {
   test("required", async () => {

@@ -9,8 +9,7 @@ export class BooleanSchema extends Schema<boolean> {
     const schema = new BooleanSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
     schema.sanitizerDefinitions = [...this.sanitizerDefinitions]
-    schema.andSchemas = [...this.andSchemas]
-    schema.orSchemas = [...this.orSchemas]
+    schema.conditionalValidationDefinitions = [...this.conditionalValidationDefinitions]
 
     return schema as any
   }

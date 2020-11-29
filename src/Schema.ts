@@ -6,8 +6,7 @@ import {
   ValidationError,
   ValidationSchema,
   ValidationType,
-  CustomValidationFunction,
-  LazyValue,
+  CustomValidation,
 } from "./types"
 import { createValidationDefinition } from "./createValidationDefinition"
 import { createSanitizerDefinition } from "./createSanitizerDefinition"
@@ -25,7 +24,6 @@ import { testValue } from "./testValue"
 import { testAndOrSchemasAsync } from "./testAndOrSchemasAsync"
 import { validateValue } from "./validateValue"
 import { validateAndOrSchemas } from "./validateAndOrSchemas"
-import { lazyValue } from "./lazyValue"
 
 export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   abstract required(message?: CustomValidationMessage): this
@@ -34,42 +32,23 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   protected abstract cloneInstance(): this
 
   protected immutableMode: boolean = true
-  protected validationDefinitions: ValidationDefinition[] = []
   protected sanitizerDefinitions: SanitizerDefinition[] = []
-  protected orSchemas: ValidationSchema[] = []
-  protected andSchemas: ValidationSchema[] = []
+  protected validationDefinitions: ValidationDefinition[] = []
+  protected conditionalValidationDefinitions: ValidationDefinition[] = []
 
   constructor() {
     this.skipClone(() => this.required())
   }
 
-  or(orSchema: LazyValue<ValidationSchema|undefined>): this {
-    const additionalSchema = lazyValue(orSchema)
-
-    if ( ! additionalSchema) {
-      return this
-    }
-
-    const schema = this.clone()
-    schema.orSchemas.push(additionalSchema)
-
-    return schema
+  or(orValidator: CustomValidation): this {
+    return this.addConditionalValidationDefinition(createValidationDefinition("or", orValidator, [], ""))
   }
 
-  and(andSchema: LazyValue<ValidationSchema|undefined>): this {
-    const additionalSchema = lazyValue(andSchema)
-
-    if ( ! additionalSchema) {
-      return this
-    }
-
-    const schema = this.clone()
-    schema.andSchemas.push(additionalSchema)
-
-    return schema
+  and(andValidator: CustomValidation): this {
+    return this.addConditionalValidationDefinition(createValidationDefinition("and", andValidator, [], ""))
   }
 
-  validator(validator: CustomValidationFunction): this {
+  validator(validator: CustomValidation): this {
     return this.addValidationDefinition(createValidationDefinition("custom", validator, [], ""))
   }
 
@@ -80,7 +59,7 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   test(value: any): boolean {
     const testResult = testValue(value, this.validationDefinitions)
     const customTestResult = this.customTestingBehavior(value, testResult)
-    const testResultWithAndOr = testAndOrSchemas(value, customTestResult, this.andSchemas, this.orSchemas)
+    const testResultWithAndOr = testAndOrSchemas(value, customTestResult, this.conditionalValidationDefinitions)
 
     return testResultWithAndOr
   }
@@ -88,7 +67,7 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   async testAsync(value: any): Promise<boolean> {
     const testResult = await testValueAsync(value, this.validationDefinitions)
     const customTestResult = await this.customTestingBehaviorAsync(value, testResult)
-    const testResultWithAndOr = await testAndOrSchemasAsync(value, customTestResult, this.andSchemas, this.orSchemas)
+    const testResultWithAndOr = await testAndOrSchemasAsync(value, customTestResult, this.conditionalValidationDefinitions)
 
     return testResultWithAndOr
   }
@@ -96,7 +75,7 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   validate(value: any): ValidationError[] | undefined {
     const errors = validateValue(value, this.validationDefinitions)
     const customErrors = this.customValidationBehavior(value, errors)
-    const errorsWithAndOr = validateAndOrSchemas(value, this, customErrors, this.andSchemas, this.orSchemas)
+    const errorsWithAndOr = validateAndOrSchemas(value, customErrors, this.conditionalValidationDefinitions)
     const dedupedErrors = dedupeValidationResult(errorsWithAndOr)
 
     return ! dedupedErrors || dedupedErrors.length === 0 ? undefined : dedupedErrors
@@ -105,7 +84,7 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   async validateAsync(value: any): Promise<ValidationError[] | undefined> {
     const errors = await validateValueAsync(value, this.validationDefinitions)
     const customErrors = await this.customValidationBehaviorAsync(value, errors)
-    const errorsWithAndOr = await validateAndOrSchemasAsync(value, this, customErrors, this.andSchemas, this.orSchemas)
+    const errorsWithAndOr = await validateAndOrSchemasAsync(value, customErrors, this.conditionalValidationDefinitions)
     const dedupedErrors = dedupeValidationResult(errorsWithAndOr)
 
     return ! dedupedErrors || dedupedErrors.length === 0 ? undefined : dedupedErrors
@@ -186,6 +165,13 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
     }
 
     schema.validationDefinitions.push(validationDefinition)
+
+    return schema
+  }
+
+  protected addConditionalValidationDefinition(validationDefinition: ValidationDefinition): this {
+    let schema = this.clone()
+    schema.conditionalValidationDefinitions.push(validationDefinition)
 
     return schema
   }

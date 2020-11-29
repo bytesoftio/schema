@@ -1,34 +1,32 @@
 import {
+  ValidationDefinition,
   ValidationError,
-  ValidationSchema,
 } from "./types"
 import { linkErrors } from "./linkErrors"
+import { validateValueAsync } from "./validateValueAsync"
 
 export const validateAndOrSchemasAsync = async (
   value: any,
-  mainSchema: ValidationSchema,
   errors: ValidationError[],
-  andSchemas: ValidationSchema[],
-  orSchemas: ValidationSchema[],
+  conditionalValidationDefinitions: ValidationDefinition[],
 ): Promise<ValidationError[]> => {
-  if (errors.length > 0) {
-    for (const schema of orSchemas) {
-      const newErrors = await schema.validateAsync(value)
+  for (const definition of conditionalValidationDefinitions) {
+    if (errors.length > 0 && definition.type === "or") {
+      const newErrors = await validateValueAsync(value, [definition])
 
-      if (newErrors) {
-        errors.push(...linkErrors("or", newErrors))
-      } else {
+      if (newErrors.length === 0) {
         errors = []
-        break
+      } else {
+        errors = [...errors, ...linkErrors("or", newErrors)]
       }
     }
-  }
 
-  for (const schema of andSchemas) {
-    const newErrors = await schema.validateAsync(value)
+    if (errors.length === 0 && definition.type === "and") {
+      const newErrors = await validateValueAsync(value, [definition])
 
-    if (newErrors) {
-      errors.push(...linkErrors("and", newErrors))
+      if (newErrors.length > 0) {
+        errors = linkErrors("and", newErrors)
+      }
     }
   }
 

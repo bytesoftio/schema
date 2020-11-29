@@ -2,13 +2,13 @@ import {
   CustomValidationMessage,
   LazyValue,
   ValidationDefinition,
-  ValidationFunction,
+  ValidationBlock,
   ValidationType,
 } from "./types"
 
 export const createValidationDefinition = (
   type: ValidationType,
-  validator: ValidationFunction,
+  validator: ValidationBlock,
   args: LazyValue<any>[] = [],
   customMessage?: CustomValidationMessage,
 ): ValidationDefinition => {

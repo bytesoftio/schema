@@ -45,8 +45,7 @@ export class ObjectSchema<TValue extends object> extends Schema<TValue> {
     const schema = new ObjectSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
     schema.sanitizerDefinitions = [...this.sanitizerDefinitions]
-    schema.andSchemas = [...this.andSchemas]
-    schema.orSchemas = [...this.orSchemas]
+    schema.conditionalValidationDefinitions = [...this.conditionalValidationDefinitions]
     schema.objectShape = this.objectShape
     schema.unknownKeysSchema = this.unknownKeysSchema
     schema.unknownValuesSchema = this.unknownValuesSchema

@@ -846,17 +846,18 @@ describe("StringSchema", () => {
   })
 
   test("lazy or", () => {
-    const s = string().numeric().or(() => string().alphaNumeric())
+    const s = string().numeric().or(() => string().equals("xy"))
 
     expect(s.test("123")).toBe(true)
-    expect(s.test("abc123")).toBe(true)
+    expect(s.test("xy")).toBe(true)
+    expect(s.test("abc")).toBe(false)
   })
 
   test("lazy empty or", () => {
     const s = string().numeric().or(() => undefined)
 
     expect(s.test("123")).toBe(true)
-    expect(s.test("123abc")).toBe(false)
+    expect(s.test("123abc")).toBe(true)
   })
 
   test("and", async () => {
@@ -868,30 +869,33 @@ describe("StringSchema", () => {
 
     const errors1 = (await s1.validateAsync("1"))!
 
-    expect(errors1.length).toBe(2)
+    expect(errors1.length).toBe(1)
     expect(errors1[0].message).toBe(translateMessage("string_min", [2]))
     expect(errors1[0].link).toBe(undefined)
-    expect(errors1[1].message).toBe(translateMessage("string_equals", ["xy"]))
-    expect(errors1[1].link).toBe("and")
+
+    const errors2 = (await s1.validateAsync("12"))!
+    expect(errors2[0].message).toBe(translateMessage("string_equals", ["xy"]))
+    expect(errors2[0].link).toBe("and")
 
     expect(await s1.validateAsync("xy")).toBe(undefined)
 
-    const s2 = string().min(2).and(string().equals("xyz").and(string().length(3)))
+    const s2 = string().min(2).and(string().equals("xyz").and(string().length(4)))
 
     expect(await s2.testAsync("1")).toBe(false)
-    expect(await s2.testAsync("xyz")).toBe(true)
+    expect(await s2.testAsync("xyz")).toBe(false)
+    expect(await s2.testAsync("xyzx")).toBe(false)
 
-    const errors2 = (await s2.validateAsync("1"))!
+    const errors3 = (await s2.validateAsync("xy"))!
 
-    expect(errors2.length).toBe(3)
-    expect(errors2[0].message).toBe(translateMessage("string_min", [2]))
-    expect(errors2[0].link).toBe(undefined)
-    expect(errors2[1].message).toBe(translateMessage("string_equals", ["xyz"]))
-    expect(errors2[1].link).toBe("and")
-    expect(errors2[2].message).toBe(translateMessage("string_length", [3]))
-    expect(errors2[2].link).toBe("and.and")
+    expect(errors3.length).toBe(1)
+    expect(errors3[0].message).toBe(translateMessage("string_equals", ["xyz"]))
+    expect(errors3[0].link).toBe("and")
 
-    expect(await s2.validateAsync("xyz")).toBe(undefined)
+    const errors4 = (await s2.validateAsync("xyz"))!
+
+    expect(errors3.length).toBe(1)
+    expect(errors4[0].message).toBe(translateMessage("string_length", [4]))
+    expect(errors4[0].link).toBe("and.and")
   })
 
   test("lazy and", () => {
@@ -940,35 +944,41 @@ describe("StringSchema", () => {
     expect(await s.validateAsync("ab")).toBe(undefined)
   })
 
-  test("and or", async () => {
-    const s = string().min(3).or(string().min(2)).and(string().equals("xy"))
+  test("and or", () => {
+    const s = string().min(3).or(string().min(2).and(string().equals("xy")))
 
-    expect(await s.testAsync("1")).toBe(false)
-    expect(await s.testAsync("xy")).toBe(true)
+    expect(s.test("1")).toBe(false)
+    expect(s.test("xy")).toBe(true)
 
-    const errors1 = (await s.validateAsync("1"))!
+    const errors1 = (s.validate("1"))!
 
-    expect(errors1.length).toBe(3)
+    expect(errors1.length).toBe(2)
     expect(errors1[0].message).toBe(translateMessage("string_min", [3]))
     expect(errors1[0].link).toBe(undefined)
     expect(errors1[1].message).toBe(translateMessage("string_min", [2]))
     expect(errors1[1].link).toBe("or")
-    expect(errors1[2].message).toBe(translateMessage("string_equals", ["xy"]))
-    expect(errors1[2].link).toBe("and")
 
-    expect(await s.validateAsync("xy")).toBe(undefined)
+    const errors2 = (s.validate("yx"))!
 
-    const errors2 = (await s.validateAsync("12"))!
+    expect(errors2.length).toBe(2)
+    expect(errors2[0].message).toBe(translateMessage("string_min", [3]))
+    expect(errors2[0].link).toBe(undefined)
+    expect(errors2[1].message).toBe(translateMessage("string_equals", ["xy"]))
+    expect(errors2[1].link).toBe("or.and")
 
-    expect(errors2.length).toBe(1)
-    expect(errors2[0].message).toBe(translateMessage("string_equals", ["xy"]))
-    expect(errors2[0].link).toBe("and")
+    expect(s.validate("xy")).toBe(undefined)
 
-    const errors3 = (await s.validateAsync("123"))!
+    const errors3 = (s.validate("12"))!
 
-    expect(errors3.length).toBe(1)
-    expect(errors3[0].message).toBe(translateMessage("string_equals", ["xy"]))
-    expect(errors3[0].link).toBe("and")
+    expect(errors3.length).toBe(2)
+    expect(errors3[0].message).toBe(translateMessage("string_min", [3]))
+    expect(errors3[0].link).toBe(undefined)
+    expect(errors3[1].message).toBe(translateMessage("string_equals", ["xy"]))
+    expect(errors3[1].link).toBe("or.and")
+
+    const errors4 = (s.validate("123"))!
+
+    expect(errors4).toBe(undefined)
   })
 
   test("and or at the same level", async () => {
@@ -977,17 +987,60 @@ describe("StringSchema", () => {
       .or(string().min(2))
       .and(string().endsWith("a"))
 
-    const errors = (await s.validateAsync("b"))!
+    const errors1 = (await s.validateAsync("b"))!
 
-    expect(errors.length).toBe(4)
-    expect(errors[0].message).toBe(translateMessage("string_min", [4]))
-    expect(errors[0].link).toBe(undefined)
-    expect(errors[1].message).toBe(translateMessage("string_min", [3]))
-    expect(errors[1].link).toBe("or")
-    expect(errors[2].message).toBe(translateMessage("string_min", [2]))
-    expect(errors[2].link).toBe("or")
-    expect(errors[3].message).toBe(translateMessage("string_ends_with", ["a"]))
-    expect(errors[3].link).toBe("and")
+    expect(errors1.length).toBe(3)
+    expect(errors1[0].message).toBe(translateMessage("string_min", [4]))
+    expect(errors1[0].link).toBe(undefined)
+    expect(errors1[1].message).toBe(translateMessage("string_min", [3]))
+    expect(errors1[1].link).toBe("or")
+    expect(errors1[2].message).toBe(translateMessage("string_min", [2]))
+    expect(errors1[2].link).toBe("or")
+
+    const errors2 = (await s.validateAsync("ab"))!
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe(translateMessage("string_ends_with", ["a"]))
+    expect(errors2[0].link).toBe("and")
+
+    expect(await s.validateAsync("aa")).toBe(undefined)
+    expect(await s.validateAsync("aaa")).toBe(undefined)
+    expect(await s.validateAsync("aaaa")).toBe(undefined)
+  })
+
+  test("and returns a schema", () => {
+    let length = 1
+    const s = string().and(() => string().min(length))
+
+    length = 2
+
+    expect(s.test("1")).toBe(false)
+    expect(s.test("12")).toBe(true)
+  })
+
+  test("and returns a schema result", () => {
+    let length = 1
+    const s = string().and((value) => string().min(length).validate(value))
+
+    length = 2
+
+    expect(s.test("1")).toBe(false)
+
+    length = 1
+
+    expect(s.test("1")).toBe(true)
+  })
+
+  test("and returns an error message", () => {
+    const s = string().and(() => "too short")
+
+    expect(s.test("1")).toBe(false)
+
+    const errors = s.validate("12")!
+
+    expect(errors.length).toBe(1)
+    expect(errors[0].message).toBe("too short")
+    expect(errors[0].link).toBe("and")
   })
 
   test("validator", () => {
@@ -1001,6 +1054,38 @@ describe("StringSchema", () => {
     expect(s.test("123")).toBe(true)
 
     expect((s.validate("12"))![0].message).toBe("too short")
+    expect(s.validate("123")).toBe(undefined)
+  })
+
+  test("validator returns a schema", () => {
+    const s = string().validator((value) => {
+      if (value.length > 2) {
+        return string().numeric()
+      }
+    })
+
+    expect(s.test("ab")).toBe(true)
+    expect(s.test("abc")).toBe(false)
+    expect(s.test("123")).toBe(true)
+
+    expect((s.validate("ab"))).toBe(undefined)
+    expect((s.validate("abc"))![0].message).toBe(translateMessage("string_numeric"))
+    expect(s.validate("123")).toBe(undefined)
+  })
+
+  test("validator that returns a schema result", () => {
+    const s = string().validator((value) => {
+      if (value.length > 2) {
+        return string().numeric().validate(value)
+      }
+    })
+
+    expect(s.test("ab")).toBe(true)
+    expect(s.test("abc")).toBe(false)
+    expect(s.test("123")).toBe(true)
+
+    expect((s.validate("ab"))).toBe(undefined)
+    expect((s.validate("abc"))![0].message).toBe(translateMessage("string_numeric"))
     expect(s.validate("123")).toBe(undefined)
   })
 
@@ -1118,6 +1203,48 @@ describe("StringSchema", () => {
     const [errors2, value2] = await s.sanitizeAndValidateAsync("   12   ")
     expect(errors2).toBe(undefined)
     expect(value2).toEqual("12")
+  })
+
+  test("validate conditional with early exit", async () => {
+    const errors1 = string().and(() => false && string().min(2)).validate("a")
+    const errors2 = await string().and(() => false && string().min(2)).validateAsync("a")
+
+    expect(errors1).toBe(undefined)
+    expect(errors2).toBe(undefined)
+
+    const errors3 = string().and(() => true && string().min(2)).validate("a")
+    const errors4 = await string().and(() => true && string().min(2)).validateAsync("a")
+
+    expect(errors3!.length).toBe(1)
+    expect(errors3![0].message).toBe(translateMessage("string_min", [2]))
+    expect(errors4!.length).toBe(1)
+    expect(errors4![0].message).toBe(translateMessage("string_min", [2]))
+
+    const errors5 = string().and(() => true && string().min(2)).validate("aa")
+    const errors6 = await string().and(() => true && string().min(2)).validateAsync("aa")
+
+    expect(errors5).toBe(undefined)
+    expect(errors6).toBe(undefined)
+  })
+
+  test("test conditional with early exit", async () => {
+    const result1 = string().and(() => false && string().min(2)).test("a")
+    const result2 = await string().and(() => false && string().min(2)).testAsync("a")
+
+    expect(result1).toBe(true)
+    expect(result2).toBe(true)
+
+    const result3 = string().and(() => true && string().min(2)).test("a")
+    const result4 = await string().and(() => true && string().min(2)).testAsync("a")
+
+    expect(result3).toBe(false)
+    expect(result4).toBe(false)
+
+    const result5 = string().and(() => true && string().min(2)).test("aa")
+    const result6 = await string().and(() => true && string().min(2)).testAsync("aa")
+
+    expect(result5).toBe(true)
+    expect(result6).toBe(true)
   })
 
   ////////////////////////////////////////////////////////////////////////////////

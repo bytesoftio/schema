@@ -293,18 +293,23 @@ describe("ObjectSchema", () => {
     expect(await s.testAsync({ foo: "123" })).toBe(false)
     expect(await s.testAsync({ foo: "1234" })).toBe(true)
 
-    const errors = (await s.validateAsync({ foo: "1" }))!
+    const errors1 = (await s.validateAsync({ foo: "1" }))!
 
-    expect(errors.length).toBe(3)
-    expect(errors[0].message).toBe(translateMessage("string_min", [2]))
-    expect(errors[0].path).toBe("foo")
-    expect(errors[0].link).toBe(undefined)
-    expect(errors[1].message).toBe(translateMessage("string_min", [3]))
-    expect(errors[1].path).toBe("foo")
-    expect(errors[1].link).toBe("and")
-    expect(errors[2].message).toBe(translateMessage("string_min", [4]))
-    expect(errors[2].path).toBe("foo")
-    expect(errors[2].link).toBe("and.and")
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("string_min", [2]))
+    expect(errors1[0].link).toBe(undefined)
+
+    const errors2 = (await s.validateAsync({ foo: "12" }))!
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe(translateMessage("string_min", [3]))
+    expect(errors2[0].link).toBe("and")
+
+    const errors3 = (await s.validateAsync({ foo: "123" }))!
+
+    expect(errors3.length).toBe(1)
+    expect(errors3[0].message).toBe(translateMessage("string_min", [4]))
+    expect(errors3[0].link).toBe("and.and")
 
     expect(await s.validateAsync({ foo: "1234" })).toBe(undefined)
   })

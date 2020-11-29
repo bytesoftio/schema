@@ -1,15 +1,14 @@
 import { locale } from "./locale"
 
 export interface ValidationSchema<TValue = any> {
-  required(message?: CustomValidationMessage): ValidationSchema
-  optional(message?: CustomValidationMessage): ValidationSchema
-  equals(value: any): ValidationSchema
+  required(message?: CustomValidationMessage): this
+  optional(message?: CustomValidationMessage): this
+  equals(value: any): this
 
-  or(orSchema: LazyValue<ValidationSchema | undefined>): ValidationSchema
-  and(andSchema: LazyValue<ValidationSchema | undefined>): ValidationSchema
-
-  validator(validator: CustomValidationFunction): ValidationSchema
-  sanitizer(sanitizer: SanitizerFunction): ValidationSchema
+  or(orSchema: CustomValidation): this
+  and(andSchema: CustomValidation): this
+  validator(validator: CustomValidation): this
+  sanitizer(sanitizer: SanitizerFunction): this
 
   test(value: any): boolean
   testAsync(value: any): Promise<boolean>
@@ -27,7 +26,7 @@ export type LazyValue<TValue> = TValue | (() => TValue) | undefined
 export type MaybePromise<TValue> = TValue | Promise<TValue>
 
 export type ValidationResult = { [key: string]: string[] }
-export type ValidationFunctionResult = undefined | boolean | string
+export type ValidationFunctionResult = undefined | boolean | string | ValidationSchema | ValidationError[]
 export type ValidationError = {
   type: ValidationType
   message: string
@@ -36,19 +35,20 @@ export type ValidationError = {
   link: ValidationLink
   path: ValidationPath
 }
+export type ValidationBlock = ValidationSchema | ValidationFunction
 export type ValidationFunction = (value: any, ...args: any[]) => MaybePromise<ValidationFunctionResult>
-export type ValidationType = (keyof typeof locale) | "custom"
+export type ValidationType = (keyof typeof locale) | "custom" | "and" | "or"
 export type ValidationLink = "and" | "or" | string | undefined
 export type ValidationPath = string | undefined
 export type ValidationDefinition = {
   type: ValidationType
-  validator: ValidationFunction
+  validator: ValidationBlock
   args: any[]
   customMessage?: CustomValidationMessage
 }
 export type CustomValidationMessage = LazyValue<string>
-export type CustomValidationResult = string | undefined
-export type CustomValidationFunction = (value: any) => MaybePromise<CustomValidationResult>
+export type CustomValidationResult = undefined | string | boolean | ValidationSchema | ValidationError[]
+export type CustomValidation = ValidationSchema | ((value: any) => MaybePromise<CustomValidationResult>)
 export type SanitizerFunction = (value: any, ...args: any[]) => MaybePromise<any>
 export type SanitizerDefinition = {
   sanitizer: SanitizerFunction,

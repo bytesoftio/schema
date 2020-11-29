@@ -51,8 +51,7 @@ export class StringSchema extends Schema<string> {
     const schema = new StringSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
     schema.sanitizerDefinitions = [...this.sanitizerDefinitions]
-    schema.andSchemas = [...this.andSchemas]
-    schema.orSchemas = [...this.orSchemas]
+    schema.conditionalValidationDefinitions = [...this.conditionalValidationDefinitions]
 
     return schema as any
   }

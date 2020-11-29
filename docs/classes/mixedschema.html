@@ -2686,19 +2686,19 @@ img {
 					<a href="mixedschema.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a href="mixedschema.html#andschemas" class="tsd-kind-icon">and<wbr>Schemas</a>
+					<a href="mixedschema.html#conditionalvalidationdefinitions" class="tsd-kind-icon">conditional<wbr>Validation<wbr>Definitions</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#immutablemode" class="tsd-kind-icon">immutable<wbr>Mode</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a href="mixedschema.html#orschemas" class="tsd-kind-icon">or<wbr>Schemas</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#sanitizerdefinitions" class="tsd-kind-icon">sanitizer<wbr>Definitions</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#validationdefinitions" class="tsd-kind-icon">validation<wbr>Definitions</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a href="mixedschema.html#addconditionalvalidationdefinition" class="tsd-kind-icon">add<wbr>Conditional<wbr>Validation<wbr>Definition</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#addsanitizerdefinition" class="tsd-kind-icon">add<wbr>Sanitizer<wbr>Definition</a>
@@ -2721,9 +2721,6 @@ img {
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#customsanitizebehaviorasync" class="tsd-kind-icon">custom<wbr>Sanitize<wbr>Behavior<wbr>Async</a>
 				</li>
-				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a href="mixedschema.html#customsanitizer" class="tsd-kind-icon">custom<wbr>Sanitizer</a>
-				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#customtestingbehavior" class="tsd-kind-icon">custom<wbr>Testing<wbr>Behavior</a>
 				</li>
@@ -2735,9 +2732,6 @@ img {
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#customvalidationbehaviorasync" class="tsd-kind-icon">custom<wbr>Validation<wbr>Behavior<wbr>Async</a>
-				</li>
-				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a href="mixedschema.html#customvalidator" class="tsd-kind-icon">custom<wbr>Validator</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a href="mixedschema.html#equals" class="tsd-kind-icon">equals</a>
@@ -2778,6 +2772,9 @@ img {
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 					<a href="mixedschema.html#sanitizeasync" class="tsd-kind-icon">sanitize<wbr>Async</a>
 				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a href="mixedschema.html#sanitizer" class="tsd-kind-icon">sanitizer</a>
+				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a href="mixedschema.html#skipclone" class="tsd-kind-icon">skip<wbr>Clone</a>
 				</li>
@@ -2795,6 +2792,9 @@ img {
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a href="mixedschema.html#validateasync" class="tsd-kind-icon">validate<wbr>Async</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a href="mixedschema.html#validator" class="tsd-kind-icon">validator</a>
 				</li>
 			</ul>
 		</li>
@@ -2814,10 +2814,13 @@ img {
 			<a href="../interfaces/validationschema.html" class="tsd-kind-icon">Validation<wbr>Schema</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
-			<a href="../globals.html#customvalidationfunction" class="tsd-kind-icon">Custom<wbr>Validation<wbr>Function</a>
+			<a href="../globals.html#customvalidation" class="tsd-kind-icon">Custom<wbr>Validation</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#customvalidationmessage" class="tsd-kind-icon">Custom<wbr>Validation<wbr>Message</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#customvalidationresult" class="tsd-kind-icon">Custom<wbr>Validation<wbr>Result</a>
 		</li>
 		<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 			<a href="../globals.html#lazyvalue" class="tsd-kind-icon">Lazy<wbr>Value</a>
@@ -2833,6 +2836,9 @@ img {
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#sanitizerfunction" class="tsd-kind-icon">Sanitizer<wbr>Function</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#validationblock" class="tsd-kind-icon">Validation<wbr>Block</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#validationdefinition" class="tsd-kind-icon">Validation<wbr>Definition</a>
@@ -2924,9 +2930,8 @@ img {
 					<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#andschemas" class="tsd-kind-icon">and<wbr>Schemas</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#conditionalvalidationdefinitions" class="tsd-kind-icon">conditional<wbr>Validation<wbr>Definitions</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#immutablemode" class="tsd-kind-icon">immutable<wbr>Mode</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#orschemas" class="tsd-kind-icon">or<wbr>Schemas</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#sanitizerdefinitions" class="tsd-kind-icon">sanitizer<wbr>Definitions</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#validationdefinitions" class="tsd-kind-icon">validation<wbr>Definitions</a></li>
 						</ul>
@@ -2934,6 +2939,7 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#addconditionalvalidationdefinition" class="tsd-kind-icon">add<wbr>Conditional<wbr>Validation<wbr>Definition</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#addsanitizerdefinition" class="tsd-kind-icon">add<wbr>Sanitizer<wbr>Definition</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#addvalidationdefinition" class="tsd-kind-icon">add<wbr>Validation<wbr>Definition</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#and" class="tsd-kind-icon">and</a></li>
@@ -2941,12 +2947,10 @@ img {
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="mixedschema.html#cloneinstance" class="tsd-kind-icon">clone<wbr>Instance</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customsanitizebehavior" class="tsd-kind-icon">custom<wbr>Sanitize<wbr>Behavior</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customsanitizebehaviorasync" class="tsd-kind-icon">custom<wbr>Sanitize<wbr>Behavior<wbr>Async</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#customsanitizer" class="tsd-kind-icon">custom<wbr>Sanitizer</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customtestingbehavior" class="tsd-kind-icon">custom<wbr>Testing<wbr>Behavior</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customtestingbehaviorasync" class="tsd-kind-icon">custom<wbr>Testing<wbr>Behavior<wbr>Async</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customvalidationbehavior" class="tsd-kind-icon">custom<wbr>Validation<wbr>Behavior</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#customvalidationbehaviorasync" class="tsd-kind-icon">custom<wbr>Validation<wbr>Behavior<wbr>Async</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#customvalidator" class="tsd-kind-icon">custom<wbr>Validator</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="mixedschema.html#equals" class="tsd-kind-icon">equals</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="mixedschema.html#noneof" class="tsd-kind-icon">none<wbr>Of</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="mixedschema.html#oneof" class="tsd-kind-icon">one<wbr>Of</a></li>
@@ -2960,12 +2964,14 @@ img {
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="mixedschema.html#sanitizeandvalidate" class="tsd-kind-icon">sanitize<wbr>And<wbr>Validate</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="mixedschema.html#sanitizeandvalidateasync" class="tsd-kind-icon">sanitize<wbr>And<wbr>Validate<wbr>Async</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="mixedschema.html#sanitizeasync" class="tsd-kind-icon">sanitize<wbr>Async</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#sanitizer" class="tsd-kind-icon">sanitizer</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="mixedschema.html#skipclone" class="tsd-kind-icon">skip<wbr>Clone</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#test" class="tsd-kind-icon">test</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#testasync" class="tsd-kind-icon">test<wbr>Async</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="mixedschema.html#todefault" class="tsd-kind-icon">to<wbr>Default</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#validate" class="tsd-kind-icon">validate</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#validateasync" class="tsd-kind-icon">validate<wbr>Async</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="mixedschema.html#validator" class="tsd-kind-icon">validator</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2984,7 +2990,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#constructor">constructor</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L38">Schema.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L37">Schema.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="mixedschema.html" class="tsd-signature-type">MixedSchema</a></h4>
@@ -2995,13 +3001,13 @@ img {
 		<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-				<a name="andschemas" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagProtected">Protected</span> and<wbr>Schemas</h3>
-				<div class="tsd-signature tsd-kind-icon">and<wbr>Schemas<span class="tsd-signature-symbol">:</span> <a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+				<a name="conditionalvalidationdefinitions" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagProtected">Protected</span> conditional<wbr>Validation<wbr>Definitions</h3>
+				<div class="tsd-signature tsd-kind-icon">conditional<wbr>Validation<wbr>Definitions<span class="tsd-signature-symbol">:</span> <a href="../globals.html#validationdefinition" class="tsd-signature-type">ValidationDefinition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#andschemas">andSchemas</a></p>
+					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#conditionalvalidationdefinitions">conditionalValidationDefinitions</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L38">Schema.ts:38</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L37">Schema.ts:37</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3012,18 +3018,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#immutablemode">immutableMode</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L34">Schema.ts:34</a></li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-				<a name="orschemas" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagProtected">Protected</span> or<wbr>Schemas</h3>
-				<div class="tsd-signature tsd-kind-icon">or<wbr>Schemas<span class="tsd-signature-symbol">:</span> <a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
-				<aside class="tsd-sources">
-					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#orschemas">orSchemas</a></p>
-					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L37">Schema.ts:37</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L34">Schema.ts:34</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3034,7 +3029,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizerdefinitions">sanitizerDefinitions</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L36">Schema.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L35">Schema.ts:35</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3045,13 +3040,37 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#validationdefinitions">validationDefinitions</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L35">Schema.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L36">Schema.ts:36</a></li>
 					</ul>
 				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<a name="addconditionalvalidationdefinition" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagProtected">Protected</span> add<wbr>Conditional<wbr>Validation<wbr>Definition</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Conditional<wbr>Validation<wbr>Definition<span class="tsd-signature-symbol">(</span>validationDefinition<span class="tsd-signature-symbol">: </span><a href="../globals.html#validationdefinition" class="tsd-signature-type">ValidationDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#addconditionalvalidationdefinition">addConditionalValidationDefinition</a></p>
+							<ul>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L172">Schema.ts:172</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>validationDefinition: <a href="../globals.html#validationdefinition" class="tsd-signature-type">ValidationDefinition</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 				<a name="addsanitizerdefinition" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagProtected">Protected</span> add<wbr>Sanitizer<wbr>Definition</h3>
@@ -3063,7 +3082,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#addsanitizerdefinition">addSanitizerDefinition</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L173">Schema.ts:173</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L179">Schema.ts:179</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3087,7 +3106,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#addvalidationdefinition">addValidationDefinition</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L166">Schema.ts:166</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L159">Schema.ts:159</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3104,7 +3123,7 @@ img {
 				<a name="and" class="tsd-anchor"></a>
 				<h3>and</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">and<span class="tsd-signature-symbol">(</span>andSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">and<span class="tsd-signature-symbol">(</span>andValidator<span class="tsd-signature-symbol">: </span><a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -3112,13 +3131,13 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#and">and</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#and">and</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L51">Schema.ts:51</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L47">Schema.ts:47</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>andSchema: <a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a></h5>
+								<h5>andValidator: <a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -3136,7 +3155,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#clone">clone</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L187">Schema.ts:187</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L193">Schema.ts:193</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -3154,7 +3173,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Overrides <a href="schema.html">Schema</a>.<a href="schema.html#cloneinstance">cloneInstance</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L8">schemas/MixedSchema.ts:8</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L8">schemas/MixedSchema.ts:8</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -3172,7 +3191,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customsanitizebehavior">customSanitizeBehavior</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L158">Schema.ts:158</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L151">Schema.ts:151</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3205,7 +3224,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customsanitizebehaviorasync">customSanitizeBehaviorAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L162">Schema.ts:162</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L155">Schema.ts:155</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3227,31 +3246,6 @@ img {
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-				<a name="customsanitizer" class="tsd-anchor"></a>
-				<h3>custom<wbr>Sanitizer</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">custom<wbr>Sanitizer<span class="tsd-signature-symbol">(</span>sanitizer<span class="tsd-signature-symbol">: </span><a href="../globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#customsanitizer">customSanitizer</a></p>
-							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customsanitizer">customSanitizer</a></p>
-							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L62">Schema.ts:62</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>sanitizer: <a href="../globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 				<a name="customtestingbehavior" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagProtected">Protected</span> custom<wbr>Testing<wbr>Behavior</h3>
@@ -3263,7 +3257,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customtestingbehavior">customTestingBehavior</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L142">Schema.ts:142</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L135">Schema.ts:135</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3290,7 +3284,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customtestingbehaviorasync">customTestingBehaviorAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L146">Schema.ts:146</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L139">Schema.ts:139</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3317,7 +3311,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customvalidationbehavior">customValidationBehavior</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L150">Schema.ts:150</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L143">Schema.ts:143</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3344,7 +3338,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customvalidationbehaviorasync">customValidationBehaviorAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L154">Schema.ts:154</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L147">Schema.ts:147</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3360,33 +3354,6 @@ img {
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-				<a name="customvalidator" class="tsd-anchor"></a>
-				<h3>custom<wbr>Validator</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">custom<wbr>Validator<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><a href="../globals.html#customvalidationmessage" class="tsd-signature-type">CustomValidationMessage</a>, validator<span class="tsd-signature-symbol">: </span><a href="../globals.html#customvalidationfunction" class="tsd-signature-type">CustomValidationFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#customvalidator">customValidator</a></p>
-							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L58">Schema.ts:58</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>message: <a href="../globals.html#customvalidationmessage" class="tsd-signature-type">CustomValidationMessage</a></h5>
-							</li>
-							<li>
-								<h5>validator: <a href="../globals.html#customvalidationfunction" class="tsd-signature-type">CustomValidationFunction</a></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 				<a name="equals" class="tsd-anchor"></a>
 				<h3>equals</h3>
@@ -3398,7 +3365,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Overrides <a href="schema.html">Schema</a>.<a href="schema.html#equals">equals</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L30">schemas/MixedSchema.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L29">schemas/MixedSchema.ts:29</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3424,7 +3391,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L38">schemas/MixedSchema.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L37">schemas/MixedSchema.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3450,7 +3417,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L34">schemas/MixedSchema.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L33">schemas/MixedSchema.ts:33</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3478,7 +3445,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#optional">optional</a></p>
 							<p>Overrides <a href="schema.html">Schema</a>.<a href="schema.html#optional">optional</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L24">schemas/MixedSchema.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L23">schemas/MixedSchema.ts:23</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3495,7 +3462,7 @@ img {
 				<a name="or" class="tsd-anchor"></a>
 				<h3>or</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">or<span class="tsd-signature-symbol">(</span>orSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">or<span class="tsd-signature-symbol">(</span>orValidator<span class="tsd-signature-symbol">: </span><a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -3503,13 +3470,13 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#or">or</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#or">or</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L44">Schema.ts:44</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L43">Schema.ts:43</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>orSchema: <a href="../interfaces/validationschema.html" class="tsd-signature-type">ValidationSchema</a></h5>
+								<h5>orValidator: <a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -3527,7 +3494,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#removevalidationdefinitionsoftype">removeValidationDefinitionsOfType</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L180">Schema.ts:180</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L186">Schema.ts:186</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3552,7 +3519,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#required">required</a></p>
 							<p>Overrides <a href="schema.html">Schema</a>.<a href="schema.html#required">required</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L18">schemas/MixedSchema.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L17">schemas/MixedSchema.ts:17</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3577,7 +3544,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitize">sanitize</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitize">sanitize</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L100">Schema.ts:100</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L93">Schema.ts:93</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3611,7 +3578,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizeandtest">sanitizeAndTest</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizeandtest">sanitizeAndTest</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L114">Schema.ts:114</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L107">Schema.ts:107</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3645,7 +3612,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizeandtestasync">sanitizeAndTestAsync</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizeandtestasync">sanitizeAndTestAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L121">Schema.ts:121</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L114">Schema.ts:114</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3679,7 +3646,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizeandvalidate">sanitizeAndValidate</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizeandvalidate">sanitizeAndValidate</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L128">Schema.ts:128</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L121">Schema.ts:121</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3713,7 +3680,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizeandvalidateasync">sanitizeAndValidateAsync</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizeandvalidateasync">sanitizeAndValidateAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L135">Schema.ts:135</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L128">Schema.ts:128</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3747,7 +3714,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizeasync">sanitizeAsync</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizeasync">sanitizeAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L107">Schema.ts:107</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L100">Schema.ts:100</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3769,6 +3736,31 @@ img {
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<a name="sanitizer" class="tsd-anchor"></a>
+				<h3>sanitizer</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<li class="tsd-signature tsd-kind-icon">sanitizer<span class="tsd-signature-symbol">(</span>sanitizer<span class="tsd-signature-symbol">: </span><a href="../globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#sanitizer">sanitizer</a></p>
+							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#sanitizer">sanitizer</a></p>
+							<ul>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L55">Schema.ts:55</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>sanitizer: <a href="../globals.html#sanitizerfunction" class="tsd-signature-type">SanitizerFunction</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 				<a name="skipclone" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagProtected">Protected</span> skip<wbr>Clone</h3>
@@ -3780,7 +3772,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#skipclone">skipClone</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L195">Schema.ts:195</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L201">Schema.ts:201</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3817,7 +3809,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#test">test</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#test">test</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L66">Schema.ts:66</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L59">Schema.ts:59</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3842,7 +3834,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#testasync">testAsync</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#testasync">testAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L74">Schema.ts:74</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L67">Schema.ts:67</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3865,7 +3857,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/schemas/MixedSchema.ts#L42">schemas/MixedSchema.ts:42</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/schemas/MixedSchema.ts#L41">schemas/MixedSchema.ts:41</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3890,7 +3882,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#validate">validate</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#validate">validate</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L82">Schema.ts:82</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L75">Schema.ts:75</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3915,7 +3907,7 @@ img {
 							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#validateasync">validateAsync</a></p>
 							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#validateasync">validateAsync</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/da51830/src/Schema.ts#L91">Schema.ts:91</a></li>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L84">Schema.ts:84</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3925,6 +3917,31 @@ img {
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#validationerror" class="tsd-signature-type">ValidationError</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<a name="validator" class="tsd-anchor"></a>
+				<h3>validator</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<li class="tsd-signature tsd-kind-icon">validator<span class="tsd-signature-symbol">(</span>validator<span class="tsd-signature-symbol">: </span><a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Implementation of <a href="../interfaces/validationschema.html">ValidationSchema</a>.<a href="../interfaces/validationschema.html#validator">validator</a></p>
+							<p>Inherited from <a href="stringschema.html">StringSchema</a>.<a href="stringschema.html#validator">validator</a></p>
+							<ul>
+								<li>Defined in <a href="https://github.com/bytesoftio/schema/blob/459d18b/src/Schema.ts#L51">Schema.ts:51</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>validator: <a href="../globals.html#customvalidation" class="tsd-signature-type">CustomValidation</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 					</li>
 				</ul>
 			</section>

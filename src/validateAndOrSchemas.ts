@@ -1,34 +1,32 @@
 import {
+  ValidationDefinition,
   ValidationError,
-  ValidationSchema,
 } from "./types"
 import { linkErrors } from "./linkErrors"
+import { validateValue } from "./validateValue"
 
 export const validateAndOrSchemas = (
   value: any,
-  mainSchema: ValidationSchema,
   errors: ValidationError[],
-  andSchemas: ValidationSchema[],
-  orSchemas: ValidationSchema[],
+  conditionalValidationDefinitions: ValidationDefinition[],
 ): ValidationError[] => {
-  if (errors.length > 0) {
-    for (const schema of orSchemas) {
-      const newErrors = schema.validate(value)
+  for (const definition of conditionalValidationDefinitions) {
+    if (errors.length > 0 && definition.type === "or") {
+      const newErrors = validateValue(value, [definition])
 
-      if (newErrors) {
-        errors.push(...linkErrors("or", newErrors))
-      } else {
+      if (newErrors.length === 0) {
         errors = []
-        break
+      } else {
+        errors = [...errors, ...linkErrors("or", newErrors)]
       }
     }
-  }
 
-  for (const schema of andSchemas) {
-    const newErrors = schema.validate(value)
+    if (errors.length === 0 && definition.type === "and") {
+      const newErrors = validateValue(value, [definition])
 
-    if (newErrors) {
-      errors.push(...linkErrors("and", newErrors))
+      if (newErrors.length > 0) {
+        errors = linkErrors("and", newErrors)
+      }
     }
   }
 

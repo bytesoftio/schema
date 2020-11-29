@@ -246,7 +246,6 @@ describe("ArraySchema", () => {
     expect(await s.validateAsync(true)).toBe(undefined)
   })
 
-
   test("and", () => {
     const someOf = ["foo", "bar"]
     const s = array().min(2)
@@ -255,15 +254,22 @@ describe("ArraySchema", () => {
     expect(s.test(["yolo"])).toBe(false)
     expect(s.test(["foo", "bar", "foo"])).toBe(true)
 
-    const errors = s.validate(["yolo"])!
+    const errors1 = s.validate(["yolo"])!
 
-    expect(errors.length).toBe(3)
-    expect(errors[0].message).toBe(translateMessage("array_min", [2]))
-    expect(errors[0].link).toBe(undefined)
-    expect(errors[1].message).toBe(translateMessage("array_some_of", [someOf]))
-    expect(errors[1].link).toBe("and")
-    expect(errors[2].message).toBe(translateMessage("array_min", [3]))
-    expect(errors[2].link).toBe("and.and")
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("array_min", [2]))
+
+    const errors2 = s.validate(["yolo", "foo"])!
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe(translateMessage("array_some_of", [someOf]))
+    expect(errors2[0].link).toBe("and")
+
+    const errors3 = s.validate(["foo", "bar"])!
+
+    expect(errors2.length).toBe(1)
+    expect(errors3[0].message).toBe(translateMessage("array_min", [3]))
+    expect(errors3[0].link).toBe("and.and")
 
     expect(s.validate(["foo", "bar", "foo"])).toBe(undefined)
   })
@@ -276,15 +282,17 @@ describe("ArraySchema", () => {
     expect(await s.testAsync(["yolo"])).toBe(false)
     expect(await s.testAsync(["foo", "bar", "foo"])).toBe(true)
 
-    const errors = (await s.validateAsync(["yolo"]))!
+    const errors1 = (await s.validateAsync(["yolo"]))!
 
-    expect(errors.length).toBe(3)
-    expect(errors[0].message).toBe(translateMessage("array_min", [2]))
-    expect(errors[0].link).toBe(undefined)
-    expect(errors[1].message).toBe(translateMessage("array_some_of", [someOf]))
-    expect(errors[1].link).toBe("and")
-    expect(errors[2].message).toBe(translateMessage("array_min", [3]))
-    expect(errors[2].link).toBe("and.and")
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("array_min", [2]))
+    expect(errors1[0].link).toBe(undefined)
+
+    const errors2 = (await s.validateAsync(["foo", "bar"]))!
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe(translateMessage("array_min", [3]))
+    expect(errors2[0].link).toBe("and.and")
 
     expect(await s.validateAsync(["foo", "bar", "foo"])).toBe(undefined)
   })

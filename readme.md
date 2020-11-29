@@ -436,6 +436,20 @@ string().min(3).and(string().noneOf(["foo", "bar"]))
 number().or(string().numeric())
 ```
 
+Conditional schemas can also be wrapped into a callback that will be executed at validation time.
+
+```ts
+string().min(3).and(() => string().noneOf(["foo", "bar"]))
+
+number().or(() => string().numeric())
+```
+
+`and()`, `or()` are practically interchangeable with `validator()` and therefore can also return an error message directly.
+
+```ts
+number().and((value) => value < 12 && "Value must be bigger than 12")
+```
+
 ## Add a custom validator
 
 Adding custom validation behaviour is fairly easy to do.
@@ -470,6 +484,14 @@ This is what the errors would look like:
     path: undefined
   }
 ]
+```
+
+A validator can also return another schema.
+
+```ts
+import { string } from "@bytesoftio/schema"
+
+const schema = string().validator(() => string().min(3))
 ```
 
 ## Add a custom sanitizer

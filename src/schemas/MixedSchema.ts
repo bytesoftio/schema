@@ -9,8 +9,7 @@ export class MixedSchema extends Schema<any> {
     const schema = new MixedSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
     schema.sanitizerDefinitions = [...this.sanitizerDefinitions]
-    schema.andSchemas = [...this.andSchemas]
-    schema.orSchemas = [...this.orSchemas]
+    schema.conditionalValidationDefinitions = [...this.conditionalValidationDefinitions]
 
     return schema as any
   }

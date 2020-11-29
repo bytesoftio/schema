@@ -1,25 +1,21 @@
-import { ValidationSchema } from "./types"
+import { ValidationDefinition } from "./types"
+import { testValue } from "./testValue"
 
 export const testAndOrSchemas = (
   value: any,
   testResult: boolean,
-  andSchemas: ValidationSchema[],
-  orSchemas: ValidationSchema[],
+  conditionalValidationDefinitions: ValidationDefinition[],
 ): boolean => {
-  if ( ! testResult) {
-    for (const schema of orSchemas) {
-      if (schema.test(value)) {
+  for (const definition of conditionalValidationDefinitions) {
+    if ( ! testResult && definition.type === "or") {
+      if (testValue(value, [definition])) {
         testResult = true
-        break
       }
     }
-  }
 
-  if (testResult) {
-    for (const schema of andSchemas) {
-      if ( ! schema.test(value)) {
+    if (testResult && definition.type === "and") {
+      if ( ! testValue(value, [definition])) {
         testResult = false
-        break
       }
     }
   }

@@ -1,25 +1,21 @@
-import { ValidationSchema } from "./types"
+import { ValidationDefinition } from "./types"
+import { testValueAsync } from "./testValueAsync"
 
 export const testAndOrSchemasAsync = async (
   value: any,
   testResult: boolean,
-  andSchemas: ValidationSchema[],
-  orSchemas: ValidationSchema[],
+  conditionalValidationDefinitions: ValidationDefinition[],
 ): Promise<boolean> => {
-  if ( ! testResult) {
-    for (const schema of orSchemas) {
-      if (await schema.testAsync(value)) {
+  for (const definition of conditionalValidationDefinitions) {
+    if ( ! testResult && definition.type === "or") {
+      if (await testValueAsync(value, [definition])) {
         testResult = true
-        break
       }
     }
-  }
 
-  if (testResult) {
-    for (const schema of andSchemas) {
-      if ( ! await schema.testAsync(value)) {
+    if (testResult && definition.type === "and") {
+      if ( ! await testValueAsync(value, [definition])) {
         testResult = false
-        break
       }
     }
   }

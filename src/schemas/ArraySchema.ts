@@ -29,8 +29,7 @@ export class ArraySchema extends Schema<any[]> {
     const schema = new ArraySchema()
     schema.validationDefinitions = [...this.validationDefinitions]
     schema.sanitizerDefinitions = [...this.sanitizerDefinitions]
-    schema.andSchemas = [...this.andSchemas]
-    schema.orSchemas = [...this.orSchemas]
+    schema.conditionalValidationDefinitions = [...this.conditionalValidationDefinitions]
     schema.valuesSchema = this.valuesSchema
 
     return schema as any

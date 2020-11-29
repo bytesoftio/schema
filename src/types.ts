@@ -5,8 +5,8 @@ export interface ValidationSchema<TValue = any> {
   optional(message?: CustomValidationMessage): ValidationSchema
   equals(value: any): ValidationSchema
 
-  or(orSchema: ValidationSchema): ValidationSchema
-  and(andSchema: ValidationSchema): ValidationSchema
+  or(orSchema: LazyValue<ValidationSchema | undefined>): ValidationSchema
+  and(andSchema: LazyValue<ValidationSchema | undefined>): ValidationSchema
 
   validator(validator: CustomValidationFunction): ValidationSchema
   sanitizer(sanitizer: SanitizerFunction): ValidationSchema

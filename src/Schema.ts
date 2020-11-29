@@ -7,6 +7,7 @@ import {
   ValidationSchema,
   ValidationType,
   CustomValidationFunction,
+  LazyValue,
 } from "./types"
 import { createValidationDefinition } from "./createValidationDefinition"
 import { createSanitizerDefinition } from "./createSanitizerDefinition"
@@ -24,6 +25,7 @@ import { testValue } from "./testValue"
 import { testAndOrSchemasAsync } from "./testAndOrSchemasAsync"
 import { validateValue } from "./validateValue"
 import { validateAndOrSchemas } from "./validateAndOrSchemas"
+import { lazyValue } from "./lazyValue"
 
 export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   abstract required(message?: CustomValidationMessage): this
@@ -41,16 +43,28 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
     this.skipClone(() => this.required())
   }
 
-  or(orSchema: ValidationSchema): this {
+  or(orSchema: LazyValue<ValidationSchema|undefined>): this {
+    const additionalSchema = lazyValue(orSchema)
+
+    if ( ! additionalSchema) {
+      return this
+    }
+
     const schema = this.clone()
-    schema.orSchemas.push(orSchema)
+    schema.orSchemas.push(additionalSchema)
 
     return schema
   }
 
-  and(andSchema: ValidationSchema): this {
+  and(andSchema: LazyValue<ValidationSchema|undefined>): this {
+    const additionalSchema = lazyValue(andSchema)
+
+    if ( ! additionalSchema) {
+      return this
+    }
+
     const schema = this.clone()
-    schema.andSchemas.push(andSchema)
+    schema.andSchemas.push(additionalSchema)
 
     return schema
   }

@@ -845,6 +845,20 @@ describe("StringSchema", () => {
     expect(await s2.validateAsync("yx")).toBe(undefined)
   })
 
+  test("lazy or", () => {
+    const s = string().numeric().or(() => string().alphaNumeric())
+
+    expect(s.test("123")).toBe(true)
+    expect(s.test("abc123")).toBe(true)
+  })
+
+  test("lazy empty or", () => {
+    const s = string().numeric().or(() => undefined)
+
+    expect(s.test("123")).toBe(true)
+    expect(s.test("123abc")).toBe(false)
+  })
+
   test("and", async () => {
     const s1 = string().min(2).and(string().equals("xy"))
 
@@ -878,6 +892,20 @@ describe("StringSchema", () => {
     expect(errors2[2].link).toBe("and.and")
 
     expect(await s2.validateAsync("xyz")).toBe(undefined)
+  })
+
+  test("lazy and", () => {
+    const s = string().and(() => string().numeric())
+
+    expect(s.test("abc")).toBe(false)
+    expect(s.test("123")).toBe(true)
+  })
+
+  test("lazy empty and", () => {
+    const s = string().and(() => undefined)
+
+    expect(s.test("abc")).toBe(true)
+    expect(s.test("123")).toBe(true)
   })
 
   test("dedupe errors", async () => {

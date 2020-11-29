@@ -4,7 +4,7 @@ export const testValueAsync = async (value: any, definitions: ValidationDefiniti
   for (let definition of definitions) {
     const result = await definition.validator(value, ...definition.args)
 
-    if (result === false) {
+    if (result === false || typeof(result) === "string") {
       return false
     }
   }

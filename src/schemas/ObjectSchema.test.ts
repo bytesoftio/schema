@@ -502,9 +502,17 @@ describe("ObjectSchema", () => {
 
   test("customValidation", async () => {
     const s1 = string()
-      .customValidator("is too short", (value) => value.length > 2)
+      .validator((value) => {
+        if (value.length < 3) {
+          return "is too short"
+        }
+      })
     const s2 = object({ foo: s1 }).allowUnknownKeys()
-      .customValidator("not enough keys", (value) => keys(value).length > 1)
+      .validator((value) => {
+        if (keys(value).length < 2) {
+          return "not enough keys"
+        }
+      })
 
     expect(await s2.testAsync({ foo: "12" })).toBe(false)
     expect(await s2.testAsync({ foo: "123" })).toBe(false)
@@ -514,9 +522,9 @@ describe("ObjectSchema", () => {
     })).toBe(true)
   })
 
-  test("customSanitizer", async () => {
+  test("sanitizer", async () => {
     const s = object({
-      foo: string().customSanitizer(value => value.toString()),
+      foo: string().sanitizer(value => value.toString()),
     })
 
     expect(await s.sanitizeAsync({ foo: 1 })).toEqual({ foo: "1" })

@@ -55,11 +55,11 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
     return schema
   }
 
-  customValidator(message: CustomValidationMessage, validator: CustomValidationFunction): this {
-    return this.addValidationDefinition(createValidationDefinition("custom", validator, [], message))
+  validator(validator: CustomValidationFunction): this {
+    return this.addValidationDefinition(createValidationDefinition("custom", validator, [], ""))
   }
 
-  customSanitizer(sanitizer: SanitizerFunction): this {
+  sanitizer(sanitizer: SanitizerFunction): this {
     return this.addSanitizerDefinition(createSanitizerDefinition(sanitizer))
   }
 
@@ -164,7 +164,13 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
   }
 
   protected addValidationDefinition(validationDefinition: ValidationDefinition): this {
-    const schema = this.removeValidationDefinitionsOfType(validationDefinition.type)
+    let schema = this.clone()
+
+    // do not remove custom validations, they all share the same key
+    if (validationDefinition.type !== "custom") {
+      schema = this.removeValidationDefinitionsOfType(validationDefinition.type)
+    }
+
     schema.validationDefinitions.push(validationDefinition)
 
     return schema

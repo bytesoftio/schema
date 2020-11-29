@@ -11,10 +11,10 @@ export const validateValueAsync = async (value: any, definitions: ValidationDefi
   for (let definition of definitions) {
     const result = await definition.validator(value, ...definition.args)
 
-    if (result === false) {
+    if (result === false || typeof(result) === "string") {
       const error = createValidationError(
         definition.type,
-        translateValidationDefinition(definition),
+        typeof(result) === "string" ? result : translateValidationDefinition(definition),
         definition.args,
         value,
       )

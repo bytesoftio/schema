@@ -444,14 +444,14 @@ Adding custom validation behaviour is fairly easy to do.
 import { string } from "@bytesoftio/schema"
 
 const assertMinLength = (min: number) => {
-    return (value) => {
-      if (typeof value === "string" && value.length < min) {
-        return false
-      }
+  return (value) => {
+    if (typeof value === "string" && value.length < min) {
+      return "Value is too short"
     }
+  }
 }
 
-const schema = string().customValidator("Value is too short", assertMinLength(10))
+const schema = string().validator(assertMinLength(10))
 
 // [ ... ]
 const errors = schema.validate("foo bar")
@@ -487,7 +487,7 @@ const toUpperCase = (value) => {
   return value
 }
 
-const schema = string().customSanitizer(toUpperCase)
+const schema = string().sanitizer(toUpperCase)
 
   // "FOO BAR"
 const value = schema.sanitize("foo bar")

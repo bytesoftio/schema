@@ -8,7 +8,7 @@ export const testValue = (value: any, definitions: ValidationDefinition[]): bool
       throw new Error("Trying to execute async validation logic in a sync call, use an async method instead")
     }
 
-    if (result === false) {
+    if (result === false || typeof(result) === "string") {
       return false
     }
   }

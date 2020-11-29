@@ -15,10 +15,10 @@ export const validateValue = (value: any, definitions: ValidationDefinition[]): 
       throw new Error("Trying to execute async validation logic in a sync call, use an async method instead")
     }
 
-    if (result === false) {
+    if (result === false || typeof(result) === "string") {
       const error = createValidationError(
         definition.type,
-        translateValidationDefinition(definition),
+        typeof(result) === "string" ? result : translateValidationDefinition(definition),
         definition.args,
         value,
       )

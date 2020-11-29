@@ -8,8 +8,8 @@ export interface ValidationSchema<TValue = any> {
   or(orSchema: ValidationSchema): ValidationSchema
   and(andSchema: ValidationSchema): ValidationSchema
 
-  customValidator(message: string, validator: CustomValidationFunction): ValidationSchema
-  customSanitizer(sanitizer: SanitizerFunction): ValidationSchema
+  validator(validator: CustomValidationFunction): ValidationSchema
+  sanitizer(sanitizer: SanitizerFunction): ValidationSchema
 
   test(value: any): boolean
   testAsync(value: any): Promise<boolean>
@@ -27,7 +27,7 @@ export type LazyValue<TValue> = TValue | (() => TValue) | undefined
 export type MaybePromise<TValue> = TValue | Promise<TValue>
 
 export type ValidationResult = { [key: string]: string[] }
-export type ValidationFunctionResult = undefined | boolean
+export type ValidationFunctionResult = undefined | boolean | string
 export type ValidationError = {
   type: ValidationType
   message: string
@@ -47,7 +47,8 @@ export type ValidationDefinition = {
   customMessage?: CustomValidationMessage
 }
 export type CustomValidationMessage = LazyValue<string>
-export type CustomValidationFunction = (value: any) => MaybePromise<ValidationFunctionResult>
+export type CustomValidationResult = string | undefined
+export type CustomValidationFunction = (value: any) => MaybePromise<CustomValidationResult>
 export type SanitizerFunction = (value: any, ...args: any[]) => MaybePromise<any>
 export type SanitizerDefinition = {
   sanitizer: SanitizerFunction,

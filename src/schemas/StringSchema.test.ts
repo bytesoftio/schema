@@ -962,8 +962,12 @@ describe("StringSchema", () => {
     expect(errors[3].link).toBe("and")
   })
 
-  test("customValidation", () => {
-    const s = string().customValidator("too short", (value) => value.length > 2)
+  test("validator", () => {
+    const s = string().validator((value) => {
+      if (value.length < 3) {
+        return "too short"
+      }
+    })
 
     expect(s.test("12")).toBe(false)
     expect(s.test("123")).toBe(true)
@@ -972,8 +976,32 @@ describe("StringSchema", () => {
     expect(s.validate("123")).toBe(undefined)
   })
 
-  test("async customValidation", async () => {
-    const s = string().customValidator("too short", async (value) => value.length > 2)
+  test("chaining custom validators", () => {
+    const s = string().validator((value) => {
+      if (value.length < 3) {
+        return "too short"
+      }
+    }).validator((value) => {
+      if (value.indexOf("@") === -1) {
+        return "must contain @"
+      }
+    })
+
+    expect(s.test("12")).toBe(false)
+    expect(s.test("123")).toBe(false)
+    expect(s.test("12@")).toBe(true)
+
+    expect((s.validate("12"))![0].message).toBe("too short")
+    expect((s.validate("123"))![0].message).toBe("must contain @")
+    expect(s.validate("12@")).toBe(undefined)
+  })
+
+  test("async validator", async () => {
+    const s = string().validator(async (value) => {
+      if (value.length < 3) {
+        return "too short"
+      }
+    })
 
     expect(await s.testAsync("12")).toBe(false)
     expect(await s.testAsync("123")).toBe(true)
@@ -982,14 +1010,14 @@ describe("StringSchema", () => {
     expect(await s.validateAsync("123")).toBe(undefined)
   })
 
-  test("customSanitizer", () => {
-    const s = string().customSanitizer((value) => value.toString())
+  test("sanitizer", () => {
+    const s = string().sanitizer((value) => value.toString())
 
     expect(s.sanitize(1)).toBe("1")
   })
 
-  test("async customSanitizer", async () => {
-    const s = string().customSanitizer(async (value) => value.toString())
+  test("async sanitizer", async () => {
+    const s = string().sanitizer(async (value) => value.toString())
 
     expect(await s.sanitizeAsync(1)).toBe("1")
   })

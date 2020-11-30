@@ -1129,6 +1129,12 @@ describe("StringSchema", () => {
     expect(s.sanitize(1)).toBe("1")
   })
 
+  test("map", () => {
+    const s = string().map((value) => value.toString())
+
+    expect(s.sanitize(1)).toBe("1")
+  })
+
   test("async sanitizer", async () => {
     const s = string().sanitizer(async (value) => value.toString())
 

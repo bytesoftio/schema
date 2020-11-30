@@ -48,17 +48,22 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
     return this.addConditionalValidationDefinition(createValidationDefinition("and", andValidator, [], ""))
   }
 
-  // alias for "validator()"
   also(validator: CustomValidation): this {
-    return this.validator(validator)
-  }
-
-  validator(validator: CustomValidation): this {
     return this.addValidationDefinition(createValidationDefinition("custom", validator, [], ""))
   }
 
-  sanitizer(sanitizer: SanitizerFunction): this {
+  // alias for "also()"
+  validator(validator: CustomValidation): this {
+    return this.also(validator)
+  }
+
+  map(sanitizer: SanitizerFunction): this {
     return this.addSanitizerDefinition(createSanitizerDefinition(sanitizer))
+  }
+
+  // alias for "map()"
+  sanitizer(sanitizer: SanitizerFunction): this {
+    return this.map(sanitizer)
   }
 
   test(value: any): boolean {

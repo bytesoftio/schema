@@ -10,7 +10,7 @@ export const objectRequired = (value: any): ValidationFunctionResult => {
   return isDefinedObject(value)
 }
 
-export const objectOptional = (value: any): ValidationFunctionResult => {
+export const objectType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 
   return isObjectLike(value)

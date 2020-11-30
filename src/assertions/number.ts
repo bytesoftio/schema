@@ -9,7 +9,7 @@ export const numberRequired = (value: any): ValidationFunctionResult => {
   return isDefined(value) && isNumber(value)
 }
 
-export const numberOptional = (value: any): ValidationFunctionResult => {
+export const numberType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 
   return isNumber(value)

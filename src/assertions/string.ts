@@ -31,7 +31,7 @@ export const stringRequired = (value: any): ValidationFunctionResult => {
   return isDefinedNonEmptyString(value)
 }
 
-export const stringOptional = (value: any): ValidationFunctionResult => {
+export const stringType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 
   return isString(value)

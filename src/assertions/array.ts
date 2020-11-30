@@ -9,7 +9,7 @@ export const arrayRequired = (value: any): ValidationFunctionResult => {
   return isDefined(value) && isArray(value)
 }
 
-export const arrayOptional = (value: any): ValidationFunctionResult => {
+export const arrayType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 
   return isArray(value)

@@ -19,7 +19,10 @@ describe("MixedSchema", () => {
     expect(await s1.testAsync(false)).toBe(true)
     expect(await s2.testAsync(false)).toBe(true)
 
-    expect((await s1.validateAsync(null))![0].message).toBe(translateMessage("mixed_required"))
+    const errors1 = (await s1.validateAsync(null))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("mixed_required"))
     expect(await s1.validateAsync("")).toBe(undefined)
   })
 

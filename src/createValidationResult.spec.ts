@@ -42,7 +42,7 @@ describe("createValidationResult", () => {
         "Missing object key \"bar\"",
       ],
       "bar": [
-        "Must be a string",
+        "Required",
       ],
     }
 

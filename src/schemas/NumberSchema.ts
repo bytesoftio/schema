@@ -6,7 +6,7 @@ import {
   numberMax,
   numberMin,
   numberNegative,
-  numberOptional,
+  numberType,
   numberPositive,
   numberRequired,
   numberToCeiled,
@@ -31,14 +31,14 @@ export class NumberSchema extends Schema<number> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("number_optional")
+      .addValidationDefinition(createValidationDefinition("number_type", numberType, [], message))
       .addValidationDefinition(createValidationDefinition("number_required", numberRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("number_required")
-      .addValidationDefinition(createValidationDefinition("number_optional", numberOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("number_type", numberType, [], message))
   }
 
   equals(equal: LazyValue<number>, message?: CustomValidationMessage): this {

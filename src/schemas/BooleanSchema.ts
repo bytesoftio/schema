@@ -1,5 +1,5 @@
 import { Schema } from "../Schema"
-import { booleanEquals, booleanOptional, booleanRequired, booleanToDefault } from "../assertions/boolean"
+import { booleanEquals, booleanType, booleanRequired, booleanToDefault } from "../assertions/boolean"
 import { CustomValidationMessage, LazyValue } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
@@ -16,14 +16,14 @@ export class BooleanSchema extends Schema<boolean> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("boolean_optional")
+      .addValidationDefinition(createValidationDefinition("boolean_type", booleanType, [], message))
       .addValidationDefinition(createValidationDefinition("boolean_required", booleanRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("boolean_required")
-      .addValidationDefinition(createValidationDefinition("boolean_optional", booleanOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("boolean_type", booleanType, [], message))
   }
 
   equals(equal: LazyValue<boolean>, message?: CustomValidationMessage): this {

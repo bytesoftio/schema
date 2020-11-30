@@ -1,7 +1,7 @@
 import { Schema } from "../Schema"
 import {
   objectEquals,
-  objectOptional,
+  objectType,
   objectRequired,
   objectToCamelCaseKeys, objectToCamelCaseKeysDeep,
   objectToConstantCaseKeys, objectToConstantCaseKeysDeep,
@@ -115,14 +115,14 @@ export class ObjectSchema<TValue extends object> extends Schema<TValue> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("object_optional")
+      .addValidationDefinition(createValidationDefinition("object_type", objectType, [], message))
       .addValidationDefinition(createValidationDefinition("object_required", objectRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("object_required")
-      .addValidationDefinition(createValidationDefinition("object_optional", objectOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("object_type", objectType, [], message))
   }
 
   equals(equal: LazyValue<object>, message?: CustomValidationMessage): this {

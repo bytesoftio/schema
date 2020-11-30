@@ -20,7 +20,17 @@ describe("NumberSchema", () => {
     expect(await s1.testAsync(1)).toBe(true)
     expect(await s2.testAsync(1)).toBe(true)
 
-    expect((await s1.validateAsync("1"))![0].message).toBe(translateMessage("number_required"))
+    const errors1 = (await s1.validateAsync(null))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("number_required"))
+
+    const errors2 = (await s1.validateAsync("1"))!
+
+    expect(errors2.length).toBe(2)
+    expect(errors2[0].message).toBe(translateMessage("number_type"))
+    expect(errors2[1].message).toBe(translateMessage("number_required"))
+
     expect(await s1.validateAsync(1)).toBe(undefined)
   })
 
@@ -32,7 +42,10 @@ describe("NumberSchema", () => {
     expect(await s.testAsync("")).toBe(false)
     expect(await s.testAsync(1)).toBe(true)
 
-    expect((await s.validateAsync("1"))![0].message).toBe(translateMessage("number_optional"))
+    const errors1 = (await s.validateAsync("1"))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("number_type"))
     expect(await s.validateAsync(1)).toBe(undefined)
     expect(await s.validateAsync(null)).toBe(undefined)
   })

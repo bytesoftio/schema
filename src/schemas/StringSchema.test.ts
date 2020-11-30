@@ -24,8 +24,16 @@ describe("StringSchema", () => {
     expect(await s2.testAsync("1")).toBe(true)
 
     const errors1 = (await s1.validateAsync(null))!
+    expect(errors1.length).toBe(1)
     expect(errors1[0].message).toBe(translateMessage("string_required"))
     expect(errors1[0].value).toBe(null)
+
+    const errors2 = (await s1.validateAsync(1))!
+    expect(errors2.length).toBe(2)
+    expect(errors2[0].message).toBe(translateMessage("string_type"))
+    expect(errors2[0].value).toBe(1)
+    expect(errors2[1].message).toBe(translateMessage("string_required"))
+    expect(errors2[1].value).toBe(1)
 
     expect(await s1.validateAsync("1")).toBe(undefined)
   })
@@ -38,7 +46,9 @@ describe("StringSchema", () => {
     expect(await s.testAsync(1)).toBe(false)
     expect(await s.testAsync("")).toBe(true)
 
-    expect((await s.validateAsync(1))![0].message).toBe(translateMessage("string_optional"))
+    const errors = (await s.validateAsync(1))!
+
+    expect(errors[0].message).toBe(translateMessage("string_type"))
     expect(await s.validateAsync(null)).toBe(undefined)
   })
 

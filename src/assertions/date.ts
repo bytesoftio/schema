@@ -9,7 +9,7 @@ export const dateRequired = (value: any): ValidationFunctionResult => {
   return isDefined(value) && isDate(value)
 }
 
-export const dateOptional = (value: any): ValidationFunctionResult => {
+export const dateType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 
   return isDate(value)

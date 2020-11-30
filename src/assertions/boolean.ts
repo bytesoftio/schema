@@ -9,7 +9,7 @@ export const booleanRequired = (value: any): ValidationFunctionResult => {
   return isDefined(value) && isBoolean(value)
 }
 
-export const booleanOptional = (value: any): ValidationFunctionResult => {
+export const booleanType = (value: any): ValidationFunctionResult => {
   if ( ! isDefined(value)) return true
 
   return isBoolean(value)

@@ -24,7 +24,17 @@ describe("ArraySchema", () => {
     expect(await s1.testAsync([])).toBe(true)
     expect(await s2.testAsync([])).toBe(true)
 
-    expect((await s1.validateAsync(null))![0].message).toBe(translateMessage("array_required"))
+    const errors1 = (await s1.validateAsync(null))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("array_required"))
+
+    const errors2 = (await s1.validateAsync("array"))!
+
+    expect(errors2.length).toBe(2)
+    expect(errors2[0].message).toBe(translateMessage("array_type"))
+    expect(errors2[1].message).toBe(translateMessage("array_required"))
+
     expect(await s1.validateAsync([])).toBe(undefined)
   })
 
@@ -36,7 +46,11 @@ describe("ArraySchema", () => {
     expect(await s.testAsync(1)).toBe(false)
     expect(await s.testAsync([])).toBe(true)
 
-    expect((await s.validateAsync("a"))![0].message).toBe(translateMessage("array_optional"))
+    const errors1 = (await s.validateAsync("a"))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("array_type"))
+
     expect(await s.validateAsync([])).toBe(undefined)
     expect(await s.validateAsync(null)).toBe(undefined)
   })
@@ -211,13 +225,15 @@ describe("ArraySchema", () => {
 
     const errors = (s.validate([]))!
 
-    expect(errors.length).toBe(3)
+    expect(errors.length).toBe(4)
     expect(errors[0].message).toBe(translateMessage("array_min", [2]))
     expect(errors[0].link).toBe(undefined)
     expect(errors[1].message).toBe(translateMessage("array_min", [1]))
     expect(errors[1].link).toBe("or")
-    expect(errors[2].message).toBe(translateMessage("boolean_required"))
+    expect(errors[2].message).toBe(translateMessage("boolean_type"))
     expect(errors[2].link).toBe("or.or")
+    expect(errors[3].message).toBe(translateMessage("boolean_required"))
+    expect(errors[3].link).toBe("or.or")
 
     expect(s.validate([1])).toBe(undefined)
     expect(s.validate([1, 2])).toBe(undefined)
@@ -233,13 +249,15 @@ describe("ArraySchema", () => {
 
     const errors = (await s.validateAsync([]))!
 
-    expect(errors.length).toBe(3)
+    expect(errors.length).toBe(4)
     expect(errors[0].message).toBe(translateMessage("array_min", [2]))
     expect(errors[0].link).toBe(undefined)
     expect(errors[1].message).toBe(translateMessage("array_min", [1]))
     expect(errors[1].link).toBe("or")
-    expect(errors[2].message).toBe(translateMessage("boolean_required"))
+    expect(errors[2].message).toBe(translateMessage("boolean_type"))
     expect(errors[2].link).toBe("or.or")
+    expect(errors[3].message).toBe(translateMessage("boolean_required"))
+    expect(errors[3].link).toBe("or.or")
 
     expect(await s.validateAsync([1])).toBe(undefined)
     expect(await s.validateAsync([1, 2])).toBe(undefined)
@@ -321,35 +339,56 @@ describe("ArraySchema", () => {
 
     const errors1 = s2.validate([1, "1", null])!
 
-    expect(errors1.length).toBe(4)
-    expect(errors1[0].message).toBe(translateMessage("number_required"))
+    expect(errors1.length).toBe(6)
+    expect(errors1[0].message).toBe(translateMessage("number_type"))
     expect(errors1[0].path).toBe("1")
     expect(errors1[0].link).toBe(undefined)
-    expect(errors1[1].message).toBe(translateMessage("boolean_required"))
+    expect(errors1[1].message).toBe(translateMessage("number_required"))
     expect(errors1[1].path).toBe("1")
-    expect(errors1[1].link).toBe("or")
-    expect(errors1[2].message).toBe(translateMessage("number_required"))
-    expect(errors1[2].path).toBe("2")
-    expect(errors1[2].link).toBe(undefined)
+    expect(errors1[1].link).toBe(undefined)
+
+    expect(errors1[2].message).toBe(translateMessage("boolean_type"))
+    expect(errors1[2].path).toBe("1")
+    expect(errors1[2].link).toBe("or")
     expect(errors1[3].message).toBe(translateMessage("boolean_required"))
-    expect(errors1[3].path).toBe("2")
+    expect(errors1[3].path).toBe("1")
     expect(errors1[3].link).toBe("or")
+
+    expect(errors1[4].message).toBe(translateMessage("number_required"))
+    expect(errors1[4].path).toBe("2")
+    expect(errors1[4].link).toBe(undefined)
+
+    expect(errors1[5].message).toBe(translateMessage("boolean_required"))
+    expect(errors1[5].path).toBe("2")
+    expect(errors1[5].link).toBe("or")
 
     const errors2 = s2.validate([1, "1", true])!
 
-    expect(errors2.length).toBe(4)
-    expect(errors2[0].message).toBe(translateMessage("number_required"))
+    expect(errors2.length).toBe(7)
+    expect(errors2[0].message).toBe(translateMessage("number_type"))
     expect(errors2[0].path).toBe("1")
     expect(errors2[0].link).toBe(undefined)
-    expect(errors2[1].message).toBe(translateMessage("boolean_required"))
+    expect(errors2[1].message).toBe(translateMessage("number_required"))
     expect(errors2[1].path).toBe("1")
-    expect(errors2[1].link).toBe("or")
-    expect(errors2[2].message).toBe(translateMessage("number_required"))
-    expect(errors2[2].path).toBe("2")
-    expect(errors2[2].link).toBe(undefined)
-    expect(errors2[3].message).toBe(translateMessage("boolean_equals", [false]))
-    expect(errors2[3].path).toBe("2")
-    expect(errors2[3].link).toBe("or.and")
+    expect(errors2[1].link).toBe(undefined)
+
+    expect(errors2[2].message).toBe(translateMessage("boolean_type"))
+    expect(errors2[2].path).toBe("1")
+    expect(errors2[2].link).toBe("or")
+    expect(errors2[3].message).toBe(translateMessage("boolean_required"))
+    expect(errors2[3].path).toBe("1")
+    expect(errors2[3].link).toBe("or")
+
+    expect(errors2[4].message).toBe(translateMessage("number_type"))
+    expect(errors2[4].path).toBe("2")
+    expect(errors2[4].link).toBe(undefined)
+    expect(errors2[5].message).toBe(translateMessage("number_required"))
+    expect(errors2[5].path).toBe("2")
+    expect(errors2[5].link).toBe(undefined)
+
+    expect(errors2[6].message).toBe(translateMessage("boolean_equals", [false]))
+    expect(errors2[6].path).toBe("2")
+    expect(errors2[6].link).toBe("or.and")
 
     const errors3 = s2.validate([false])!
     expect(errors3.length).toBe(1)
@@ -386,35 +425,55 @@ describe("ArraySchema", () => {
 
     const errors1 = (await s2.validateAsync([1, "1", null]))!
 
-    expect(errors1.length).toBe(4)
-    expect(errors1[0].message).toBe(translateMessage("number_required"))
+    expect(errors1.length).toBe(6)
+    expect(errors1[0].message).toBe(translateMessage("number_type"))
     expect(errors1[0].path).toBe("1")
     expect(errors1[0].link).toBe(undefined)
-    expect(errors1[1].message).toBe(translateMessage("boolean_required"))
+    expect(errors1[1].message).toBe(translateMessage("number_required"))
     expect(errors1[1].path).toBe("1")
-    expect(errors1[1].link).toBe("or")
-    expect(errors1[2].message).toBe(translateMessage("number_required"))
-    expect(errors1[2].path).toBe("2")
-    expect(errors1[2].link).toBe(undefined)
+    expect(errors1[1].link).toBe(undefined)
+
+    expect(errors1[2].message).toBe(translateMessage("boolean_type"))
+    expect(errors1[2].path).toBe("1")
+    expect(errors1[2].link).toBe("or")
     expect(errors1[3].message).toBe(translateMessage("boolean_required"))
-    expect(errors1[3].path).toBe("2")
+    expect(errors1[3].path).toBe("1")
     expect(errors1[3].link).toBe("or")
+
+    expect(errors1[4].message).toBe(translateMessage("number_required"))
+    expect(errors1[4].path).toBe("2")
+    expect(errors1[4].link).toBe(undefined)
+    expect(errors1[5].message).toBe(translateMessage("boolean_required"))
+    expect(errors1[5].path).toBe("2")
+    expect(errors1[5].link).toBe("or")
 
     const errors2 = (await s2.validateAsync([1, "1", true]))!
 
-    expect(errors2.length).toBe(4)
-    expect(errors2[0].message).toBe(translateMessage("number_required"))
+    expect(errors2.length).toBe(7)
+    expect(errors2[0].message).toBe(translateMessage("number_type"))
     expect(errors2[0].path).toBe("1")
     expect(errors2[0].link).toBe(undefined)
-    expect(errors2[1].message).toBe(translateMessage("boolean_required"))
+    expect(errors2[1].message).toBe(translateMessage("number_required"))
     expect(errors2[1].path).toBe("1")
-    expect(errors2[1].link).toBe("or")
-    expect(errors2[2].message).toBe(translateMessage("number_required"))
-    expect(errors2[2].path).toBe("2")
-    expect(errors2[2].link).toBe(undefined)
-    expect(errors2[3].message).toBe(translateMessage("boolean_equals", [false]))
-    expect(errors2[3].path).toBe("2")
-    expect(errors2[3].link).toBe("or.and")
+    expect(errors2[1].link).toBe(undefined)
+
+    expect(errors2[2].message).toBe(translateMessage("boolean_type"))
+    expect(errors2[2].path).toBe("1")
+    expect(errors2[2].link).toBe("or")
+    expect(errors2[3].message).toBe(translateMessage("boolean_required"))
+    expect(errors2[3].path).toBe("1")
+    expect(errors2[3].link).toBe("or")
+
+    expect(errors2[4].message).toBe(translateMessage("number_type"))
+    expect(errors2[4].path).toBe("2")
+    expect(errors2[4].link).toBe(undefined)
+    expect(errors2[5].message).toBe(translateMessage("number_required"))
+    expect(errors2[5].path).toBe("2")
+    expect(errors2[5].link).toBe(undefined)
+
+    expect(errors2[6].message).toBe(translateMessage("boolean_equals", [false]))
+    expect(errors2[6].path).toBe("2")
+    expect(errors2[6].link).toBe("or.and")
 
     const errors3 = (await s2.validateAsync([false]))!
     expect(errors3.length).toBe(1)

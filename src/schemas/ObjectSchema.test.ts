@@ -26,10 +26,16 @@ describe("ObjectSchema", () => {
     expect(await s1.testAsync({})).toBe(true)
     expect(await s2.testAsync({})).toBe(true)
 
-    const errors = (await s1.validateAsync(null))!
+    const errors1 = (await s1.validateAsync(null))!
 
-    expect(errors.length).toBe(1)
-    expect(errors[0].message).toBe(translateMessage("object_required"))
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe(translateMessage("object_required"))
+
+    const errors2 = (await s1.validateAsync("object"))!
+
+    expect(errors2.length).toBe(2)
+    expect(errors2[0].message).toBe(translateMessage("object_type"))
+    expect(errors2[1].message).toBe(translateMessage("object_required"))
 
     expect(await s1.validateAsync({})).toBe(undefined)
   })
@@ -45,7 +51,7 @@ describe("ObjectSchema", () => {
     const errors = (await s.validateAsync(1))!
 
     expect(errors.length).toBe(1)
-    expect(errors[0].message).toBe(translateMessage("object_optional"))
+    expect(errors[0].message).toBe(translateMessage("object_type"))
 
     expect(await s.validateAsync(null)).toBe(undefined)
     expect(await s.validateAsync({})).toBe(undefined)
@@ -360,8 +366,9 @@ describe("ObjectSchema", () => {
       yolo: "swag",
     }))!
 
-    expect(errors.length).toBe(1)
-    expect(errors[0].message).toBe(translateMessage("string_required"))
+    expect(errors.length).toBe(2)
+    expect(errors[0].message).toBe(translateMessage("string_type"))
+    expect(errors[1].message).toBe(translateMessage("string_required"))
 
     expect(await s.validateAsync({
       foo: "bar",

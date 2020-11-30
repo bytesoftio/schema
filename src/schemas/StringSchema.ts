@@ -24,7 +24,7 @@ import {
   stringNumeric,
   stringOmits,
   stringOneOf,
-  stringOptional,
+  stringType,
   stringRequired,
   stringStartsWith,
   stringTime,
@@ -58,14 +58,14 @@ export class StringSchema extends Schema<string> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("string_optional")
+      .addValidationDefinition(createValidationDefinition("string_type", stringType, [], message))
       .addValidationDefinition(createValidationDefinition("string_required", stringRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("string_required")
-      .addValidationDefinition(createValidationDefinition("string_optional", stringOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("string_type", stringType, [], message))
   }
 
   equals(equal: LazyValue<string>, message?: CustomValidationMessage): this {

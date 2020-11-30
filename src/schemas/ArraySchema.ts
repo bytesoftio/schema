@@ -6,7 +6,7 @@ import {
   arrayMax,
   arrayMin,
   arrayNoneOf,
-  arrayOptional,
+  arrayType,
   arrayRequired,
   arraySomeOf,
   arrayToCompact,
@@ -73,14 +73,14 @@ export class ArraySchema extends Schema<any[]> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("array_optional")
+      .addValidationDefinition(createValidationDefinition("array_type", arrayType, [], message))
       .addValidationDefinition(createValidationDefinition("array_required", arrayRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("array_required")
-      .addValidationDefinition(createValidationDefinition("array_optional", arrayOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("array_type", arrayType, [], message))
   }
 
   equals(equal: LazyValue<any[]>, message?: CustomValidationMessage): this {

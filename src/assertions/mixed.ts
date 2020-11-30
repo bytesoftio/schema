@@ -8,10 +8,6 @@ export const mixedRequired = (value: any): ValidationFunctionResult => {
   return isDefined(value)
 }
 
-export const mixedOptional = (value: any): ValidationFunctionResult => {
-  return
-}
-
 export const mixedEquals = (value: any, equal: LazyValue<any>): ValidationFunctionResult => {
   if ( ! isDefined(value)) return
 

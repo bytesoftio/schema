@@ -1,5 +1,5 @@
 import { Schema } from "../Schema"
-import { mixedEquals, mixedNoneOf, mixedOneOf, mixedOptional, mixedRequired, mixedToDefault } from "../assertions/mixed"
+import { mixedEquals, mixedNoneOf, mixedOneOf, mixedRequired, mixedToDefault } from "../assertions/mixed"
 import { CustomValidationMessage, LazyValue } from "../types"
 import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
@@ -16,14 +16,12 @@ export class MixedSchema extends Schema<any> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("mixed_optional")
       .addValidationDefinition(createValidationDefinition("mixed_required", mixedRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("mixed_required")
-      .addValidationDefinition(createValidationDefinition("mixed_optional", mixedOptional, [], message))
   }
 
   equals(equal: LazyValue<any>, message?: CustomValidationMessage): this {

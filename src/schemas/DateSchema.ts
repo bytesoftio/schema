@@ -4,7 +4,7 @@ import {
   dateBefore,
   dateBetween,
   dateEquals,
-  dateOptional,
+  dateType,
   dateRequired,
   dateToDefault,
 } from "../assertions/date"
@@ -24,14 +24,14 @@ export class DateSchema extends Schema<Date> {
 
   required(message?: CustomValidationMessage): this {
     return this
-      .removeValidationDefinitionsOfType("date_optional")
+      .addValidationDefinition(createValidationDefinition("date_type", dateType, [], message))
       .addValidationDefinition(createValidationDefinition("date_required", dateRequired, [], message))
   }
 
   optional(message?: CustomValidationMessage): this {
     return this
       .removeValidationDefinitionsOfType("date_required")
-      .addValidationDefinition(createValidationDefinition("date_optional", dateOptional, [], message))
+      .addValidationDefinition(createValidationDefinition("date_type", dateType, [], message))
   }
 
   equals(equal: LazyValue<Date>, message?: CustomValidationMessage): this {

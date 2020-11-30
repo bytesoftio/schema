@@ -17,7 +17,7 @@ export const testValueAsync = async (value: any, definitions: ValidationDefiniti
     } else {
       let result = await (definition.validator as ValidationFunction)(value, ...definition.args)
 
-      if (["and", "or"].includes(definition.type) && isBoolean(result)) {
+      if (["and", "or", "custom"].includes(definition.type) && isBoolean(result)) {
         continue
       }
 

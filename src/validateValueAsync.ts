@@ -31,7 +31,7 @@ export const validateValueAsync = async (value: any, definitions: ValidationDefi
         result = await result.validateAsync(value)
       }
 
-      if (["and", "or"].includes(definition.type) && isBoolean(result)) {
+      if (["and", "or", "custom"].includes(definition.type) && isBoolean(result)) {
         continue
       }
 

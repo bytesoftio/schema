@@ -7,6 +7,8 @@ export interface ValidationSchema<TValue = any> {
 
   or(orSchema: CustomValidation): this
   and(andSchema: CustomValidation): this
+  // alias for "validator()"
+  also(validator: CustomValidation): this
   validator(validator: CustomValidation): this
   sanitizer(sanitizer: SanitizerFunction): this
 

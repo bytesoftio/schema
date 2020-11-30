@@ -48,6 +48,11 @@ export abstract class Schema<TValue> implements ValidationSchema<TValue> {
     return this.addConditionalValidationDefinition(createValidationDefinition("and", andValidator, [], ""))
   }
 
+  // alias for "validator()"
+  also(validator: CustomValidation): this {
+    return this.validator(validator)
+  }
+
   validator(validator: CustomValidation): this {
     return this.addValidationDefinition(createValidationDefinition("custom", validator, [], ""))
   }

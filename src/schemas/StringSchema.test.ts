@@ -1227,9 +1227,51 @@ describe("StringSchema", () => {
     expect(errors6).toBe(undefined)
   })
 
+  test("validate validator / also with early exit", async () => {//
+    const errors1 = string().validator(() => false && string().min(2)).validate("a")
+    const errors2 = await string().also(() => false && string().min(2)).validateAsync("a")
+
+    expect(errors1).toBe(undefined)
+    expect(errors2).toBe(undefined)
+
+    const errors3 = string().and(() => true && string().min(2)).validate("a")
+    const errors4 = await string().and(() => true && string().min(2)).validateAsync("a")
+
+    expect(errors3!.length).toBe(1)
+    expect(errors3![0].message).toBe(translateMessage("string_min", [2]))
+    expect(errors4!.length).toBe(1)
+    expect(errors4![0].message).toBe(translateMessage("string_min", [2]))
+
+    const errors5 = string().and(() => true && string().min(2)).validate("aa")
+    const errors6 = await string().and(() => true && string().min(2)).validateAsync("aa")
+
+    expect(errors5).toBe(undefined)
+    expect(errors6).toBe(undefined)
+  })
+
   test("test conditional with early exit", async () => {
     const result1 = string().and(() => false && string().min(2)).test("a")
     const result2 = await string().and(() => false && string().min(2)).testAsync("a")
+
+    expect(result1).toBe(true)
+    expect(result2).toBe(true)
+
+    const result3 = string().and(() => true && string().min(2)).test("a")
+    const result4 = await string().and(() => true && string().min(2)).testAsync("a")
+
+    expect(result3).toBe(false)
+    expect(result4).toBe(false)
+
+    const result5 = string().and(() => true && string().min(2)).test("aa")
+    const result6 = await string().and(() => true && string().min(2)).testAsync("aa")
+
+    expect(result5).toBe(true)
+    expect(result6).toBe(true)
+  })
+
+  test("test validator / also with early exit", async () => {
+    const result1 = string().validator(() => false && string().min(2)).test("a")
+    const result2 = await string().also(() => false && string().min(2)).testAsync("a")
 
     expect(result1).toBe(true)
     expect(result2).toBe(true)

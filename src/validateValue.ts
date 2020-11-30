@@ -39,7 +39,7 @@ export const validateValue = (value: any, definitions: ValidationDefinition[]): 
       // conditional definitions must always return some sort of an error,
       // boolean are useful for chaining and early exits from conditionals,
       // but can not represent an error
-      if (["and", "or"].includes(definition.type) && isBoolean(result)) {
+      if (["and", "or", "custom"].includes(definition.type) && isBoolean(result)) {
         continue
       }
 

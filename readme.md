@@ -18,7 +18,7 @@
 - [Sanitize and test](#sanitize-and-test)
 - [Sanitize and validate](#sanitize-and-validate)
 - [Reusing validation schemas](#reusing-validation-schemas)
-- [Relations with and() / or()](#relations-with-and--or)
+- [Relations with and() / or() / also()](#relations-with-and--or--also)
 - [Add a custom validator](#add-a-custom-validator)
 - [Add a custom sanitizer](#add-a-custom-sanitizer)
 - [Async methods and logic](#async-methods-and-logic)
@@ -424,7 +424,7 @@ const usernameListSchema = array().min(3).shape(usernameSchema)
 const errors = usernameListSchema.validate(["foo", "bar", "baz"])
 ```
 
-## Relations with and() / or()
+## Relations with and() / or() / also()
 
 Schemas can logically be linked together using `and` and `or` methods. An `and` schema 
 will only be executed if the higher order schema, that it is linked to, could validate successfully.
@@ -449,6 +449,8 @@ number().or(() => string().numeric())
 ```ts
 number().and((value) => value < 12 && "Value must be bigger than 12")
 ```
+
+There is also a method `also()` that is basically an alias for `validator()` and is syntactic sugar for some use cases.
 
 ## Add a custom validator
 

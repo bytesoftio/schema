@@ -32,7 +32,7 @@ export type LazyValue<TValue> = TValue | (() => TValue) | undefined
 export type MaybePromise<TValue> = TValue | Promise<TValue>
 
 export type ValidationResult = { [key: string]: string[] }
-export type ValidationFunctionResult = undefined | boolean | string | ValidationSchema | ValidationError[]
+export type ValidationFunctionResult = undefined | void | boolean | string | ValidationSchema | ValidationError[]
 export type ValidationError = {
   type: ValidationType
   message: string
@@ -53,7 +53,7 @@ export type ValidationDefinition = {
   customMessage?: CustomValidationMessage
 }
 export type CustomValidationMessage = LazyValue<string>
-export type CustomValidationResult = undefined | string | boolean | ValidationSchema | ValidationError[]
+export type CustomValidationResult = void | undefined | string | boolean | ValidationSchema | ValidationError[]
 export type CustomValidation = ValidationSchema | ((value: any) => MaybePromise<CustomValidationResult>)
 export type SanitizerFunction = (value: any, ...args: any[]) => MaybePromise<any>
 export type SanitizerDefinition = {

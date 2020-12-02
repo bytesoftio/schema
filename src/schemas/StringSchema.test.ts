@@ -401,6 +401,8 @@ describe("StringSchema", () => {
 
     expect(await s.testAsync("2019 12 12")).toBe(false)
     expect(await s.testAsync("2019-12-12")).toBe(true)
+    expect(await s.testAsync("2019-13-12")).toBe(false)
+    expect(await s.testAsync("2019-12-40")).toBe(false)
     expect(await s.testAsync("2019-12-12T17:55:00")).toBe(false)
     expect(await s.testAsync("2019-12-12+07:00")).toBe(true)
     expect(await s.testAsync("2019-12-12Z")).toBe(true)
@@ -870,6 +872,13 @@ describe("StringSchema", () => {
     expect(s.test("123abc")).toBe(true)
   })
 
+  test("lazy void or", () => {
+    const s = string().or(() => {})
+
+    expect(s.test("abc")).toBe(true)
+    expect(s.test("123")).toBe(true)
+  })
+
   test("and", async () => {
     const s1 = string().min(2).and(string().equals("xy"))
 
@@ -917,6 +926,13 @@ describe("StringSchema", () => {
 
   test("lazy empty and", () => {
     const s = string().and(() => undefined)
+
+    expect(s.test("abc")).toBe(true)
+    expect(s.test("123")).toBe(true)
+  })
+
+  test("lazy void and", () => {
+    const s = string().and(() => {})
 
     expect(s.test("abc")).toBe(true)
     expect(s.test("123")).toBe(true)
@@ -1097,6 +1113,20 @@ describe("StringSchema", () => {
     expect((s.validate("ab"))).toBe(undefined)
     expect((s.validate("abc"))![0].message).toBe(translateMessage("string_numeric"))
     expect(s.validate("123")).toBe(undefined)
+  })
+
+  test("validator with an empty return", () => {
+    const s = string().validator(() => undefined)
+
+    expect(s.test("abc")).toBe(true)
+    expect(s.test("123")).toBe(true)
+  })
+
+  test("validator with a void return", () => {
+    const s = string().validator(() => {})
+
+    expect(s.test("abc")).toBe(true)
+    expect(s.test("123")).toBe(true)
   })
 
   test("chaining custom validators", () => {

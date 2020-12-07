@@ -5,6 +5,11 @@ import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
 export class MixedSchema extends Schema<any> {
+  constructor() {
+    super()
+    this.skipClone(() => this.required())
+  }
+
   protected cloneInstance(): this {
     const schema = new MixedSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -14,9 +19,9 @@ export class MixedSchema extends Schema<any> {
     return schema as any
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
-      .addValidationDefinition(createValidationDefinition("mixed_required", mixedRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("mixed_required", mixedRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

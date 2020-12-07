@@ -1,10 +1,6 @@
 import { locale } from "./locale"
 
 export interface ValidationSchema<TValue = any> {
-  required(message?: CustomValidationMessage): this
-  optional(message?: CustomValidationMessage): this
-  equals(value: any): this
-
   or(orSchema: CustomValidation): this
   and(andSchema: CustomValidation): this
 

@@ -484,6 +484,10 @@ describe("ArraySchema", () => {
     expect(await s2.validateAsync([2, false])).toBe(undefined)
     expect(await s2.validateAsync([2, 2])).toBe(undefined)
     expect(await s2.validateAsync([false, false])).toBe(undefined)
+
+    expect(array().required(false).test(undefined)).toBe(true)
+    expect(array().required(() => false).test(undefined)).toBe(true)
+    expect(array().required(() => true).test(undefined)).toBe(false)
   })
 
   test("sanitize", () => {

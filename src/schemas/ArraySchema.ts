@@ -68,13 +68,13 @@ export class ArraySchema extends Schema<any[]> {
   constructor(valuesSchema?: ValidationSchema) {
     super()
 
-    this.skipClone(() => this.shape(valuesSchema))
+    this.skipClone(() => this.required().shape(valuesSchema))
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("array_type", arrayType, [], message))
-      .addValidationDefinition(createValidationDefinition("array_required", arrayRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("array_required", arrayRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

@@ -109,14 +109,14 @@ export class ObjectSchema<TValue extends object> extends Schema<TValue> {
     super()
 
     this.skipClone(() => {
-      this.shape(objectShape).disallowUnknownKeys()
+      this.required().shape(objectShape).disallowUnknownKeys()
     })
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("object_type", objectType, [], message))
-      .addValidationDefinition(createValidationDefinition("object_required", objectRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("object_required", objectRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

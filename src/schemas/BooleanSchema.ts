@@ -5,6 +5,11 @@ import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
 export class BooleanSchema extends Schema<boolean> {
+  constructor() {
+    super()
+    this.skipClone(() => this.required())
+  }
+
   protected cloneInstance(): this {
     const schema = new BooleanSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -14,10 +19,10 @@ export class BooleanSchema extends Schema<boolean> {
     return schema as any
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("boolean_type", booleanType, [], message))
-      .addValidationDefinition(createValidationDefinition("boolean_required", booleanRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("boolean_required", booleanRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

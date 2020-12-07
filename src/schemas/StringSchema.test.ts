@@ -36,6 +36,10 @@ describe("StringSchema", () => {
     expect(errors2[1].value).toBe(1)
 
     expect(await s1.validateAsync("1")).toBe(undefined)
+
+    expect(string().required(false).test(undefined)).toBe(true)
+    expect(string().required(() => false).test(undefined)).toBe(true)
+    expect(string().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

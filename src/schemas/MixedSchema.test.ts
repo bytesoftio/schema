@@ -24,6 +24,10 @@ describe("MixedSchema", () => {
     expect(errors1.length).toBe(1)
     expect(errors1[0].message).toBe(translateMessage("mixed_required"))
     expect(await s1.validateAsync("")).toBe(undefined)
+
+    expect(mixed().required(false).test(undefined)).toBe(true)
+    expect(mixed().required(() => false).test(undefined)).toBe(true)
+    expect(mixed().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

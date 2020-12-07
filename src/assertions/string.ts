@@ -27,7 +27,9 @@ const isDefinedString = (value: any) => isDefined(value) && isString(value)
 const isDefinedNonEmptyString = (value: any) => isDefined(value) && isString(value) && value.length > 0
 const isNumeric = (value: any) => isNumber(value) || ( ! isEmpty(value) && ! isNaN(value))
 
-export const stringRequired = (value: any): ValidationFunctionResult => {
+export const stringRequired = (value: any, required?: LazyValue<boolean>): ValidationFunctionResult => {
+  if (lazyValue(required) === false) return
+
   return isDefinedNonEmptyString(value)
 }
 

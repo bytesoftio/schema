@@ -581,6 +581,8 @@ Value must be a non empty string. Active by default.
 
 ```ts
 string().required()
+// or
+string().required(() => false)
 ```
 
 ### optional
@@ -1014,6 +1016,8 @@ Value must be a number.
 
 ```ts
 number().required()
+// or
+number().required(() => false)
 ```
 
 ### optional
@@ -1146,6 +1150,8 @@ Value must be a boolean.
 
 ```ts
 boolean().required()
+// or
+boolean().required(() => false)
 ```
 
 ### optional
@@ -1190,6 +1196,8 @@ Value must be a date.
 
 ```ts
 date().required()
+// or
+date().required(() => false)
 ```
 
 ### optional
@@ -1264,6 +1272,8 @@ Value must be a array.
 
 ```ts
 array().required()
+// or
+array().required(() => false)
 ```
 
 ### optional
@@ -1414,6 +1424,8 @@ Value must be a object.
 
 ```ts
 object().required()
+// or
+object().required(() => false)
 ```
 
 ### optional
@@ -1602,6 +1614,8 @@ Value must not be `null` nor `undefined`.
 
 ```ts
 mixed().required()
+// or
+mixed().required(() => false)
 ```
 
 ### optional

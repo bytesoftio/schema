@@ -26,19 +26,12 @@ import { validateValue } from "./validateValue"
 import { validateAndOrSchemas } from "./validateAndOrSchemas"
 
 export abstract class Schema<TValue> implements ValidationSchema<TValue> {
-  abstract required(message?: CustomValidationMessage): this
-  abstract optional(message?: CustomValidationMessage): this
-  abstract equals(value: any): this
   protected abstract cloneInstance(): this
 
   protected immutableMode: boolean = true
   protected sanitizerDefinitions: SanitizerDefinition[] = []
   protected validationDefinitions: ValidationDefinition[] = []
   protected conditionalValidationDefinitions: ValidationDefinition[] = []
-
-  constructor() {
-    this.skipClone(() => this.required())
-  }
 
   or(orValidator: CustomValidation): this {
     return this.addConditionalValidationDefinition(createValidationDefinition("or", orValidator, [], ""))

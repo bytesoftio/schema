@@ -38,6 +38,10 @@ describe("ObjectSchema", () => {
     expect(errors2[1].message).toBe(translateMessage("object_required"))
 
     expect(await s1.validateAsync({})).toBe(undefined)
+
+    expect(object().required(false).test(undefined)).toBe(true)
+    expect(object().required(() => false).test(undefined)).toBe(true)
+    expect(object().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

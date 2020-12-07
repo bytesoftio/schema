@@ -47,6 +47,11 @@ import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
 export class StringSchema extends Schema<string> {
+  constructor() {
+    super()
+    this.skipClone(() => this.required())
+  }
+
   protected cloneInstance(): this {
     const schema = new StringSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -56,10 +61,10 @@ export class StringSchema extends Schema<string> {
     return schema as any
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("string_type", stringType, [], message))
-      .addValidationDefinition(createValidationDefinition("string_required", stringRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("string_required", stringRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

@@ -35,6 +35,10 @@ describe("DateSchema", () => {
     expect(errors2[1].message).toBe(translateMessage("date_required"))
 
     expect(await s2.validateAsync(new Date())).toBe(undefined)
+
+    expect(date().required(false).test(undefined)).toBe(true)
+    expect(date().required(() => false).test(undefined)).toBe(true)
+    expect(date().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

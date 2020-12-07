@@ -20,6 +20,11 @@ import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
 export class NumberSchema extends Schema<number> {
+  constructor() {
+    super()
+    this.skipClone(() => this.required())
+  }
+
   protected cloneInstance(): this {
     const schema = new NumberSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -29,10 +34,10 @@ export class NumberSchema extends Schema<number> {
     return schema as any
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("number_type", numberType, [], message))
-      .addValidationDefinition(createValidationDefinition("number_required", numberRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("number_required", numberRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

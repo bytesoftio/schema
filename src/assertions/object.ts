@@ -6,7 +6,9 @@ import { lazyValue } from "../lazyValue"
 
 const isDefinedObject = (value: any) => isDefined(value) && isObjectLike(value)
 
-export const objectRequired = (value: any): ValidationFunctionResult => {
+export const objectRequired = (value: any, required?: LazyValue<boolean>): ValidationFunctionResult => {
+  if (lazyValue(required) === false) return
+
   return isDefinedObject(value)
 }
 

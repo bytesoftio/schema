@@ -5,7 +5,9 @@ import { lazyValue } from "../lazyValue"
 
 const isDefinedNumber = (value: any) => isDefined(value) && isNumber(value)
 
-export const numberRequired = (value: any): ValidationFunctionResult => {
+export const numberRequired = (value: any, required?: LazyValue<boolean>): ValidationFunctionResult => {
+  if (lazyValue(required) === false) return
+
   return isDefined(value) && isNumber(value)
 }
 

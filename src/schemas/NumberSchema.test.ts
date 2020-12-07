@@ -32,6 +32,10 @@ describe("NumberSchema", () => {
     expect(errors2[1].message).toBe(translateMessage("number_required"))
 
     expect(await s1.validateAsync(1)).toBe(undefined)
+
+    expect(number().required(false).test(undefined)).toBe(true)
+    expect(number().required(() => false).test(undefined)).toBe(true)
+    expect(number().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

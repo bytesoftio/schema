@@ -32,6 +32,10 @@ describe("BooleanSchema", () => {
     expect(errors2[1].message).toBe(translateMessage("boolean_required"))
 
     expect(await s2.validateAsync(true)).toBe(undefined)
+
+    expect(boolean().required(false).test(undefined)).toBe(true)
+    expect(boolean().required(() => false).test(undefined)).toBe(true)
+    expect(boolean().required(() => true).test(undefined)).toBe(false)
   })
 
   test("optional", async () => {

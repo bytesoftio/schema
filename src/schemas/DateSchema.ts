@@ -13,6 +13,11 @@ import { createValidationDefinition } from "../createValidationDefinition"
 import { createSanitizerDefinition } from "../createSanitizerDefinition"
 
 export class DateSchema extends Schema<Date> {
+  constructor() {
+    super()
+    this.skipClone(() => this.required())
+  }
+
   protected cloneInstance(): this {
     const schema = new DateSchema()
     schema.validationDefinitions = [...this.validationDefinitions]
@@ -22,10 +27,10 @@ export class DateSchema extends Schema<Date> {
     return schema as any
   }
 
-  required(message?: CustomValidationMessage): this {
+  required(required?: LazyValue<boolean>, message?: CustomValidationMessage): this {
     return this
       .addValidationDefinition(createValidationDefinition("date_type", dateType, [], message))
-      .addValidationDefinition(createValidationDefinition("date_required", dateRequired, [], message))
+      .addValidationDefinition(createValidationDefinition("date_required", dateRequired, [required], message))
   }
 
   optional(message?: CustomValidationMessage): this {

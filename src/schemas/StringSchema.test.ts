@@ -75,6 +75,9 @@ describe("StringSchema", () => {
     const s1 = string().equals(arg)
 
     expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
+    expect(await s1.testAsync("abc")).toBe(false)
+    expect(await s1.optional().testAsync("abc")).toBe(false)
     expect(await s1.testAsync(arg)).toBe(true)
 
     expect((await s1.validateAsync("2"))![0].message).toBe(translateMessage("string_equals", [arg]))
@@ -90,7 +93,9 @@ describe("StringSchema", () => {
     const s1 = string().length(arg)
 
     expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
     expect(await s1.testAsync("123")).toBe(false)
+    expect(await s1.optional().testAsync("123")).toBe(false)
     expect(await s1.testAsync("12345")).toBe(true)
 
     expect((await s1.validateAsync("1"))![0].message).toBe(translateMessage("string_length", [arg]))
@@ -113,7 +118,9 @@ describe("StringSchema", () => {
     const s1 = string().min(arg)
 
     expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
     expect(await s1.testAsync("123")).toBe(false)
+    expect(await s1.optional().testAsync("123")).toBe(false)
     expect(await s1.testAsync("12345")).toBe(true)
     expect(await s1.testAsync("123456")).toBe(true)
 
@@ -130,9 +137,11 @@ describe("StringSchema", () => {
     const s1 = string().max(arg)
 
     expect(await s1.testAsync("123456")).toBe(false)
+    expect(await s1.optional().testAsync("123456")).toBe(false)
     expect(await s1.testAsync("12345")).toBe(true)
     expect(await s1.testAsync("1234")).toBe(true)
     expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
     expect(await s1.testAsync("1")).toBe(true)
 
     expect((await s1.validateAsync("123456"))![0].message).toBe(translateMessage("string_max", [arg]))
@@ -149,7 +158,9 @@ describe("StringSchema", () => {
     const s1 = string().between(arg1, arg2)
 
     expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
     expect(await s1.testAsync("12")).toBe(false)
+    expect(await s1.optional().testAsync("12")).toBe(false)
     expect(await s1.testAsync("123")).toBe(true)
     expect(await s1.testAsync("1234")).toBe(true)
     expect(await s1.testAsync("12345")).toBe(true)
@@ -164,10 +175,12 @@ describe("StringSchema", () => {
   })
 
   test("email", async () => {
-    const s = string().optional().email()
+    const s = string().email()
 
-    expect(await s.testAsync("")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
     expect(await s.testAsync("some email")).toBe(false)
+    expect(await s.optional().testAsync("some email")).toBe(false)
     expect(await s.testAsync("some@email")).toBe(false)
     expect(await s.testAsync("some@email.com")).toBe(true)
 
@@ -176,12 +189,14 @@ describe("StringSchema", () => {
   })
 
   test("url", async () => {
-    const s = string().optional().url()
+    const s = string().url()
 
     expect(await s.testAsync("google.com")).toBe(false)
+    expect(await s.optional().testAsync("google.com")).toBe(false)
     expect(await s.testAsync("http://google.com")).toBe(true)
     expect(await s.testAsync("https://google.com")).toBe(true)
-    expect(await s.testAsync("")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("a"))![0].message).toBe(translateMessage("string_url"))
     expect(await s.validateAsync("http://google.com")).toBe(undefined)
@@ -192,7 +207,10 @@ describe("StringSchema", () => {
     const s1 = string().startsWith(arg)
 
     expect(await s1.testAsync("blue car")).toBe(false)
+    expect(await s1.optional().testAsync("blue car")).toBe(false)
     expect(await s1.testAsync("red car")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("a"))![0].message).toBe(translateMessage("string_starts_with", [arg]))
     expect(await s1.validateAsync("red bus")).toBe(undefined)
@@ -207,7 +225,10 @@ describe("StringSchema", () => {
     const s1 = string().endsWith(arg)
 
     expect(await s1.testAsync("red car")).toBe(false)
+    expect(await s1.optional().testAsync("red car")).toBe(false)
     expect(await s1.testAsync("red bus")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("a"))![0].message).toBe(translateMessage("string_ends_with", [arg]))
     expect(await s1.validateAsync("red bus")).toBe(undefined)
@@ -222,7 +243,10 @@ describe("StringSchema", () => {
     const s1 = string().includes(arg)
 
     expect(await s1.testAsync("red car")).toBe(false)
+    expect(await s1.optional().testAsync("red car")).toBe(false)
     expect(await s1.testAsync("red bus")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("a"))![0].message).toBe(translateMessage("string_includes", [arg]))
     expect(await s1.validateAsync(arg)).toBe(undefined)
@@ -237,7 +261,10 @@ describe("StringSchema", () => {
     const s1 = string().omits(arg)
 
     expect(await s1.testAsync("blue")).toBe(false)
+    expect(await s1.optional().testAsync("blue")).toBe(false)
     expect(await s1.testAsync("red")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync(arg))![0].message).toBe(translateMessage("string_omits", [arg]))
     expect(await s1.validateAsync("red")).toBe(undefined)
@@ -252,8 +279,11 @@ describe("StringSchema", () => {
     const s1 = string().oneOf(arg)
 
     expect(await s1.testAsync("car")).toBe(false)
+    expect(await s1.optional().testAsync("car")).toBe(false)
     expect(await s1.testAsync("bus")).toBe(true)
     expect(await s1.testAsync("taxi")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("car"))![0].message).toBe(translateMessage("string_one_of", [arg]))
     expect(await s1.validateAsync("bus")).toBe(undefined)
@@ -268,8 +298,11 @@ describe("StringSchema", () => {
     const s1 = string().noneOf(arg)
 
     expect(await s1.testAsync("bus")).toBe(false)
+    expect(await s1.optional().testAsync("bus")).toBe(false)
     expect(await s1.testAsync("taxi")).toBe(false)
     expect(await s1.testAsync("car")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("bus"))![0].message).toBe(translateMessage("string_none_of", [arg]))
     expect(await s1.validateAsync("car")).toBe(undefined)
@@ -284,7 +317,10 @@ describe("StringSchema", () => {
     const s1 = string().matches(regex)
 
     expect(await s1.testAsync("blue car")).toBe(false)
+    expect(await s1.optional().testAsync("blue car")).toBe(false)
     expect(await s1.testAsync("red car")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("blue car"))![0].message).toBe(translateMessage("string_matches", [regex]))
     expect(await s1.validateAsync("red car")).toBe(undefined)
@@ -298,7 +334,9 @@ describe("StringSchema", () => {
     const s = string().numeric()
 
     expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
     expect(await s.testAsync("a1")).toBe(false)
+    expect(await s.optional().testAsync("a1")).toBe(false)
     expect(await s.testAsync("1a")).toBe(false)
     expect(await s.testAsync("1.0 a")).toBe(false)
     expect(await s.testAsync("1-0")).toBe(false)
@@ -316,9 +354,12 @@ describe("StringSchema", () => {
     const s = string().alpha()
 
     expect(await s.testAsync("a1")).toBe(false)
+    expect(await s.optional().testAsync("a1")).toBe(false)
     expect(await s.testAsync("1a")).toBe(false)
     expect(await s.testAsync("a")).toBe(true)
     expect(await s.testAsync("A")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("1"))![0].message).toBe(translateMessage("string_alpha"))
     expect(await s.validateAsync("a")).toBe(undefined)
@@ -328,6 +369,7 @@ describe("StringSchema", () => {
     const s = string().alphaNumeric()
 
     expect(await s.testAsync("a1_")).toBe(false)
+    expect(await s.optional().testAsync("a1_")).toBe(false)
     expect(await s.testAsync("1a-")).toBe(false)
     expect(await s.testAsync("a 1")).toBe(false)
     expect(await s.testAsync("1'0")).toBe(false)
@@ -335,6 +377,8 @@ describe("StringSchema", () => {
     expect(await s.testAsync("a")).toBe(true)
     expect(await s.testAsync("A")).toBe(true)
     expect(await s.testAsync("a1")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("-"))![0].message).toBe(translateMessage("string_alpha_numeric"))
     expect(await s.validateAsync("1")).toBe(undefined)
@@ -344,12 +388,15 @@ describe("StringSchema", () => {
     const s = string().alphaDashes()
 
     expect(await s.testAsync("a1")).toBe(false)
+    expect(await s.optional().testAsync("a1")).toBe(false)
     expect(await s.testAsync("a_")).toBe(false)
     expect(await s.testAsync("a -")).toBe(false)
     expect(await s.testAsync("a-")).toBe(true)
     expect(await s.testAsync("a")).toBe(true)
     expect(await s.testAsync("A")).toBe(true)
     expect(await s.testAsync("-")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("_"))![0].message).toBe(translateMessage("string_alpha_dashes"))
     expect(await s.validateAsync("-")).toBe(undefined)
@@ -374,12 +421,15 @@ describe("StringSchema", () => {
     const s = string().alphaNumericDashes()
 
     expect(await s.testAsync("a1_")).toBe(false)
+    expect(await s.optional().testAsync("a1_")).toBe(false)
     expect(await s.testAsync("1a -")).toBe(false)
     expect(await s.testAsync("a")).toBe(true)
     expect(await s.testAsync("A")).toBe(true)
     expect(await s.testAsync("1")).toBe(true)
     expect(await s.testAsync("-")).toBe(true)
     expect(await s.testAsync("a1-")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("_"))![0].message).toBe(translateMessage("string_alpha_numeric_dashes"))
     expect(await s.validateAsync("1")).toBe(undefined)
@@ -389,12 +439,15 @@ describe("StringSchema", () => {
     const s = string().alphaNumericUnderscores()
 
     expect(await s.testAsync("a1-")).toBe(false)
+    expect(await s.optional().testAsync("a1-")).toBe(false)
     expect(await s.testAsync("1a _")).toBe(false)
     expect(await s.testAsync("a")).toBe(true)
     expect(await s.testAsync("As")).toBe(true)
     expect(await s.testAsync("1")).toBe(true)
     expect(await s.testAsync("_")).toBe(true)
     expect(await s.testAsync("a1_")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("-"))![0].message).toBe(translateMessage("string_alpha_numeric_underscores"))
     expect(await s.validateAsync("_")).toBe(undefined)
@@ -404,12 +457,15 @@ describe("StringSchema", () => {
     const s = string().date()
 
     expect(await s.testAsync("2019 12 12")).toBe(false)
+    expect(await s.optional().testAsync("2019 12 12")).toBe(false)
     expect(await s.testAsync("2019-12-12")).toBe(true)
     expect(await s.testAsync("2019-13-12")).toBe(false)
     expect(await s.testAsync("2019-12-40")).toBe(false)
     expect(await s.testAsync("2019-12-12T17:55:00")).toBe(false)
     expect(await s.testAsync("2019-12-12+07:00")).toBe(true)
     expect(await s.testAsync("2019-12-12Z")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("-"))![0].message).toBe(translateMessage("string_date"))
     expect(await s.validateAsync("2019-12-12")).toBe(undefined)
@@ -419,6 +475,7 @@ describe("StringSchema", () => {
     const s = string().time()
 
     expect(await s.testAsync("17 55 41")).toBe(false)
+    expect(await s.optional().testAsync("17 55 41")).toBe(false)
     expect(await s.testAsync("17:55")).toBe(true)
     expect(await s.testAsync("17:55:41")).toBe(true)
     expect(await s.testAsync("17:55:41.127")).toBe(true)
@@ -426,6 +483,8 @@ describe("StringSchema", () => {
     expect(await s.testAsync("17:55:41Z")).toBe(true)
     expect(await s.testAsync("17:55:41.127+07:00")).toBe(true)
     expect(await s.testAsync("17:55:41.127Z")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("-"))![0].message).toBe(translateMessage("string_time"))
     expect(await s.validateAsync("17:55:41")).toBe(undefined)
@@ -435,12 +494,15 @@ describe("StringSchema", () => {
     const s = string().dateTime()
 
     expect(await s.testAsync("2019 12 12T17 55 41")).toBe(false)
+    expect(await s.optional().testAsync("2019 12 12T17 55 41")).toBe(false)
     expect(await s.testAsync("2019-12-12T17:55:41")).toBe(true)
     expect(await s.testAsync("2019-12-12T17:55:41.123")).toBe(true)
     expect(await s.testAsync("2019-12-12T17:55:41+07:00")).toBe(true)
     expect(await s.testAsync("2019-12-12T17:55:41Z")).toBe(true)
     expect(await s.testAsync("2019-12-12T17:55:41.123+07:00")).toBe(true)
     expect(await s.testAsync("2019-12-12T17:55:41.123Z")).toBe(true)
+    expect(await s.testAsync("")).toBe(false)
+    expect(await s.optional().testAsync("")).toBe(true)
 
     expect((await s.validateAsync("-"))![0].message).toBe(translateMessage("string_date_time"))
     expect(await s.validateAsync("2019-12-12T17:55:41")).toBe(undefined)
@@ -451,10 +513,14 @@ describe("StringSchema", () => {
     const s1 = string().dateBefore(before)
 
     expect(await s1.testAsync(before)).toBe(false)
+    expect(await s1.optional().testAsync(before)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(before.toISOString())).toBe(false)
     expect(await s1.testAsync(subDays(before, 1))).toBe(false)
     expect(await s1.testAsync(subDays(before, 1).toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_before", [before]))
     expect(await s1.validateAsync(subDays(before, 1).toISOString())).toBe(undefined)
@@ -469,10 +535,14 @@ describe("StringSchema", () => {
     const s1 = string().dateBeforeOrSame(before)
 
     expect(await s1.testAsync(before)).toBe(false)
+    expect(await s1.optional().testAsync(before)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(before.toISOString())).toBe(true)
     expect(await s1.testAsync(subDays(before, 1))).toBe(false)
     expect(await s1.testAsync(subDays(before, 1).toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_before_or_same", [before]))
     expect(await s1.validateAsync(subDays(before, 1).toISOString())).toBe(undefined)
@@ -487,10 +557,14 @@ describe("StringSchema", () => {
     const s1 = string().dateAfter(after)
 
     expect(await s1.testAsync(after)).toBe(false)
+    expect(await s1.optional().testAsync(after)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(after.toISOString())).toBe(false)
     expect(await s1.testAsync(addDays(after, 1))).toBe(false)
     expect(await s1.testAsync(addDays(after, 1).toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_after", [after]))
     expect(await s1.validateAsync(addDays(after, 1).toISOString())).toBe(undefined)
@@ -505,10 +579,14 @@ describe("StringSchema", () => {
     const s1 = string().dateAfterOrSame(after)
 
     expect(await s1.testAsync(after)).toBe(false)
+    expect(await s1.optional().testAsync(after)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(after.toISOString())).toBe(true)
     expect(await s1.testAsync(addDays(after, 1))).toBe(false)
     expect(await s1.testAsync(addDays(after, 1).toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_after_or_same", [after]))
     expect(await s1.validateAsync(addDays(after, 1).toISOString())).toBe(undefined)
@@ -525,7 +603,9 @@ describe("StringSchema", () => {
     const s1 = string().dateBetween(after, before)
 
     expect(await s1.testAsync(after)).toBe(false)
+    expect(await s1.optional().testAsync(after)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(after.toISOString())).toBe(false)
     expect(await s1.testAsync(before.toISOString())).toBe(false)
     expect(await s1.testAsync(addDays(now, 4))).toBe(false)
@@ -534,6 +614,8 @@ describe("StringSchema", () => {
     expect(await s1.testAsync(subDays(now, 4).toISOString())).toBe(false)
     expect(await s1.testAsync(now)).toBe(false)
     expect(await s1.testAsync(now.toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_between", [after, before]))
     expect(await s1.validateAsync(now.toISOString())).toBe(undefined)
@@ -550,7 +632,9 @@ describe("StringSchema", () => {
     const s1 = string().dateBetweenOrSame(after, before)
 
     expect(await s1.testAsync(after)).toBe(false)
+    expect(await s1.optional().testAsync(after)).toBe(false)
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync(after.toISOString())).toBe(true)
     expect(await s1.testAsync(before.toISOString())).toBe(true)
     expect(await s1.testAsync(addDays(now, 4))).toBe(false)
@@ -559,6 +643,8 @@ describe("StringSchema", () => {
     expect(await s1.testAsync(subDays(now, 4).toISOString())).toBe(false)
     expect(await s1.testAsync(now)).toBe(false)
     expect(await s1.testAsync(now.toISOString())).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_date_between_or_same", [after, before]))
     expect(await s1.validateAsync(now.toISOString())).toBe(undefined)
@@ -573,10 +659,13 @@ describe("StringSchema", () => {
     const s1 = string().timeBefore(before)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("13:00")).toBe(false)
     expect(await s1.testAsync("12:00")).toBe(false)
     expect(await s1.testAsync("11:59")).toBe(true)
     expect(await s1.testAsync("11:00")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_before", [before]))
     expect(await s1.validateAsync("11:00")).toBe(undefined)
@@ -591,10 +680,13 @@ describe("StringSchema", () => {
     const s1 = string().timeBeforeOrSame(before)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("13:00")).toBe(false)
     expect(await s1.testAsync("12:00")).toBe(true)
     expect(await s1.testAsync("11:59")).toBe(true)
     expect(await s1.testAsync("11:00")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_before_or_same", [before]))
     expect(await s1.validateAsync("11:00")).toBe(undefined)
@@ -609,10 +701,13 @@ describe("StringSchema", () => {
     const s1 = string().timeAfter(after)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("11:59")).toBe(false)
     expect(await s1.testAsync("12:00")).toBe(false)
     expect(await s1.testAsync("12:01")).toBe(true)
     expect(await s1.testAsync("13:00")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_after", [after]))
     expect(await s1.validateAsync("13:00")).toBe(undefined)
@@ -627,10 +722,13 @@ describe("StringSchema", () => {
     const s1 = string().timeAfterOrSame(after)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("11:59")).toBe(false)
     expect(await s1.testAsync("12:00")).toBe(true)
     expect(await s1.testAsync("12:01")).toBe(true)
     expect(await s1.testAsync("13:00")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_after_or_same", [after]))
     expect(await s1.validateAsync("13:00")).toBe(undefined)
@@ -646,6 +744,7 @@ describe("StringSchema", () => {
     const s1 = string().timeBetween(after, before)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("09:00")).toBe(false)
     expect(await s1.testAsync("09:59")).toBe(false)
     expect(await s1.testAsync("16:00")).toBe(false)
@@ -654,6 +753,8 @@ describe("StringSchema", () => {
     expect(await s1.testAsync("15:00")).toBe(false)
     expect(await s1.testAsync("10:01")).toBe(true)
     expect(await s1.testAsync("14:59")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_between", [after, before]))
     expect(await s1.validateAsync("12:00")).toBe(undefined)
@@ -669,6 +770,7 @@ describe("StringSchema", () => {
     const s1 = string().timeBetweenOrSame(after, before)
 
     expect(await s1.testAsync("foo")).toBe(false)
+    expect(await s1.optional().testAsync("foo")).toBe(false)
     expect(await s1.testAsync("09:00")).toBe(false)
     expect(await s1.testAsync("09:59")).toBe(false)
     expect(await s1.testAsync("16:00")).toBe(false)
@@ -677,6 +779,8 @@ describe("StringSchema", () => {
     expect(await s1.testAsync("15:00")).toBe(true)
     expect(await s1.testAsync("10:01")).toBe(true)
     expect(await s1.testAsync("14:59")).toBe(true)
+    expect(await s1.testAsync("")).toBe(false)
+    expect(await s1.optional().testAsync("")).toBe(true)
 
     expect((await s1.validateAsync("-"))![0].message).toBe(translateMessage("string_time_between_or_same", [after, before]))
     expect(await s1.validateAsync("12:00")).toBe(undefined)
@@ -962,9 +1066,8 @@ describe("StringSchema", () => {
 
     const errors1 = (await s.validateAsync(""))!
 
-    expect(errors1.length).toBe(2)
+    expect(errors1.length).toBe(1)
     expect(errors1[0].message).toBe(translateMessage("string_required"))
-    expect(errors1[1].message).toBe(translateMessage("string_min", [2]))
 
     const errors2 = (await s.validateAsync("a"))!
 

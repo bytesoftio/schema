@@ -23,7 +23,6 @@ import {
 import { LazyValue, ValidationFunctionResult } from "../types"
 import { lazyValue } from "../lazyValue"
 
-const isDefinedString = (value: any) => isDefined(value) && isString(value)
 const isDefinedNonEmptyString = (value: any) => isDefined(value) && isString(value) && value.length > 0
 const isNumeric = (value: any) => isNumber(value) || ( ! isEmpty(value) && ! isNaN(value))
 
@@ -40,37 +39,37 @@ export const stringType = (value: any): ValidationFunctionResult => {
 }
 
 export const stringEquals = (value: any, equal: LazyValue<string>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return value === lazyValue(equal)
 }
 
 export const stringLength = (value: any, exactLength: LazyValue<number>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return value.length === lazyValue(exactLength)
 }
 
 export const stringMin = (value: any, minLength: LazyValue<number>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return value.length >= lazyValue(minLength)
 }
 
 export const stringMax = (value: any, maxLength: LazyValue<number>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return value.length <= lazyValue(maxLength)
 }
 
 export const stringBetween = (value: any, minLength: LazyValue<number>, maxLength: LazyValue<number>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return value.length >= lazyValue(minLength) && value.length <= lazyValue(maxLength)
 }
 
 export const stringMatches = (value: any, regex: LazyValue<RegExp>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return lazyValue(regex).test(value)
 }
@@ -92,43 +91,43 @@ export const stringUrl = (value: any): ValidationFunctionResult => {
 }
 
 export const stringStartsWith = (value: any, find: LazyValue<string>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return startsWith(value, lazyValue(find))
 }
 
 export const stringEndsWith = (value: any, find: LazyValue<string>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return endsWith(value, lazyValue(find))
 }
 
 export const stringIncludes = (value: any, find: LazyValue<string>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return includes(value, lazyValue(find))
 }
 
 export const stringOmits = (value: any, find: LazyValue<string>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return ! includes(value, lazyValue(find))
 }
 
 export const stringOneOf = (value: any, whitelist: LazyValue<string[]>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return includes(lazyValue(whitelist), value)
 }
 
 export const stringNoneOf = (value: any, blacklist: LazyValue<string[]>): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return ! includes(lazyValue(blacklist), value)
 }
 
 export const stringNumeric = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return isNumeric(value)
 }
@@ -136,7 +135,7 @@ export const stringNumeric = (value: any): ValidationFunctionResult => {
 const alphaRegex = /^[a-zA-Z]+$/
 
 export const stringAlpha = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaRegex.test(value)
 }
@@ -144,7 +143,7 @@ export const stringAlpha = (value: any): ValidationFunctionResult => {
 const alphaNumericRegex = /^[0-9a-zA-Z]+$/
 
 export const stringAlphaNumeric = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaNumericRegex.test(value)
 }
@@ -152,7 +151,7 @@ export const stringAlphaNumeric = (value: any): ValidationFunctionResult => {
 const alphaDashes = /^[a-zA-Z-]+$/
 
 export const stringAlphaDashes = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaDashes.test(value)
 }
@@ -160,7 +159,7 @@ export const stringAlphaDashes = (value: any): ValidationFunctionResult => {
 const alphaUnderscores = /^[a-zA-Z_]+$/
 
 export const stringAlphaUnderscores = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaUnderscores.test(value)
 }
@@ -168,7 +167,7 @@ export const stringAlphaUnderscores = (value: any): ValidationFunctionResult => 
 const alphaNumericDashes = /^[0-9a-zA-Z-]+$/
 
 export const stringAlphaNumericDashes = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaNumericDashes.test(value)
 }
@@ -176,7 +175,7 @@ export const stringAlphaNumericDashes = (value: any): ValidationFunctionResult =
 const alphaNumericUnderscores = /^[0-9a-zA-Z_]+$/
 
 export const stringAlphaNumericUnderscores = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return alphaNumericUnderscores.test(value)
 }
@@ -184,7 +183,7 @@ export const stringAlphaNumericUnderscores = (value: any): ValidationFunctionRes
 const dateRegex = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$/
 
 export const stringDate = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return dateRegex.test(value)
 }
@@ -192,7 +191,7 @@ export const stringDate = (value: any): ValidationFunctionResult => {
 const timeRegex = /^(2[0-3]|[01][0-9]):([0-5][0-9]):?([0-5][0-9])?(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$/
 
 export const stringTime = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return timeRegex.test(value)
 }
@@ -200,13 +199,13 @@ export const stringTime = (value: any): ValidationFunctionResult => {
 const dateTimeRegex = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$/
 
 export const stringDateTime = (value: any): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return dateTimeRegex.test(value)
 }
 
 export const stringDateAfter = (value: any, after: LazyValue<Date>, allowSame: boolean): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   const date = parseISO(value)
 
@@ -214,7 +213,7 @@ export const stringDateAfter = (value: any, after: LazyValue<Date>, allowSame: b
 }
 
 export const stringDateBefore = (value: any, before: LazyValue<Date>, allowSame: boolean): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   const date = parseISO(value)
 
@@ -226,7 +225,7 @@ export const stringDateBetween = (value: any, after: LazyValue<Date>, before: La
 }
 
 export const stringTimeAfter = (value: any, after: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
   if ( ! stringTime(value)) return false
 
   const date = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${value}`)
@@ -236,7 +235,7 @@ export const stringTimeAfter = (value: any, after: LazyValue<string>, allowSame:
 }
 
 export const stringTimeBefore = (value: any, before: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
   if ( ! stringTime(value)) return false
 
   const date = parseISO(`${format(new Date(), "yyyy-MM-dd")}T${value}`)
@@ -246,7 +245,7 @@ export const stringTimeBefore = (value: any, before: LazyValue<string>, allowSam
 }
 
 export const stringTimeBetween = (value: any, after: LazyValue<string>, before: LazyValue<string>, allowSame: boolean): ValidationFunctionResult => {
-  if ( ! isDefinedString(value)) return
+  if ( ! isDefinedNonEmptyString(value)) return
 
   return stringTimeAfter(value, after, allowSame) && stringTimeBefore(value, before, allowSame)
 }

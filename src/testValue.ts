@@ -18,7 +18,7 @@ export const testValue = (value: any, definitions: ValidationDefinition[]): bool
     } else {
       let result = (definition.validator as ValidationFunction)(value, ...definition.args)
 
-      if (result !== undefined && result['then'] && result['catch']) {
+      if (result != undefined && result['then'] && result['catch']) {
         throw new Error("Trying to execute async validation logic in a sync call, use an async method instead")
       }
 

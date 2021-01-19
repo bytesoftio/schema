@@ -9,6 +9,8 @@ import { joinPath } from "./helpers"
 export const validateObjectShapeAsync = async (
   value: any,
   objectShape: ObjectShape<any> | undefined,
+  language?: string,
+  fallbackLanguage?: string
 ): Promise<ValidationError[]> => {
   if ( ! objectShape) return []
 
@@ -17,7 +19,7 @@ export const validateObjectShapeAsync = async (
   await Promise.all(keys(objectShape).map(async key => {
     const shapeValue = objectShape[key]
     const keyValue = get(value, key)
-    const newErrors = await shapeValue.validateAsync(keyValue)
+    const newErrors = await shapeValue.validateAsync(keyValue, language, fallbackLanguage)
 
     if (newErrors) {
       newErrors.forEach(error => {

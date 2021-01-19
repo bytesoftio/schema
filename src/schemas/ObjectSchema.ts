@@ -72,22 +72,22 @@ export class ObjectSchema<TValue extends object> extends Schema<TValue> {
       && await testObjectShapeAsync(value, this.objectShape)
   }
 
-  protected customValidationBehavior(value: any, errors: ValidationError[]): ValidationError[] {
-    const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
-    const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape)
-    const unknownKeysErrors = validateObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema)
-    const unknownValueErrors = validateObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema)
-    const validateShapeErrors = validateObjectShape(value, this.objectShape)
+  protected customValidationBehavior(value: any, errors: ValidationError[], language?: string, fallbackLanguage?: string): ValidationError[] {
+    const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues, language, fallbackLanguage)
+    const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape, language, fallbackLanguage)
+    const unknownKeysErrors = validateObjectUnknownKeys(value, this.objectShape, this.unknownKeysSchema, language, fallbackLanguage)
+    const unknownValueErrors = validateObjectUnknownValues(value, this.objectShape, this.unknownValuesSchema, language, fallbackLanguage)
+    const validateShapeErrors = validateObjectShape(value, this.objectShape, language, fallbackLanguage)
 
     return [...errors, ...hasUnknownKeysErrors, ...isMissingKeysErrors, ...unknownKeysErrors, ...unknownValueErrors, ...validateShapeErrors]
   }
 
-  protected async customValidationBehaviorAsync(value: any, errors: ValidationError[]): Promise<ValidationError[]> {
-    const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues)
-    const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape)
-    const unknownKeysErrors = await validateObjectUnknownKeysAsync(value, this.objectShape, this.unknownKeysSchema)
-    const unknownValueErrors = await validateObjectUnknownValuesAsync(value, this.objectShape, this.unknownValuesSchema)
-    const validateShapeErrors = await validateObjectShapeAsync(value, this.objectShape)
+  protected async customValidationBehaviorAsync(value: any, errors: ValidationError[], language?: string, fallbackLanguage?: string): Promise<ValidationError[]> {
+    const hasUnknownKeysErrors = validateObjectHasUnknownKeys(value, this.objectShape, this.allowUnknownKeysAndValues, language, fallbackLanguage)
+    const isMissingKeysErrors = validateObjectIsMissingKeys(value, this.objectShape, language, fallbackLanguage)
+    const unknownKeysErrors = await validateObjectUnknownKeysAsync(value, this.objectShape, this.unknownKeysSchema, language, fallbackLanguage)
+    const unknownValueErrors = await validateObjectUnknownValuesAsync(value, this.objectShape, this.unknownValuesSchema, language, fallbackLanguage)
+    const validateShapeErrors = await validateObjectShapeAsync(value, this.objectShape, language, fallbackLanguage)
 
     return [...errors, ...hasUnknownKeysErrors, ...isMissingKeysErrors, ...unknownKeysErrors, ...unknownValueErrors, ...validateShapeErrors]
   }

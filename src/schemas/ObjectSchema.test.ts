@@ -1,11 +1,6 @@
 import {
-  ObjectSchema,
-
-} from "../index"
-import {
-  isString,
-  keys,
-} from "lodash"
+  ObjectSchema } from "../index"
+import { isString, keys } from "lodash"
 import { translateMessage } from "../translateMessage"
 import { string } from "../factories/string"
 import { array } from "../factories/array"
@@ -42,6 +37,63 @@ describe("ObjectSchema", () => {
     expect(object().required(false).test(undefined)).toBe(true)
     expect(object().required(() => false).test(undefined)).toBe(true)
     expect(object().required(() => true).test(undefined)).toBe(false)
+  })
+
+  test("sync and async errors are identical", async () => {
+    const s = object({
+      foo: string()
+    })
+      .shapeUnknownKeys(string().numeric())
+      .shapeUnknownValues(string().numeric())
+
+    const errors1 = s.validate(null, "de")!
+    const errors2 = (await s.validateAsync(null, "de"))!
+    const errors3 = s.validate({
+      yolo: "swag"
+    }, "xx", "de")!
+    const errors4 = (await s.validateAsync({
+      yolo: "swag"
+    }, "xx", "de"))!
+
+    expect(JSON.stringify(errors1)).toBe(JSON.stringify(errors2))
+    expect(JSON.stringify(errors3)).toBe(JSON.stringify(errors4))
+
+    expect(errors1[0].type).toBe("object_required")
+    expect(errors1[1].type).toBe("object_missing_key")
+    expect(errors1[2].type).toBe("string_required")
+
+    expect(errors3[0].type).toBe("object_missing_key")
+    expect(errors3[1].type).toBe("string_numeric")
+    expect(errors3[2].type).toBe("string_required")
+  })
+
+  test("translates into another language", async () => {
+    const s = object({
+      foo: string()
+    })
+      .shapeUnknownKeys(string().numeric())
+      .shapeUnknownValues(string().numeric())
+
+    const errors1 = s.validate(null, "de")!
+    const errors2 = (await s.validateAsync(null, "de"))!
+    const errors3 = s.validate({
+      yolo: "swag"
+    }, "xx", "de")!
+    const errors4 = (await s.validateAsync({
+      yolo: "swag"
+    }, "xx", "de"))!
+
+    expect(errors1.length).toBe(3)
+    expect(errors1[0].message).toBe(translateMessage("object_required", [], "de"))
+
+    expect(errors2.length).toBe(3)
+    expect(errors2[0].message).toBe(translateMessage("object_required", [], "de"))
+
+    expect(errors3.length).toBe(3)
+    expect(errors3[0].message).toBe(translateMessage("object_missing_key", ["foo"], "de"))
+
+    expect(errors4.length).toBe(3)
+    expect(errors4[0].message).toBe(translateMessage("object_missing_key", ["foo"], "de"))
   })
 
   test("optional", async () => {

@@ -1,8 +1,5 @@
 import { addDays, subDays } from "date-fns"
-import {
-  StringSchema,
-
-} from "../index"
+import { StringSchema } from "../index"
 import { translateMessage } from "../translateMessage"
 import { string } from "../factories/string"
 import { value } from "../factories/value"
@@ -40,6 +37,26 @@ describe("StringSchema", () => {
     expect(string().required(false).test(undefined)).toBe(true)
     expect(string().required(() => false).test(undefined)).toBe(true)
     expect(string().required(() => true).test(undefined)).toBe(false)
+  })
+
+  test("translates into another language", async () => {
+    const s = string().required()
+
+    const errors1 = s.validate(null, "de")!
+    const errors2 = (await s.validateAsync(null, "de"))!
+    const errors3 = (await s.validateAsync(null, "xx", "de"))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe("Erforderlich")
+    expect(errors1[0].message).toBe(translateMessage("string_required", [], "de"))
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe("Erforderlich")
+    expect(errors2[0].message).toBe(translateMessage("string_required", [], "de"))
+
+    expect(errors3.length).toBe(1)
+    expect(errors3[0].message).toBe("Erforderlich")
+    expect(errors3[0].message).toBe(translateMessage("string_required", [], "de"))
   })
 
   test("optional", async () => {

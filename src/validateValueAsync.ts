@@ -13,13 +13,17 @@ import {
 } from "lodash"
 import { Schema } from "./Schema"
 
-export const validateValueAsync = async (value: any, definitions: ValidationDefinition[]): Promise<ValidationError[]> => {
+export const validateValueAsync = async (
+  value: any,
+  definitions: ValidationDefinition[],
+  language?: string,
+  fallbackLanguage?: string
+): Promise<ValidationError[]> => {
   const errors: ValidationError[] = []
 
   for (let definition of definitions) {
-
     if (definition.validator instanceof Schema) {
-      const newErrors = await definition.validator.validateAsync(value)
+      const newErrors = await definition.validator.validateAsync(value, language, fallbackLanguage)
 
       if (newErrors) {
         errors.push(...newErrors)
@@ -28,7 +32,7 @@ export const validateValueAsync = async (value: any, definitions: ValidationDefi
       let result = await (definition.validator as ValidationFunction)(value, ...definition.args)
 
       if (result instanceof Schema) {
-        result = await result.validateAsync(value)
+        result = await result.validateAsync(value, language, fallbackLanguage)
       }
 
       if (["and", "or", "custom"].includes(definition.type) && isBoolean(result)) {
@@ -41,7 +45,7 @@ export const validateValueAsync = async (value: any, definitions: ValidationDefi
         } else {
           const error = createValidationError(
             definition.type,
-            isString(result) ? result : translateValidationDefinition(definition),
+            isString(result) ? result : translateValidationDefinition(definition, language, fallbackLanguage),
             definition.args,
             value,
           )

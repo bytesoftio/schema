@@ -1,4 +1,4 @@
-import { locale } from "./locale"
+import en from "./locales/en.json"
 
 export interface ValidationSchema<TValue = any> {
   or(orSchema: CustomValidation): this
@@ -14,14 +14,14 @@ export interface ValidationSchema<TValue = any> {
 
   test(value: any): boolean
   testAsync(value: any): Promise<boolean>
-  validate(value: any): ValidationError[] | undefined
-  validateAsync(value: any): Promise<ValidationError[] | undefined>
+  validate(value: any, language?: string, fallbackLanguage?: string): ValidationError[] | undefined
+  validateAsync(value: any, language?: string, fallbackLanguage?: string): Promise<ValidationError[] | undefined>
   sanitize<TValue, TSanitizedValue = TValue>(value: TValue): TSanitizedValue
   sanitizeAsync<TValue, TSanitizedValue = TValue>(value: TValue): Promise<TSanitizedValue>
   sanitizeAndTest<TValue, TSanitizedValue = TValue>(value: any): [boolean, TValue]
   sanitizeAndTestAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[boolean, TValue]>
-  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any): [ValidationError[] | undefined, TValue]
-  sanitizeAndValidateAsync<TValue, TSanitizedValue = TValue>(value: any): Promise<[ValidationError[] | undefined, TValue]>
+  sanitizeAndValidate<TValue, TSanitizedValue = TValue>(value: any, language?: string, fallbackLanguage?: string): [ValidationError[] | undefined, TValue]
+  sanitizeAndValidateAsync<TValue, TSanitizedValue = TValue>(value: any, language?: string, fallbackLanguage?: string): Promise<[ValidationError[] | undefined, TValue]>
 }
 
 export type LazyValue<TValue> = TValue | (() => TValue) | undefined
@@ -39,7 +39,7 @@ export type ValidationError = {
 }
 export type ValidationBlock = ValidationSchema | ValidationFunction
 export type ValidationFunction = (value: any, ...args: any[]) => MaybePromise<ValidationFunctionResult>
-export type ValidationType = (keyof typeof locale) | "custom" | "and" | "or"
+export type ValidationType = (keyof typeof en) | "custom" | "and" | "or"
 export type ValidationLink = "and" | "or" | string | undefined
 export type ValidationPath = string | undefined
 export type ValidationDefinition = {

@@ -14,12 +14,17 @@ import {
 } from "lodash"
 import { Schema } from "./Schema"
 
-export const validateValue = (value: any, definitions: ValidationDefinition[]): ValidationError[] => {
+export const validateValue = (
+  value: any,
+  definitions: ValidationDefinition[],
+  language?: string,
+  fallbackLanguage?: string
+): ValidationError[] => {
   const errors: ValidationError[] = []
 
   for (let definition of definitions) {
     if (definition.validator instanceof Schema) {
-      const newErrors = definition.validator.validate(value)
+      const newErrors = definition.validator.validate(value, language, fallbackLanguage)
 
       if (newErrors) {
         errors.push(...newErrors)
@@ -33,7 +38,7 @@ export const validateValue = (value: any, definitions: ValidationDefinition[]): 
 
       // we might get a schema from a validation function
       if (result instanceof Schema) {
-        result = result.validate(value)
+        result = result.validate(value, language, fallbackLanguage)
       }
 
       // conditional definitions must always return some sort of an error,
@@ -50,7 +55,7 @@ export const validateValue = (value: any, definitions: ValidationDefinition[]): 
         } else {
           const error = createValidationError(
             definition.type,
-            isString(result) ? result : translateValidationDefinition(definition),
+            isString(result) ? result : translateValidationDefinition(definition, language, fallbackLanguage),
             definition.args,
             value,
           )

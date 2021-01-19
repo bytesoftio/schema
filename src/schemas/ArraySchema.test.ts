@@ -1,7 +1,4 @@
-import {
-  ArraySchema,
-
-} from "../index"
+import { ArraySchema } from "../index"
 import { isString } from "lodash"
 import { translateMessage } from "../translateMessage"
 import { string } from "../factories/string"
@@ -36,6 +33,34 @@ describe("ArraySchema", () => {
     expect(errors2[1].message).toBe(translateMessage("array_required"))
 
     expect(await s1.validateAsync([])).toBe(undefined)
+  })
+
+  test("translates into another language", async () => {
+    const s = array().required().someOf(["foo"])
+
+    const errors1 = s.validate(null, "de")!
+    const errors2 = (await s.validateAsync(null, "de"))!
+    const errors3 = (await s.validateAsync(null, "xx", "de"))!
+    const errors4 = s.validate(["bar"], "xx", "de")!
+    const errors5 = (await s.validateAsync(["bar"], "xx", "de"))!
+
+    expect(errors1.length).toBe(1)
+    expect(errors1[0].message).toBe("Erforderlich")
+    expect(errors1[0].message).toBe(translateMessage("array_required", [], "de"))
+
+    expect(errors2.length).toBe(1)
+    expect(errors2[0].message).toBe("Erforderlich")
+    expect(errors2[0].message).toBe(translateMessage("array_required", [], "de"))
+
+    expect(errors3.length).toBe(1)
+    expect(errors3[0].message).toBe("Erforderlich")
+    expect(errors3[0].message).toBe(translateMessage("array_required", [], "de"))
+
+    expect(errors4.length).toBe(1)
+    expect(errors4[0].message).toBe(translateMessage("array_some_of", [["foo"]], "de"))
+
+    expect(errors5.length).toBe(1)
+    expect(errors5[0].message).toBe(translateMessage("array_some_of", [["foo"]], "de"))
   })
 
   test("optional", async () => {

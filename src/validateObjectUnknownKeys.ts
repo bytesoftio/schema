@@ -13,14 +13,16 @@ export const validateObjectUnknownKeys = (
   value: any,
   objectShape: ObjectShape<any> | undefined,
   unknownKeysSchema: ValidationSchema | undefined,
+  language?: string,
+  fallbackLanguage?: string
 ): ValidationError[] => {
   if ( ! unknownKeysSchema) return []
 
   const unknownKeys = difference(keys(value), keys(objectShape))
   const errors: ValidationError[] = []
 
-  unknownKeys.map(async (unknownKey) => {
-    const newErrors = await unknownKeysSchema.validate(unknownKey)
+  unknownKeys.map(unknownKey => {
+    const newErrors = unknownKeysSchema.validate(unknownKey, language, fallbackLanguage)
 
     if (newErrors) {
       newErrors.forEach(error => {

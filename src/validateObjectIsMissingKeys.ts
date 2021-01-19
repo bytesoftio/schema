@@ -7,6 +7,8 @@ import { translateMessage } from "./translateMessage"
 export const validateObjectIsMissingKeys = <TValue = any>(
   value: any,
   objectShape: ObjectShape<TValue> | undefined,
+  language?: string,
+  fallbackLanguage?: string
 ): ValidationError[] => {
   const missingKeys = difference(keys(objectShape), keys(value))
 
@@ -15,7 +17,7 @@ export const validateObjectIsMissingKeys = <TValue = any>(
   missingKeys.forEach(missingKey => {
     const error = createValidationError(
       "object_missing_key",
-      translateMessage("object_missing_key", [missingKey]),
+      translateMessage("object_missing_key", [missingKey], language, fallbackLanguage),
       [],
       value,
     )
